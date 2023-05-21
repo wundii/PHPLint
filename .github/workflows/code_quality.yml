@@ -31,18 +31,14 @@ jobs:
             ${{ runner.os }}-php-
 
       - name: Composer install
-        working-directory: app
         run: |
           composer install --prefer-dist --no-progress
 
       - name: Run RectorPHP
-        working-directory: app
         run: composer rector-dry-run
 
       - name: Run PHPStan
-        working-directory: app
         run: composer phpstan
 
-      - name: Run PHPUnitTest
-        working-directory: app
+      - name: Run PHPUnitTests
         run: composer unittest
