@@ -1,0 +1,64 @@
+{
+  "name": "wundii/phplint",
+  "description": "This tool checks the syntax and style of PHP files",
+  "license": "BSD-2-Clause",
+  "authors": [
+    {
+      "name": "Andreas Wunderwald",
+      "email": "wundii@gmail.com"
+    }
+  ],
+  "require": {
+    "php": ">=8.1",
+    "ext-json": "*",
+    "symfony/console": "6.2.*"
+  },
+  "require-dev": {
+    "phpstan/phpstan": "^1.10",
+    "phpstan/phpstan-strict-rules": "^1.5",
+    "phpunit/phpunit": "^10.0",
+    "rector/rector": "^0.16",
+    "symfony/var-dumper": "^6.2"
+  },
+  "config": {
+    "sort-packages": true
+  },
+  "autoload": {
+    "psr-4": {
+      "PHPLint\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "PHPLint\\Tests\\": "tests/"
+    }
+  },
+  "bin": [
+    "bin/phplint"
+  ],
+  "scripts": {
+    "auto-scripts": {
+    },
+    "post-install-cmd": [
+      "@auto-scripts"
+    ],
+    "post-update-cmd": [
+      "@auto-scripts"
+    ],
+    "rector-dry-run": [
+      "php vendor/bin/rector process --dry-run --ansi"
+    ],
+    "rector-apply": [
+      "php vendor/bin/rector process --ansi"
+    ],
+    "rector-cache": [
+      "rm -R cache/rector"
+    ],
+    "phpstan-analyse": [
+      "php vendor/bin/phpstan analyse src"
+    ],
+    "unittest": [
+      "php vendor/bin/phpunit --configuration phpunit.xml"
+    ]
+  }
+}
