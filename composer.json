@@ -1,7 +1,7 @@
 {
   "name": "wundii/phplint",
   "description": "This tool checks the syntax and style of PHP files",
-  "license": "BSD-2-Clause",
+  "license": "MIT",
   "authors": [
     {
       "name": "Andreas Wunderwald",
