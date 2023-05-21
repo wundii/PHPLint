@@ -7,8 +7,15 @@ use Exception;
 use Symfony\Component\Console\Application as BaseApplication;
 final class Application
 {
-    CONST NAME = 'PHPLint';
-    const VERSION = '0.0.1';
+    /**
+     * @var string
+     */
+    public const NAME = 'PHPLint';
+
+    /**
+     * @var string
+     */
+    public const VERSION = '0.0.1';
 
     /**
      * @throws Exception
