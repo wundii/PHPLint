@@ -35,7 +35,7 @@ jobs:
           composer install --prefer-dist --no-progress
 
       - name: Run RectorPHP
-        run: composer rector-dry-run
+        run: composer rector-dry
 
       - name: Run PHPStan
         run: composer phpstan
