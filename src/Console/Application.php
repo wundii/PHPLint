@@ -43,7 +43,7 @@ final class Application
         return $application->run();
     }
 
-    protected function getInputDefinition(): InputDefinition
+    private function getInputDefinition(): InputDefinition
     {
         return new InputDefinition([
             new InputArgument('command', InputArgument::REQUIRED, 'The command to execute'),
