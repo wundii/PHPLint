@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace PHPLint\Bootstrap;
 
 use Exception;
-use PHPLint\Config\LintConfig;
 
 final class BootstrapConfig
 {

@@ -6,7 +6,7 @@ use PHPLint\Config\LintConfig;
 
 return static function (LintConfig $lintConfig): LintConfig
 {
-    echo 'phplint config'.PHP_EOL;
+    dump('testausgabe');
     // $lintConfig->setPhpCgiExecutable('test');
 
     return $lintConfig;
