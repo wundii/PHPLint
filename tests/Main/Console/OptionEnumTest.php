@@ -7,6 +7,18 @@ use PHPUnit\Framework\TestCase;
 
 class OptionEnumTest extends TestCase
 {
+    public static function enumValues(): array
+    {
+        $values = [];
+
+        $reflectionEnum = new ReflectionEnum(OptionEnum::class);
+        foreach ($reflectionEnum->getCases() as $case) {
+            $values[] = $case->getValue();
+        }
+
+        return $values;
+    }
+
     public function testGetName()
     {
         $this->assertEquals('--ansi', OptionEnum::ANSI->getName());
@@ -29,25 +41,25 @@ class OptionEnumTest extends TestCase
     {
         $optionNames = [];
 
-        foreach (OptionEnum::values() as $option) {
+        foreach (self::enumValues() as $option) {
             $name = $option->getName();
             $this->assertFalse(in_array($name, $optionNames), "Duplicate option name: $name");
             $optionNames[] = $name;
         }
 
-        $this->assertCount(count(OptionEnum::values()), $optionNames, 'Missing option names');
+        $this->assertCount(count(self::enumValues()), $optionNames, 'Missing option names');
     }
 
     public function testAllShortcutsAreUnique()
     {
         $shortcuts = [];
 
-        foreach (OptionEnum::values() as $option) {
+        foreach (self::enumValues() as $option) {
             $shortcut = $option->getShortcut();
             $this->assertFalse(in_array($shortcut, $shortcuts), "Duplicate shortcut: $shortcut");
             $shortcuts[] = $shortcut;
         }
 
-        $this->assertCount(count(OptionEnum::values()), $shortcuts, 'Missing shortcuts');
+        $this->assertCount(count(self::enumValues()), $shortcuts, 'Missing shortcuts');
     }
 }

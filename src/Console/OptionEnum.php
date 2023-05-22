@@ -3,8 +3,6 @@
 declare(strict_types=1);
 namespace PHPLint\Console;
 
-use ReflectionEnum;
-
 enum OptionEnum: string
 {
     /**
@@ -37,20 +35,5 @@ enum OptionEnum: string
             self::VERBOSE => self::PRE_SHORTCUT . 'v|vv|vvv',
             self::VERSION => self::PRE_SHORTCUT . 'V',
         };
-    }
-
-    /**
-     * @return array<OptionEnum>
-     */
-    public static function values(): array
-    {
-        $values = [];
-
-        $reflectionEnum = new ReflectionEnum(self::class);
-        foreach ($reflectionEnum->getCases() as $case) {
-            $values[] = $case->getValue();
-        }
-
-        return $values;
     }
 }
