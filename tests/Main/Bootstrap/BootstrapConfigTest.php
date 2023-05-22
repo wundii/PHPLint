@@ -23,7 +23,7 @@ class BootstrapConfigTest extends TestCase
         $configFile = __DIR__ . '/Files/phplint-no-exist.php';
 
         $this->expectException(Exception::class);
-        $this->expectExceptionMessage("BootstrapConfig " . $configFile . " file does not exist.");
+        $this->expectExceptionMessage('BootstrapConfig ' . $configFile . ' file does not exist.');
 
         new BootstrapConfig($configFile);
     }
@@ -33,7 +33,7 @@ class BootstrapConfigTest extends TestCase
         $configFile = __DIR__ . '/Files/';
 
         $this->expectException(Exception::class);
-        $this->expectExceptionMessage("BootstrapConfig " . $configFile . " file is not a file.");
+        $this->expectExceptionMessage('BootstrapConfig ' . $configFile . ' file is not a file.');
 
         new BootstrapConfig($configFile);
     }

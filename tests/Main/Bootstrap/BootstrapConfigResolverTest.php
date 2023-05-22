@@ -44,7 +44,7 @@ class BootstrapConfigResolverTest extends TestCase
         $configFile = __DIR__ . '/Files/phplint-no-exist.php';
 
         $this->expectException(Exception::class);
-        $this->expectExceptionMessage("BootstrapConfig " . $configFile . " file does not exist.");
+        $this->expectExceptionMessage('BootstrapConfig ' . $configFile . ' file does not exist.');
 
         $resolver = new BootstrapConfigResolver();
         $input = new ArgvInput(['bin/phplint', '--config', $configFile]);

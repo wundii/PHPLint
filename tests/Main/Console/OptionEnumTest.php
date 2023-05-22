@@ -43,7 +43,7 @@ class OptionEnumTest extends TestCase
 
         foreach (self::enumValues() as $option) {
             $name = $option->getName();
-            $this->assertFalse(in_array($name, $optionNames), "Duplicate option name: $name");
+            $this->assertFalse(in_array($name, $optionNames, true), "Duplicate option name: {$name}");
             $optionNames[] = $name;
         }
 
@@ -56,7 +56,7 @@ class OptionEnumTest extends TestCase
 
         foreach (self::enumValues() as $option) {
             $shortcut = $option->getShortcut();
-            $this->assertFalse(in_array($shortcut, $shortcuts), "Duplicate shortcut: $shortcut");
+            $this->assertFalse(in_array($shortcut, $shortcuts, true), "Duplicate shortcut: {$shortcut}");
             $shortcuts[] = $shortcut;
         }
 

@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types=1);
+
 namespace PHPLint\Config;
 
 final class LintConfig
@@ -12,10 +13,11 @@ final class LintConfig
      */
     public function __construct(
         private string $phpCgiExecutable = 'php',
-        private array  $paths = [],
-        private array  $skip = [],
-        private array  $sets = [],
-    ) {}
+        private array $paths = [],
+        private array $skip = [],
+        private array $sets = [],
+    ) {
+    }
 
     public function getPhpCgiExecutable(): string
     {
@@ -32,7 +34,7 @@ final class LintConfig
      */
     public function getPaths(): array
     {
-        if($this->paths === []) {
+        if ($this->paths === []) {
             return [getcwd() . DIRECTORY_SEPARATOR];
         }
 

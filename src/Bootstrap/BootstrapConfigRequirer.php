@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types=1);
+
 namespace PHPLint\Bootstrap;
 
 use Exception;
@@ -12,7 +13,8 @@ final class BootstrapConfigRequirer
 {
     public function __construct(
         private readonly BootstrapConfig $bootstrapConfig
-    ) {}
+    ) {
+    }
 
     /**
      * @throws Exception
@@ -23,7 +25,7 @@ final class BootstrapConfigRequirer
 
         $fn = require_once $this->bootstrapConfig->getBootstrapConfigFile();
 
-        if(!is_callable($fn)) {
+        if (! is_callable($fn)) {
             throw new Exception('BootstrapConfig ' . $this->bootstrapConfig->getBootstrapConfigFile() . ' file is not callable.');
         }
 
@@ -31,12 +33,12 @@ final class BootstrapConfigRequirer
         /* @phpstan-ignore-next-line */
         $reflectionFunction = new ReflectionFunction($fn);
 
-        if($reflectionFunction->getNumberOfParameters() === 0) {
+        if ($reflectionFunction->getNumberOfParameters() === 0) {
             throw new Exception('BootstrapConfig ' . $this->bootstrapConfig->getBootstrapConfigFile() . ' file has no parameters.');
         }
 
         foreach ($reflectionFunction->getParameters() as $reflectionParameter) {
-            if(
+            if (
                 $reflectionParameter->hasType()
                 && $reflectionParameter->getType() instanceof ReflectionNamedType
                 && $reflectionParameter->getType()->getName() === LintConfig::class

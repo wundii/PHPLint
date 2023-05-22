@@ -49,6 +49,7 @@
     "complete-check": [
       "@rector-dry",
       "@phpstan",
+      "@ecs-dry",
       "@unittest"
     ],
     "rector-dry": [
@@ -56,6 +57,12 @@
     ],
     "rector-apply": [
       "php vendor/bin/rector process --ansi"
+    ],
+    "ecs-dry": [
+      "php vendor/bin/ecs check"
+    ],
+    "ecs-apply": [
+      "php vendor/bin/ecs check --fix"
     ],
     "phpstan": [
       "php vendor/bin/phpstan analyse src"
