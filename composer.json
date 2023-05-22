@@ -56,9 +56,6 @@
     "rector-apply": [
       "php vendor/bin/rector process --ansi"
     ],
-    "rector-cache": [
-      "rm -R cache/rector"
-    ],
     "phpstan": [
       "php vendor/bin/phpstan analyse src"
     ],

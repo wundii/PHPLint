@@ -6,5 +6,5 @@ use PHPLint\Config\LintConfig;
 
 return static function (LintConfig $lintConfig): void
 {
-    // dump('testausgabe');
+
 };

@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace PHPLint\Bootstrap;
 
 use Exception;
+use PHPLint\Console\OptionEnum;
 use Symfony\Component\Console\Input\ArgvInput;
 
 final class BootstrapConfigResolver
@@ -11,9 +12,9 @@ final class BootstrapConfigResolver
     /**
      * @throws Exception
      */
-    public function getBootstrapConfig(): BootstrapConfig
+    public function getBootstrapConfig(ArgvInput $argvInput): BootstrapConfig
     {
-        $configFile = $this->resolveFromInput(new ArgvInput());
+        $configFile = $this->resolveFromInput($argvInput);
 
         return new BootstrapConfig($configFile);
     }
@@ -23,22 +24,16 @@ final class BootstrapConfigResolver
      */
     private function resolveFromInput(ArgvInput $argvInput): string
     {
-        $configFile = $this->getOptionValue($argvInput, ['--config', '-c']);
+        $configFile = $this->getOptionValue($argvInput, [OptionEnum::CONFIG->getName(), OptionEnum::CONFIG->getShortcut()]);
         if ($configFile === null) {
-
             $configFile = getcwd() . DIRECTORY_SEPARATOR . 'phplint.php';
         }
 
         if(!file_exists($configFile)) {
-            throw new Exception('Config ' . $configFile . ' file does not exist.');
+            throw new Exception('BootstrapConfig ' . $configFile . ' file does not exist.');
         }
 
-        $realpath = realpath($configFile);
-        if($realpath === false) {
-            throw new Exception('Config ' . $configFile . ' file is not readable.');
-        }
-
-        return $realpath;
+        return $configFile;
     }
 
     /**

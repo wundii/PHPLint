@@ -17,7 +17,9 @@
   </php>
   <testsuites>
     <testsuite name="main">
-      <directory>tests/Main</directory>
+      <directory>tests/Main/Config</directory>
+      <directory>tests/Main/Bootstrap</directory>
+      <directory>tests/Main/Console</directory>
     </testsuite>
   </testsuites>
   <source>
