@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types=1);
+
 namespace PHPLint\Console;
 
 use Exception;
@@ -27,14 +28,15 @@ final class Application
 
     public function __construct(
         private readonly LintConfig $lintConfig
-    ) {}
+    ) {
+    }
 
     /**
      * @throws Exception
      */
     public function initRun(): BaseApplication
     {
-        if(!function_exists('proc_open')) {
+        if (! function_exists('proc_open')) {
             throw new Exception('proc_open() is disabled.');
         }
 
@@ -60,7 +62,7 @@ final class Application
     {
         $argv = $_SERVER['argv'] ?? [];
 
-        if(!$output instanceof OutputInterface) {
+        if (! $output instanceof OutputInterface) {
             $output = new ConsoleOutput();
         }
 

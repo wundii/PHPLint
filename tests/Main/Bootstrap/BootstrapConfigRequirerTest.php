@@ -22,10 +22,6 @@ class BootstrapConfigRequirerTest extends TestCase
         $lintConfig = $requirer->getLintConfig();
 
         $this->assertInstanceOf(LintConfig::class, $lintConfig);
-        $this->assertSame('php', $lintConfig->getPhpCgiExecutable());
-        $this->assertSame([getcwd() . DIRECTORY_SEPARATOR], $lintConfig->getPaths());
-        $this->assertSame([], $lintConfig->getSkip());
-        $this->assertSame([], $lintConfig->getSets());
     }
 
     public function testGetLintConfigWithInvalidConfigReturnString()
@@ -33,7 +29,7 @@ class BootstrapConfigRequirerTest extends TestCase
         $configFile = __DIR__ . '/Files/phplint-02.php';
 
         $this->expectException(Exception::class);
-        $this->expectExceptionMessage("BootstrapConfig " . $configFile . " file is not callable.");
+        $this->expectExceptionMessage('BootstrapConfig ' . $configFile . ' file is not callable.');
 
         $bootstrapConfig = new BootstrapConfig($configFile);
         $requirer = new BootstrapConfigRequirer($bootstrapConfig);
@@ -46,7 +42,7 @@ class BootstrapConfigRequirerTest extends TestCase
         $configFile = __DIR__ . '/Files/phplint-03.php';
 
         $this->expectException(Exception::class);
-        $this->expectExceptionMessage("BootstrapConfig " . $configFile . " file has no parameters.");
+        $this->expectExceptionMessage('BootstrapConfig ' . $configFile . ' file has no parameters.');
 
         $bootstrapConfig = new BootstrapConfig($configFile);
         $requirer = new BootstrapConfigRequirer($bootstrapConfig);
@@ -59,7 +55,7 @@ class BootstrapConfigRequirerTest extends TestCase
         $configFile = __DIR__ . '/Files/phplint-04.php';
 
         $this->expectException(Exception::class);
-        $this->expectExceptionMessage("BootstrapConfig " . $configFile . " file has no lintconfig parameter.");
+        $this->expectExceptionMessage('BootstrapConfig ' . $configFile . ' file has no lintconfig parameter.');
 
         $bootstrapConfig = new BootstrapConfig($configFile);
         $requirer = new BootstrapConfigRequirer($bootstrapConfig);

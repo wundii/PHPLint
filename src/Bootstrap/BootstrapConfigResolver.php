@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types=1);
+
 namespace PHPLint\Bootstrap;
 
 use Exception;
@@ -29,7 +30,7 @@ final class BootstrapConfigResolver
             $configFile = getcwd() . DIRECTORY_SEPARATOR . 'phplint.php';
         }
 
-        if(!file_exists($configFile)) {
+        if (! file_exists($configFile)) {
             throw new Exception('BootstrapConfig ' . $configFile . ' file does not exist.');
         }
 
