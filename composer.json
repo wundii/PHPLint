@@ -8,6 +8,9 @@
       "email": "wundii@gmail.com"
     }
   ],
+  "bin": [
+    "bin/phplint"
+  ],
   "require": {
     "php": ">=8.1",
     "ext-json": "*",
@@ -33,9 +36,6 @@
       "PHPLint\\Tests\\": "tests/"
     }
   },
-  "bin": [
-    "bin/phplint"
-  ],
   "scripts": {
     "auto-scripts": {
     },
