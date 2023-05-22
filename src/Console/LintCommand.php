@@ -23,6 +23,12 @@ final class LintCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        $argv = $_SERVER['argv'] ?? [];
+
+        $output->writeln('> ' . implode('', $argv));
+        $output->writeln('<fg=blue;options=bold>PHP</><fg=yellow;options=bold>Lint</> ' . Application::VERSION);
+        $output->writeln('');
+
         $lintConfig = $this->lintConfig;
 
         dump($lintConfig);

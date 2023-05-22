@@ -15,9 +15,7 @@ final class LintConfig
         private array  $paths = [],
         private array  $skip = [],
         private array  $sets = [],
-    ) {
-        $this->paths = [getcwd() . DIRECTORY_SEPARATOR];
-    }
+    ) {}
 
     public function getPhpCgiExecutable(): string
     {
@@ -34,6 +32,10 @@ final class LintConfig
      */
     public function getPaths(): array
     {
+        if($this->paths === []) {
+            return [getcwd() . DIRECTORY_SEPARATOR];
+        }
+
         return $this->paths;
     }
 
