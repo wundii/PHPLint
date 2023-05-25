@@ -22,8 +22,9 @@ final class LintContainerFactory
     public function createFromArgvInput(ArgvInput $argvInput): ContainerInterface
     {
         $containerBuilder = new ContainerBuilder();
-        $containerBuilder->autowire(ContainerBuilder::class, ContainerBuilder::class)->setPublic(true);
-        $containerBuilder->autowire(LintConfig::class, LintConfig::class)->setPublic(true);
+        $containerBuilder->autowire(LintConfig::class, LintConfig::class)
+            ->setPublic(true)
+            ->setArgument('$containerBuilder', $containerBuilder);
 
         $phpFileLoader = new PhpFileLoader($containerBuilder, new FileLocator(__DIR__));
         $phpFileLoader->load(__DIR__ . '/../../config/config.php');
