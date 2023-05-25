@@ -8,13 +8,16 @@ use Exception;
 use PHPLint\Config\LintConfig;
 use Symfony\Component\Console\Application as BaseApplication;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
+use Throwable;
 
-final class Application
+final class LintApplication
 {
     /**
      * @var string
@@ -58,19 +61,23 @@ final class Application
         return $baseApplication->run();
     }
 
-    public function runExceptionally(Exception $exception, ?OutputInterface $output = null): int
+    public static function runExceptionally(Throwable $throwable, ?OutputInterface $output = null): int
     {
         $argv = $_SERVER['argv'] ?? [];
+        $argvInput = new ArgvInput($argv);
 
         if (! $output instanceof OutputInterface) {
             $output = new ConsoleOutput();
         }
 
-        $output->writeln('> ' . implode('', $argv));
-        $output->writeln('<fg=blue;options=bold>PHP</><fg=yellow;options=bold>Lint</> ' . self::VERSION);
-        $output->writeln('');
-        $output->writeln('<error>' . $exception->getMessage() . '</error>');
-        $output->writeln('');
+        $symfonyStyle = new SymfonyStyle($argvInput, $output);
+
+        $symfonyStyle->writeln('> ' . implode('', $argv));
+        $symfonyStyle->writeln('<fg=blue;options=bold>PHP</><fg=yellow;options=bold>Lint</> ' . self::VERSION);
+        $symfonyStyle->writeln('');
+
+        $symfonyStyle->error($throwable->getMessage());
+        $symfonyStyle->writeln($throwable->getTraceAsString());
 
         return Command::FAILURE;
     }

@@ -19,10 +19,8 @@ final class BootstrapConfigRequirer
     /**
      * @throws Exception
      */
-    public function getLintConfig(): LintConfig
+    public function getLintConfig(LintConfig $lintConfig): LintConfig
     {
-        $phpLintConfig = new LintConfig();
-
         $fn = require_once $this->bootstrapConfig->getBootstrapConfigFile();
 
         if (! is_callable($fn)) {
@@ -50,8 +48,8 @@ final class BootstrapConfigRequirer
             throw new Exception('BootstrapConfig ' . $this->bootstrapConfig->getBootstrapConfigFile() . ' file has no lintconfig parameter.');
         }
 
-        $fn($phpLintConfig);
+        $fn($lintConfig);
 
-        return $phpLintConfig;
+        return $lintConfig;
     }
 }

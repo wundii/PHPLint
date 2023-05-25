@@ -6,5 +6,8 @@ use PHPLint\Config\LintConfig;
 
 return static function (LintConfig $lintConfig): void
 {
-    // dump('testausgabe');
+    dump('testausgabe');
+
+    $lintConfig->setPhpCgiExecutable('php7');
+    $lintConfig->setPaths(['src']);
 };

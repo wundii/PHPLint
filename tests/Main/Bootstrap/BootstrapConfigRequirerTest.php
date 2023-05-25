@@ -2,13 +2,22 @@
 
 declare(strict_types=1);
 
+namespace Main\Bootstrap;
+
+use Exception;
 use PHPLint\Bootstrap\BootstrapConfig;
 use PHPLint\Bootstrap\BootstrapConfigRequirer;
 use PHPLint\Config\LintConfig;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class BootstrapConfigRequirerTest extends TestCase
 {
+    public function getMockContainerBuilder(): ContainerBuilder
+    {
+        return new ContainerBuilder();
+    }
+
     /**
      * @throws Exception
      */
@@ -19,9 +28,11 @@ class BootstrapConfigRequirerTest extends TestCase
         $bootstrapConfig = new BootstrapConfig($configFile);
         $requirer = new BootstrapConfigRequirer($bootstrapConfig);
 
-        $lintConfig = $requirer->getLintConfig();
+        $lintConfig = new LintConfig($this->getMockContainerBuilder());
+        $lintConfig = $requirer->getLintConfig($lintConfig);
 
         $this->assertInstanceOf(LintConfig::class, $lintConfig);
+        $this->assertEquals('phpUnitTest', $lintConfig->getPhpCgiExecutable());
     }
 
     public function testGetLintConfigWithInvalidConfigReturnString()
@@ -34,7 +45,8 @@ class BootstrapConfigRequirerTest extends TestCase
         $bootstrapConfig = new BootstrapConfig($configFile);
         $requirer = new BootstrapConfigRequirer($bootstrapConfig);
 
-        $requirer->getLintConfig();
+        $lintConfig = new LintConfig($this->getMockContainerBuilder());
+        $requirer->getLintConfig($lintConfig);
     }
 
     public function testGetLintConfigWithInvalidConfigReturnWithoutParameter()
@@ -47,7 +59,8 @@ class BootstrapConfigRequirerTest extends TestCase
         $bootstrapConfig = new BootstrapConfig($configFile);
         $requirer = new BootstrapConfigRequirer($bootstrapConfig);
 
-        $requirer->getLintConfig();
+        $lintConfig = new LintConfig($this->getMockContainerBuilder());
+        $requirer->getLintConfig($lintConfig);
     }
 
     public function testGetLintConfigWithInvalidConfigReturnWithWrongParameter()
@@ -60,6 +73,7 @@ class BootstrapConfigRequirerTest extends TestCase
         $bootstrapConfig = new BootstrapConfig($configFile);
         $requirer = new BootstrapConfigRequirer($bootstrapConfig);
 
-        $requirer->getLintConfig();
+        $lintConfig = new LintConfig($this->getMockContainerBuilder());
+        $requirer->getLintConfig($lintConfig);
     }
 }
