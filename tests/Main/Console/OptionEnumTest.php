@@ -2,8 +2,11 @@
 
 declare(strict_types=1);
 
+namespace Main\Console;
+
 use PHPLint\Console\OptionEnum;
 use PHPUnit\Framework\TestCase;
+use ReflectionEnum;
 
 class OptionEnumTest extends TestCase
 {

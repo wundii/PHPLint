@@ -2,6 +2,9 @@
 
 declare(strict_types=1);
 
+namespace Main\Bootstrap;
+
+use Exception;
 use PHPLint\Bootstrap\BootstrapConfig;
 use PHPLint\Bootstrap\BootstrapConfigResolver;
 use PHPUnit\Framework\TestCase;

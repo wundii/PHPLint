@@ -14,7 +14,11 @@
   "require": {
     "php": ">=8.1",
     "ext-json": "*",
-    "symfony/console": "6.2.*"
+    "squizlabs/php_codesniffer": "3.*",
+    "symfony/config": "6.*",
+    "symfony/console": "6.*",
+    "symfony/dependency-injection": "6.*",
+    "webmozart/assert": "1.*"
   },
   "require-dev": {
     "phpstan/phpstan": "^1.10",
@@ -22,10 +26,7 @@
     "phpunit/phpunit": "^10.0",
     "rector/rector": "^0.16",
     "symfony/var-dumper": "^6.2",
-    "symplify/easy-coding-standard": "^11.3"
-  },
-  "config": {
-    "sort-packages": true
+    "symplify/easy-coding-standard": "11.*"
   },
   "autoload": {
     "psr-4": {
@@ -70,5 +71,7 @@
     "unittest": [
       "php vendor/bin/phpunit --configuration phpunit.xml"
     ]
-  }
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true
 }

@@ -31,4 +31,12 @@ final class BootstrapConfig
     {
         return $this->bootstrapConfigFile;
     }
+
+    /**
+     * @return array<string>
+     */
+    public function getConfigFiles(): array
+    {
+        return [$this->bootstrapConfigFile];
+    }
 }

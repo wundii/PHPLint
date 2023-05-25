@@ -2,11 +2,12 @@
 
 declare(strict_types=1);
 
-use PHPLint\Bootstrap\BootstrapConfigRequirer;
 use PHPLint\Bootstrap\BootstrapConfigResolver;
-use PHPLint\Config\LintConfig;
-use PHPLint\Console\Application;
+use PHPLint\Console\LintApplication;
+use PHPLint\DependencyInjection\LintContainerFactory;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\ArgvInput;
+use Symplify\PackageBuilder\Console\Style\SymfonyStyleFactory;
 
 @ini_set('memory_limit', '-1');
 
@@ -14,18 +15,39 @@ error_reporting(E_ALL);
 ini_set('display_errors', 'stderr');
 gc_disable();
 
-require_once getcwd() . '/vendor/autoload.php';
 
-$configResolver = new BootstrapConfigResolver();
+$autoloadIncluder = new AutoloadIncluder();
+$autoloadIncluder->includeCwdVendorAutoloadIfExists();
 
+final class AutoloadIncluder
+{
+    public function includeCwdVendorAutoloadIfExists(): void
+    {
+        $cwdVendorAutoload = getcwd() . '/vendor/autoload.php';
+        if (! is_file($cwdVendorAutoload)) {
+            return;
+        }
+
+        $this->loadIfNotLoadedYet($cwdVendorAutoload);
+    }
+
+    public function loadIfNotLoadedYet(string $file): void
+    {
+        if (! file_exists($file)) {
+            return;
+        }
+
+        require_once $file;
+    }
+}
+
+// https://tomasvotruba.com/blog/introducing-light-kernel-for-symfony-console-apps/
+
+$lintContainerFactory = new LintContainerFactory();
 try {
-    $bootstrapConfig = $configResolver->getBootstrapConfig(new ArgvInput());
-    $bootstrapConfigRequirer = new BootstrapConfigRequirer($bootstrapConfig);
-    $lintConfig = $bootstrapConfigRequirer->getLintConfig();
-
-    $application = new Application($lintConfig);
+    $container = $lintContainerFactory->createFromArgvInput(new ArgvInput());
+    $application = $container->get(LintApplication::class);
     exit($application->run());
-} catch (Exception $e) {
-    $application = new Application(new LintConfig());
-    exit($application->runExceptionally($e));
+} catch (Throwable $throwable) {
+    LintApplication::runExceptionally($throwable);
 }

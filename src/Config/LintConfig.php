@@ -4,18 +4,30 @@ declare(strict_types=1);
 
 namespace PHPLint\Config;
 
+use Exception;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+
 final class LintConfig
 {
+    private string $phpCgiExecutable = 'php';
+
     /**
-     * @param array<string> $paths
-     * @param array<string> $skip
-     * @param array<string> $sets
+     * @var array<string>
      */
+    private array $paths = [];
+
+    /**
+     * @var array<string>
+     */
+    private array $skip = [];
+
+    /**
+     * @var array<string>
+     */
+    private array $sets = [];
+
     public function __construct(
-        private string $phpCgiExecutable = 'php',
-        private array $paths = [],
-        private array $skip = [],
-        private array $sets = [],
+        public ContainerBuilder $containerBuilder
     ) {
     }
 
@@ -79,5 +91,13 @@ final class LintConfig
     public function setSets(array $sets): void
     {
         $this->sets = $sets;
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function getService(string $id): ?object
+    {
+        return $this->containerBuilder->get($id);
     }
 }

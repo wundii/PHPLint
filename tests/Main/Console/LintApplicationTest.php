@@ -2,22 +2,31 @@
 
 declare(strict_types=1);
 
+namespace Main\Console;
+
+use Exception;
 use PHPLint\Config\LintConfig;
-use PHPLint\Console\Application;
+use PHPLint\Console\LintApplication;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Output\StreamOutput;
 use Symfony\Component\Console\Tester\ApplicationTester;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-class ApplicationTest extends TestCase
+class LintApplicationTest extends TestCase
 {
+    public function getMockContainerBuilder(): ContainerBuilder
+    {
+        return new ContainerBuilder();
+    }
+
     /**
      * @throws Exception
      */
     public function testRun()
     {
         // Create Application instance
-        $application = new Application(new LintConfig());
+        $application = new LintApplication(new LintConfig($this->getMockContainerBuilder()));
         $appInit = $application->initRun();
         $appInit->setAutoExit(false);
 
@@ -37,14 +46,11 @@ class ApplicationTest extends TestCase
         // Mock Exception
         $exceptionMock = new Exception('Test exception');
 
-        // Create Application instance
-        $application = new Application(new LintConfig());
-
         // Create ConsoleOutput instance
         $consoleOutput = new StreamOutput(fopen('php://memory', 'w', false));
 
         // Simulate running the application with an exception
-        $statusCode = $application->runExceptionally($exceptionMock, $consoleOutput);
+        $statusCode = LintApplication::runExceptionally($exceptionMock, $consoleOutput);
 
         // Prepare the ConsoleOutput for reading
         rewind($consoleOutput->getStream());
