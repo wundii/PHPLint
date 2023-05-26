@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace PHPLint\DependencyInjection;
 
 use Exception;
+use PHPLint\Bootstrap\BootstrapConfig;
+use PHPLint\Bootstrap\BootstrapConfigInitializer;
 use PHPLint\Bootstrap\BootstrapConfigRequirer;
 use PHPLint\Bootstrap\BootstrapConfigResolver;
 use PHPLint\Config\LintConfig;
@@ -21,7 +23,18 @@ final class LintContainerFactory
      */
     public function createFromArgvInput(ArgvInput $argvInput): ContainerInterface
     {
+        $bootstrapConfigResolver = new BootstrapConfigResolver();
+        $bootstrapConfig = $bootstrapConfigResolver->getBootstrapConfig($argvInput);
+        $bootstrapConfigRequirer = new BootstrapConfigRequirer($bootstrapConfig);
+
         $containerBuilder = new ContainerBuilder();
+        $containerBuilder->register(BootstrapConfig::class, BootstrapConfig::class)
+            ->setPublic(true)
+            ->setArgument('$bootstrapConfigFile', $bootstrapConfig->getBootstrapConfigFile());
+        $containerBuilder->autowire(BootstrapConfigInitializer::class, BootstrapConfigInitializer::class)
+            ->setPublic(true);
+        $containerBuilder->autowire(BootstrapConfigResolver::class, BootstrapConfigResolver::class)
+            ->setPublic(true);
         $containerBuilder->autowire(LintConfig::class, LintConfig::class)
             ->setPublic(true)
             ->setArgument('$containerBuilder', $containerBuilder);
@@ -31,13 +44,9 @@ final class LintContainerFactory
 
         $containerBuilder->compile();
 
-        $bootstrapConfigResolver = new BootstrapConfigResolver();
-        $bootstrapConfig = $bootstrapConfigResolver->getBootstrapConfig($argvInput);
-        $bootstrapConfigRequirer = new BootstrapConfigRequirer($bootstrapConfig);
-
         $lintConfig = $containerBuilder->get(LintConfig::class);
         if ($lintConfig instanceof LintConfig) {
-            $bootstrapConfigRequirer->getLintConfig($lintConfig);
+            $bootstrapConfigRequirer->loadConfigFile($lintConfig);
         }
 
         return $containerBuilder;

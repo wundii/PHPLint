@@ -29,7 +29,7 @@ class BootstrapConfigRequirerTest extends TestCase
         $requirer = new BootstrapConfigRequirer($bootstrapConfig);
 
         $lintConfig = new LintConfig($this->getMockContainerBuilder());
-        $lintConfig = $requirer->getLintConfig($lintConfig);
+        $lintConfig = $requirer->loadConfigFile($lintConfig);
 
         $this->assertInstanceOf(LintConfig::class, $lintConfig);
         $this->assertEquals('phpUnitTest', $lintConfig->getPhpCgiExecutable());
@@ -46,7 +46,7 @@ class BootstrapConfigRequirerTest extends TestCase
         $requirer = new BootstrapConfigRequirer($bootstrapConfig);
 
         $lintConfig = new LintConfig($this->getMockContainerBuilder());
-        $requirer->getLintConfig($lintConfig);
+        $requirer->loadConfigFile($lintConfig);
     }
 
     public function testGetLintConfigWithInvalidConfigReturnWithoutParameter()
@@ -60,7 +60,7 @@ class BootstrapConfigRequirerTest extends TestCase
         $requirer = new BootstrapConfigRequirer($bootstrapConfig);
 
         $lintConfig = new LintConfig($this->getMockContainerBuilder());
-        $requirer->getLintConfig($lintConfig);
+        $requirer->loadConfigFile($lintConfig);
     }
 
     public function testGetLintConfigWithInvalidConfigReturnWithWrongParameter()
@@ -74,6 +74,6 @@ class BootstrapConfigRequirerTest extends TestCase
         $requirer = new BootstrapConfigRequirer($bootstrapConfig);
 
         $lintConfig = new LintConfig($this->getMockContainerBuilder());
-        $requirer->getLintConfig($lintConfig);
+        $requirer->loadConfigFile($lintConfig);
     }
 }

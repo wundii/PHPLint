@@ -42,16 +42,19 @@ class BootstrapConfigResolverTest extends TestCase
         $this->assertEquals(getcwd() . '/phplint.php', $bootstrapConfig->getBootstrapConfigFile());
     }
 
+    /**
+     * @throws Exception
+     */
     public function testGetBootstrapConfigWithFileDoesNotExist()
     {
         $configFile = __DIR__ . '/Files/phplint-no-exist.php';
 
-        $this->expectException(Exception::class);
-        $this->expectExceptionMessage('BootstrapConfig ' . $configFile . ' file does not exist.');
-
         $resolver = new BootstrapConfigResolver();
         $input = new ArgvInput(['bin/phplint', '--config', $configFile]);
 
-        $resolver->getBootstrapConfig($input);
+        $bootstrapConfig = $resolver->getBootstrapConfig($input);
+
+        $this->assertInstanceOf(BootstrapConfig::class, $bootstrapConfig);
+        $this->assertNull($bootstrapConfig->getBootstrapConfigFile());
     }
 }
