@@ -5,13 +5,18 @@ declare(strict_types=1);
 namespace Main\Console;
 
 use Exception;
-use PHPLint\Config\LintConfig;
+use PHPLint\Bootstrap\BootstrapConfigInitializer;
+use PHPLint\Bootstrap\BootstrapConfigResolver;
+use PHPLint\Console\Commands\LintCheckCommand;
+use PHPLint\Console\Commands\LintInitCommand;
 use PHPLint\Console\LintApplication;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Output\StreamOutput;
+use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Console\Tester\ApplicationTester;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\Filesystem\Filesystem;
 
 class LintApplicationTest extends TestCase
 {
@@ -25,8 +30,17 @@ class LintApplicationTest extends TestCase
      */
     public function testRun()
     {
+        $symfonyStyle = $this->createMock(SymfonyStyle::class);
+        $bootstrapConfigInitializer = new BootstrapConfigInitializer(new Filesystem(), $symfonyStyle);
+        $bootstrapConfigResolver = new BootstrapConfigResolver();
+        $lintCheckCommand = new LintCheckCommand($bootstrapConfigInitializer, $bootstrapConfigResolver, $symfonyStyle);
+        $lintInitCommand = new LintInitCommand($bootstrapConfigInitializer);
+
         // Create Application instance
-        $application = new LintApplication(new LintConfig($this->getMockContainerBuilder()));
+        $application = new LintApplication(
+            $lintCheckCommand,
+            $lintInitCommand,
+        );
         $appInit = $application->initRun();
         $appInit->setAutoExit(false);
 

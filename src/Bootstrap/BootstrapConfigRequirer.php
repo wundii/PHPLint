@@ -19,8 +19,13 @@ final class BootstrapConfigRequirer
     /**
      * @throws Exception
      */
-    public function getLintConfig(LintConfig $lintConfig): LintConfig
+    public function loadConfigFile(LintConfig $lintConfig): LintConfig
     {
+        $configFile = $this->bootstrapConfig->getBootstrapConfigFile();
+        if ($configFile === null) {
+            return $lintConfig;
+        }
+
         $fn = require_once $this->bootstrapConfig->getBootstrapConfigFile();
 
         if (! is_callable($fn)) {

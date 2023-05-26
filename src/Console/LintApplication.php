@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace PHPLint\Console;
 
 use Exception;
-use PHPLint\Config\LintConfig;
+use PHPLint\Bootstrap\BootstrapConfig;
+use PHPLint\Console\Commands\LintCheckCommand;
+use PHPLint\Console\Commands\LintInitCommand;
 use Symfony\Component\Console\Application as BaseApplication;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\ArgvInput;
@@ -30,7 +32,8 @@ final class LintApplication
     public const VERSION = '0.0.1';
 
     public function __construct(
-        private readonly LintConfig $lintConfig
+        private readonly LintCheckCommand $lintCheckCommand,
+        private readonly LintInitCommand $lintInitCommand,
     ) {
     }
 
@@ -39,13 +42,10 @@ final class LintApplication
      */
     public function initRun(): BaseApplication
     {
-        if (! function_exists('proc_open')) {
-            throw new Exception('proc_open() is disabled.');
-        }
-
         $application = new BaseApplication(self::NAME, self::VERSION);
-        $application->add(new LintCommand($this->lintConfig));
-        $application->setDefaultCommand('phplint', true);
+        $application->add($this->lintCheckCommand);
+        $application->add($this->lintInitCommand);
+        $application->setDefaultCommand('lint');
         $application->setDefinition($this->getInputDefinition());
 
         return $application;
@@ -96,6 +96,6 @@ final class LintApplication
 
     private function getDefaultConfigPath(): string
     {
-        return getcwd() . DIRECTORY_SEPARATOR . 'phplint.php';
+        return getcwd() . DIRECTORY_SEPARATOR . BootstrapConfig::DEFAULT_CONFIG_FILE;
     }
 }

@@ -9,25 +9,36 @@ use Exception;
 final class BootstrapConfig
 {
     /**
+     * @var string
+     */
+    public const DEFAULT_CONFIG_FILE = 'phplint.php';
+
+    /**
      * @throws Exception
      */
     public function __construct(
-        private readonly string $bootstrapConfigFile
+        private readonly ?string $bootstrapConfigFile
     ) {
-        if (! file_exists($bootstrapConfigFile)) {
+        if ($bootstrapConfigFile !== null && ! file_exists($bootstrapConfigFile)) {
             throw new Exception('BootstrapConfig ' . $bootstrapConfigFile . ' file does not exist.');
         }
 
-        if (! is_readable($bootstrapConfigFile)) {
+        if ($bootstrapConfigFile !== null && ! is_readable($bootstrapConfigFile)) {
             throw new Exception('BootstrapConfig ' . $bootstrapConfigFile . ' file is not readable.');
         }
 
-        if (! is_file($bootstrapConfigFile)) {
-            throw new Exception('BootstrapConfig ' . $bootstrapConfigFile . ' file is not a file.');
+        if ($bootstrapConfigFile === null) {
+            return;
         }
+
+        if (is_file($bootstrapConfigFile)) {
+            return;
+        }
+
+        throw new Exception('BootstrapConfig ' . $bootstrapConfigFile . ' file is not a file.');
     }
 
-    public function getBootstrapConfigFile(): string
+    public function getBootstrapConfigFile(): ?string
     {
         return $this->bootstrapConfigFile;
     }
@@ -37,6 +48,10 @@ final class BootstrapConfig
      */
     public function getConfigFiles(): array
     {
+        if ($this->bootstrapConfigFile === null) {
+            return [];
+        }
+
         return [$this->bootstrapConfigFile];
     }
 }
