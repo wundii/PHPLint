@@ -34,7 +34,7 @@ final class BootstrapConfigInitializer
 
         try {
             $this->filesystem->copy(__DIR__ . '/../../templates/phplint.php.dist', $configFile);
-        }catch (Exception $exception) {
+        } catch (Exception $exception) {
             $this->symfonyStyle->error($exception->getMessage());
             return;
         }
