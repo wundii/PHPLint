@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PHPLint\Bootstrap;
 
+use Exception;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Filesystem\Filesystem;
 
@@ -31,16 +32,13 @@ final class BootstrapConfigInitializer
             return;
         }
 
-        $this->filesystem->copy(__DIR__ . '/../../templates/phplint.php.dist', $configFile);
-
-        /** this is a double check if the file exists */
-        /* @phpstan-ignore-next-line */
-        if ($this->filesystem->exists($configFile)) {
-            $this->symfonyStyle->success('The config file was generated! You can now run "bin/phplint" to lint your code.');
+        try {
+            $this->filesystem->copy(__DIR__ . '/../../templates/phplint.php.dist', $configFile);
+        } catch (Exception $exception) {
+            $this->symfonyStyle->error($exception->getMessage());
             return;
         }
 
-        $errorMessage = sprintf('The "%s" config could not be generated.', BootstrapConfig::DEFAULT_CONFIG_FILE);
-        $this->symfonyStyle->error($errorMessage);
+        $this->symfonyStyle->success('The config file was generated! You can now run "bin/phplint" to lint your code.');
     }
 }

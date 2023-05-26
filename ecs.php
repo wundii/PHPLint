@@ -10,6 +10,7 @@ return function (ECSConfig $ecsConfig): void {
     $ecsConfig->cacheDirectory('./cache/ecs');
 
     $ecsConfig->paths([
+        __DIR__ . '/config',
         __DIR__ . '/src',
         __DIR__ . '/tests',
     ]);

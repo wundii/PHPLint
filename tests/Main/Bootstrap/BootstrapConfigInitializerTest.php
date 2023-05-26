@@ -8,6 +8,7 @@ use PHPLint\Bootstrap\BootstrapConfigInitializer;
 use PHPUnit\Framework\MockObject\Exception;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Filesystem;
 
 class BootstrapConfigInitializerTest extends TestCase
@@ -63,7 +64,7 @@ class BootstrapConfigInitializerTest extends TestCase
         $configFile = $projectDirectory . DIRECTORY_SEPARATOR . 'phplint.php';
 
         // Set up expectations
-        $filesystem->method('exists')->willReturn(false, true);
+        $filesystem->method('exists')->willReturn(false);
         $symfonyStyle->method('ask')->willReturn('yes');
         $filesystem->expects($this->once())->method('copy')->with(
             getcwd() . '/src/Bootstrap/../../templates/phplint.php.dist',
@@ -89,8 +90,8 @@ class BootstrapConfigInitializerTest extends TestCase
         // Set up expectations
         $filesystem->method('exists')->willReturn(false);
         $symfonyStyle->method('ask')->willReturn('yes');
-        $filesystem->method('copy')->willReturn(false);
-        $symfonyStyle->expects($this->once())->method('error')->with('The "phplint.php" config could not be generated.');
+        $filesystem->method('copy')->willThrowException(new IOException(sprintf('Failed to copy "%s" to "%s".', 'source/file.txt', 'target/file.txt')));
+        $symfonyStyle->expects($this->once())->method('error')->with('Failed to copy "source/file.txt" to "target/file.txt".');
 
         // Act
         $initializer->createConfig($projectDirectory);
