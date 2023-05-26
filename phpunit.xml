@@ -20,6 +20,7 @@
       <directory>tests/Main/Config</directory>
       <directory>tests/Main/Bootstrap</directory>
       <directory>tests/Main/Console</directory>
+      <directory>tests/Main/DependencyInjection</directory>
     </testsuite>
   </testsuites>
   <source>

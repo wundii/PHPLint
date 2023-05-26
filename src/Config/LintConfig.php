@@ -27,7 +27,7 @@ final class LintConfig
     private array $sets = [];
 
     public function __construct(
-        public ContainerBuilder $containerBuilder
+        private readonly ContainerBuilder $containerBuilder
     ) {
     }
 

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Main\Config;
 
+use Exception;
 use PHPLint\Config\LintConfig;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -12,14 +13,22 @@ class LintConfigTest extends TestCase
 {
     public function getMockContainerBuilder(): ContainerBuilder
     {
-        return new ContainerBuilder();
+        $containerBuilder = new ContainerBuilder();
+        $containerBuilder->register(LintConfig::class, LintConfig::class)
+            ->setArgument('$containerBuilder', $containerBuilder);
+
+        return $containerBuilder;
     }
 
+    /**
+     * @throws Exception
+     */
     public function testGetPhpCgiExecutable()
     {
         $lintConfig = new LintConfig($this->getMockContainerBuilder());
 
         $this->assertEquals('php', $lintConfig->getPhpCgiExecutable());
+        $this->assertInstanceOf(LintConfig::class, $lintConfig->getService(LintConfig::class));
     }
 
     public function testSetPhpCgiExecutable()
