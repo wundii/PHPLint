@@ -26,6 +26,8 @@ final class LintConfig
      */
     private array $sets = [];
 
+    private string $memoryLimit = '512M';
+
     public function __construct(
         private readonly ContainerBuilder $containerBuilder
     ) {
@@ -70,6 +72,34 @@ final class LintConfig
     }
 
     /**
+     * @return array<string>
+     */
+    public function getSkipPath(): array
+    {
+        $paths = [];
+
+        foreach ($this->skip as $path) {
+            if (str_starts_with($path, DIRECTORY_SEPARATOR)) {
+                $path = substr($path, 1);
+            }
+
+            $path = getcwd() . DIRECTORY_SEPARATOR . $path;
+
+            if (! is_dir($path)) {
+                continue;
+            }
+
+            $realPath = realpath($path);
+
+            if ($realPath !== false) {
+                $paths[] = $realPath;
+            }
+        }
+
+        return $paths;
+    }
+
+    /**
      * @param array<string> $skip
      */
     public function setSkip(array $skip): void
@@ -91,6 +121,16 @@ final class LintConfig
     public function setSets(array $sets): void
     {
         $this->sets = $sets;
+    }
+
+    public function getMemoryLimit(): string
+    {
+        return $this->memoryLimit;
+    }
+
+    public function setMemoryLimit(string $memoryLimit): void
+    {
+        $this->memoryLimit = $memoryLimit;
     }
 
     /**

@@ -7,9 +7,11 @@ namespace Main\Console;
 use Exception;
 use PHPLint\Bootstrap\BootstrapConfigInitializer;
 use PHPLint\Bootstrap\BootstrapConfigResolver;
-use PHPLint\Console\Commands\LintCheckCommand;
+use PHPLint\Config\LintConfig;
+use PHPLint\Console\Commands\LintCommand;
 use PHPLint\Console\Commands\LintInitCommand;
 use PHPLint\Console\LintApplication;
+use PHPLint\Finder\LintFinder;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Output\StreamOutput;
@@ -31,9 +33,12 @@ class LintApplicationTest extends TestCase
     public function testRun()
     {
         $symfonyStyle = $this->createMock(SymfonyStyle::class);
+        $container = $this->createMock(ContainerBuilder::class);
         $bootstrapConfigInitializer = new BootstrapConfigInitializer(new Filesystem(), $symfonyStyle);
         $bootstrapConfigResolver = new BootstrapConfigResolver();
-        $lintCheckCommand = new LintCheckCommand($bootstrapConfigInitializer, $bootstrapConfigResolver, $symfonyStyle);
+        $lintConfig = new LintConfig($container);
+        $lintFinder = new LintFinder();
+        $lintCheckCommand = new LintCommand($bootstrapConfigInitializer, $bootstrapConfigResolver, $symfonyStyle, $lintConfig, $lintFinder);
         $lintInitCommand = new LintInitCommand($bootstrapConfigInitializer);
 
         // Create Application instance

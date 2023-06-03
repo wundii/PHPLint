@@ -6,7 +6,7 @@ namespace PHPLint\Console;
 
 use Exception;
 use PHPLint\Bootstrap\BootstrapConfig;
-use PHPLint\Console\Commands\LintCheckCommand;
+use PHPLint\Console\Commands\LintCommand;
 use PHPLint\Console\Commands\LintInitCommand;
 use Symfony\Component\Console\Application as BaseApplication;
 use Symfony\Component\Console\Command\Command;
@@ -32,7 +32,7 @@ final class LintApplication
     public const VERSION = '0.0.1';
 
     public function __construct(
-        private readonly LintCheckCommand $lintCheckCommand,
+        private readonly LintCommand $lintCommand,
         private readonly LintInitCommand $lintInitCommand,
     ) {
     }
@@ -43,7 +43,7 @@ final class LintApplication
     public function initRun(): BaseApplication
     {
         $application = new BaseApplication(self::NAME, self::VERSION);
-        $application->add($this->lintCheckCommand);
+        $application->add($this->lintCommand);
         $application->add($this->lintInitCommand);
         $application->setDefaultCommand('lint');
         $application->setDefinition($this->getInputDefinition());
