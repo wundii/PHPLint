@@ -79,6 +79,10 @@ final class LintConfig
         $paths = [];
 
         foreach ($this->skip as $path) {
+            if (class_exists($path)) {
+                continue;
+            }
+
             if (str_starts_with($path, DIRECTORY_SEPARATOR)) {
                 $path = substr($path, 1);
             }

@@ -26,14 +26,9 @@ final class LintFinder extends Finder
 
             if (is_dir($path)) {
                 $this->append($this->getFinderFromPath($path, $excludes));
+            } elseif (is_file($path)) {
+                $this->append([new SplFileInfo($path, $path, $path)]);
             }
-
-            // elseif (is_file($path)) {
-            //     $iterator = new ArrayIterator();
-            //     TODO: the next line is not working with phpstan
-            //     $iterator[$path] = new SplFileInfo($path, $path, $path);
-            //     $this->append($iterator);
-            // }
         }
 
         return $this;

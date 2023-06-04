@@ -69,6 +69,38 @@ class LintConfigTest extends TestCase
         $this->assertEquals(['className', 'file1.php', 'file2.php'], $lintConfig->getSkip());
     }
 
+    public function testGetSkipPath()
+    {
+        $containerBuilder = $this->getMockContainerBuilder();
+        $lintConfig = new LintConfig($containerBuilder);
+
+        // Test case 1: No skip paths
+        $this->assertEquals([], $lintConfig->getSkipPath());
+
+        // Test case 2: Skip existing class
+        $lintConfig->setSkip([LintConfig::class]);
+        $this->assertEquals([], $lintConfig->getSkipPath());
+
+        // Test case 3: One skip path
+        $lintConfig->setSkip(['tests/Main/Config']);
+        $this->assertEquals([getcwd() . '/tests/Main/Config'], $lintConfig->getSkipPath());
+
+        // Test case 4: Multiple skip paths
+        $lintConfig->setSkip(['tests/Main/Config', 'tests/Main/Console']);
+        $this->assertEquals([
+            getcwd() . '/tests/Main/Config',
+            getcwd() . '/tests/Main/Console',
+        ], $lintConfig->getSkipPath());
+
+        // Test case 5: Invalid skip path
+        $lintConfig->setSkip(['/nonexistent/path']);
+        $this->assertEquals([], $lintConfig->getSkipPath());
+
+        // Test case 6: Skip path starting with DIRECTORY_SEPARATOR
+        $lintConfig->setSkip([DIRECTORY_SEPARATOR . 'tests/Main/Config']);
+        $this->assertEquals([getcwd() . '/tests/Main/Config'], $lintConfig->getSkipPath());
+    }
+
     public function testGetSets()
     {
         $lintConfig = new LintConfig($this->getMockContainerBuilder());
@@ -83,32 +115,4 @@ class LintConfigTest extends TestCase
 
         $this->assertEquals(['set1', 'set2'], $lintConfig->getSets());
     }
-
-    // public function testGetSkipPath()
-    // {
-    //     $containerBuilder = $this->getMockContainerBuilder();
-    //     $lintConfig = new LintConfig($containerBuilder);
-    //
-    //     // Test case 1: No skip paths
-    //     $this->assertEquals([], $lintConfig->getSkipPath());
-    //
-    //     // Test case 2: One skip path
-    //     $lintConfig->setSkip(['/path/to/skip']);
-    //     $this->assertEquals([getcwd() . '/path/to/skip'], $lintConfig->getSkipPath());
-    //
-    //     // Test case 3: Multiple skip paths
-    //     $lintConfig->setSkip(['/path/to/skip1', '/path/to/skip2']);
-    //     $this->assertEquals([
-    //         getcwd() . '/path/to/skip1',
-    //         getcwd() . '/path/to/skip2',
-    //     ], $lintConfig->getSkipPath());
-    //
-    //     // Test case 4: Invalid skip path
-    //     $lintConfig->setSkip(['/nonexistent/path']);
-    //     $this->assertEquals([], $lintConfig->getSkipPath());
-    //
-    //     // Test case 5: Skip path starting with DIRECTORY_SEPARATOR
-    //     $lintConfig->setSkip([DIRECTORY_SEPARATOR . 'path/to/skip']);
-    //     $this->assertEquals([getcwd() . '/path/to/skip'], $lintConfig->getSkipPath());
-    // }
 }
