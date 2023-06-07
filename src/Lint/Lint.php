@@ -85,7 +85,6 @@ final class Lint
             return;
         }
 
-        // $this->lintConsoleOutput->writeln($lintProcessResult->getFilename());
-        // $this->lintConsoleOutput->writeln($lintProcessResult->getResult());
+        $this->lintConsoleOutput->messageByProcessResult($lintProcessResult);
     }
 }
