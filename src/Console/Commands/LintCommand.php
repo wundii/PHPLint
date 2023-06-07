@@ -9,20 +9,20 @@ use PHPLint\Bootstrap\BootstrapConfigInitializer;
 use PHPLint\Bootstrap\BootstrapConfigResolver;
 use PHPLint\Config\LintConfig;
 use PHPLint\Console\LintApplication;
+use PHPLint\Console\Output\LintConsoleOutput;
 use PHPLint\Finder\LintFinder;
 use PHPLint\Lint\Lint;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\Helper;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Style\SymfonyStyle;
 
 final class LintCommand extends Command
 {
     public function __construct(
         private readonly BootstrapConfigInitializer $bootstrapConfigInitializer,
         private readonly BootstrapConfigResolver $bootstrapConfigResolver,
-        private readonly SymfonyStyle $symfonyStyle,
+        private readonly LintConsoleOutput $lintConsoleOutput,
         private readonly LintConfig $lintConfig,
         private readonly LintFinder $lintFinder,
     ) {
@@ -46,26 +46,16 @@ final class LintCommand extends Command
         }
 
         $startExecuteTime = microtime(true);
-        $argv = $_SERVER['argv'] ?? [];
 
-        $output->writeln('> ' . implode('', $argv));
-        $output->writeln('<fg=blue;options=bold>PHP</><fg=yellow;options=bold>Lint</> ' . LintApplication::VERSION);
-        $output->writeln('');
+        $this->lintConsoleOutput->startApplication(LintApplication::VERSION);
 
         $lintFinder = $this->lintFinder->getFilesFromLintConfig($this->lintConfig);
 
-        $lint = new Lint($this->symfonyStyle, $this->lintConfig, $lintFinder);
+        $lint = new Lint($this->lintConsoleOutput, $this->lintConfig, $lintFinder);
         $lint->run();
 
         $usageExecuteTime = Helper::formatTime(microtime(true) - $startExecuteTime);
-        $usageMemory = Helper::formatMemory(memory_get_usage(true));
 
-        $this->symfonyStyle->info([
-            'time: ' . $usageExecuteTime,
-            'memory: ' . $usageMemory,
-        ]);
-        $this->symfonyStyle->success('Success');
-
-        return self::SUCCESS;
+        return (int) $this->lintConsoleOutput->finishApplication($usageExecuteTime);
     }
 }

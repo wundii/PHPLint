@@ -74,7 +74,7 @@ final class LintApplication
 
         $symfonyStyle->writeln('> ' . implode('', $argv));
         $symfonyStyle->writeln('<fg=blue;options=bold>PHP</><fg=yellow;options=bold>Lint</> ' . self::VERSION);
-        $symfonyStyle->writeln('');
+        $symfonyStyle->newLine();
 
         $symfonyStyle->error($throwable->getMessage());
         $symfonyStyle->writeln($throwable->getTraceAsString());

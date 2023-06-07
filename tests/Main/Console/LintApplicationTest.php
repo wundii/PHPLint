@@ -11,9 +11,12 @@ use PHPLint\Config\LintConfig;
 use PHPLint\Console\Commands\LintCommand;
 use PHPLint\Console\Commands\LintInitCommand;
 use PHPLint\Console\LintApplication;
+use PHPLint\Console\Output\LintConsoleOutput;
 use PHPLint\Finder\LintFinder;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\ArgvInput;
+use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\StreamOutput;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Console\Tester\ApplicationTester;
@@ -32,14 +35,17 @@ class LintApplicationTest extends TestCase
      */
     public function testRun()
     {
-        $symfonyStyle = $this->createMock(SymfonyStyle::class);
+        $consoleInput = new ArgvInput();
+        $consoleOutput = new StreamOutput(fopen('php://memory', 'w', false));
+        $symfonyStyle = new SymfonyStyle($consoleInput, $consoleOutput);
+        $lintConsoleOutput = new LintConsoleOutput($symfonyStyle);
         $container = $this->createMock(ContainerBuilder::class);
         $bootstrapConfigInitializer = new BootstrapConfigInitializer(new Filesystem(), $symfonyStyle);
         $bootstrapConfigResolver = new BootstrapConfigResolver();
         $lintConfig = new LintConfig($container);
         $lintConfig->setPaths(['src']);
         $lintFinder = new LintFinder();
-        $lintCheckCommand = new LintCommand($bootstrapConfigInitializer, $bootstrapConfigResolver, $symfonyStyle, $lintConfig, $lintFinder);
+        $lintCheckCommand = new LintCommand($bootstrapConfigInitializer, $bootstrapConfigResolver, $lintConsoleOutput, $lintConfig, $lintFinder);
         $lintInitCommand = new LintInitCommand($bootstrapConfigInitializer);
 
         // Create Application instance
@@ -58,7 +64,14 @@ class LintApplicationTest extends TestCase
 
         // Assertions
         $this->assertEquals(Command::SUCCESS, $statusCode);
-        $this->assertStringContainsString('PHPLint', $tester->getDisplay(true));
+
+        // Prepare the ConsoleOutput for reading
+        rewind($consoleOutput->getStream());
+        $display = stream_get_contents($consoleOutput->getStream());
+        $display = str_replace(\PHP_EOL, "\n", $display);
+
+        $this->assertStringContainsString('PHPLint', $display);
+        $this->assertStringContainsString('Finished', $display);
     }
 
     public function testRunExceptionally()

@@ -6,5 +6,4 @@ use PHPLint\Config\LintConfig;
 
 return static function (LintConfig $lintConfig): void {
     $lintConfig->setPaths(['src', 'tests']);
-    $lintConfig->setSkip(['src/Console']);
 };
