@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Main\DependencyInjection;
+namespace PHPLint\Tests\Main\DependencyInjection;
 
 use Exception;
 use PHPLint\Config\LintConfig;

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Main\Console;
+namespace PHPLint\Tests\Main\Console;
 
 use Exception;
 use PHPLint\Bootstrap\BootstrapConfigInitializer;

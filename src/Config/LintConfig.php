@@ -83,11 +83,13 @@ final class LintConfig
                 continue;
             }
 
-            if (str_starts_with($path, DIRECTORY_SEPARATOR)) {
-                $path = substr($path, 1);
-            }
+            if (! str_starts_with($path, (string) getcwd())) {
+                if (str_starts_with($path, DIRECTORY_SEPARATOR)) {
+                    $path = substr($path, 1);
+                }
 
-            $path = getcwd() . DIRECTORY_SEPARATOR . $path;
+                $path = getcwd() . DIRECTORY_SEPARATOR . $path;
+            }
 
             if (! is_dir($path)) {
                 continue;

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Main\Config;
+namespace PHPLint\Tests\Main\Config;
 
 use Exception;
 use PHPLint\Config\LintConfig;
@@ -98,6 +98,10 @@ class LintConfigTest extends TestCase
 
         // Test case 6: Skip path starting with DIRECTORY_SEPARATOR
         $lintConfig->setSkip([DIRECTORY_SEPARATOR . 'tests/Main/Config']);
+        $this->assertEquals([getcwd() . '/tests/Main/Config'], $lintConfig->getSkipPath());
+
+        // Test case 7: One skip path from root directory
+        $lintConfig->setSkip([__DIR__]);
         $this->assertEquals([getcwd() . '/tests/Main/Config'], $lintConfig->getSkipPath());
     }
 

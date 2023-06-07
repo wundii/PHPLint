@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Main\Bootstrap;
+namespace PHPLint\Tests\Main\Bootstrap;
 
 use Exception;
 use PHPLint\Bootstrap\BootstrapConfig;
