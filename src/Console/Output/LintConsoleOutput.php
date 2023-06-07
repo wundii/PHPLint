@@ -10,6 +10,18 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 final class LintConsoleOutput
 {
+    /**
+     * @var int
+     */
+    private const SNIPPED_LINE = 5;
+
+    /**
+     * @var int
+     */
+    private const LINE_LENGTH = 5;
+
+    private bool $isSuccess = true;
+
     public function __construct(
         private readonly SymfonyStyle $symfonyStyle
     ) {
@@ -24,12 +36,19 @@ final class LintConsoleOutput
         $this->symfonyStyle->writeln('');
     }
 
-    public function finishApplication(string $executionTime): void
+    public function finishApplication(string $executionTime): bool
     {
         $usageMemory = Helper::formatMemory(memory_get_usage(true));
 
         $this->symfonyStyle->writeln(sprintf('Memory usage: %s', $usageMemory));
+
+        if (! $this->isSuccess) {
+            $this->symfonyStyle->error(sprintf('Finished in %s seconds', $executionTime));
+            return true;
+        }
+
         $this->symfonyStyle->success(sprintf('Finished in %s seconds', $executionTime));
+        return false; // false means success
     }
 
     public function progressBarStart(int $count): void
@@ -52,9 +71,46 @@ final class LintConsoleOutput
 
     public function messageByProcessResult(LintProcessResult $lintProcessResult): void
     {
-        $this->symfonyStyle->writeln($lintProcessResult->getFilename());
-        $this->symfonyStyle->writeln($lintProcessResult->getResult());
-        $this->symfonyStyle->writeln((string) $lintProcessResult->getLine());
+        $line01 = sprintf('<options=bold>line %s </><fg=gray;options=bold>[%s]</>', $lintProcessResult->getLine(), $lintProcessResult->getFilename());
+        $line02 = sprintf('<fg=bright-red>%s</>', $lintProcessResult->getResult());
+
+        $this->symfonyStyle->writeln($line01);
+        $this->symfonyStyle->writeln($line02);
+        $this->loadCodeSnippet($lintProcessResult->getFilename(), (int) $lintProcessResult->getLine());
         $this->symfonyStyle->newLine();
+
+        $this->isSuccess = false;
+    }
+
+    private function loadCodeSnippet(string $filename, int $line): void
+    {
+        $lineStart = $line - self::SNIPPED_LINE;
+        $lineEnd = $line + (self::SNIPPED_LINE - 1);
+
+        $content = file_get_contents($filename);
+        if ($content === false) {
+            return;
+        }
+
+        $contentArray = explode("\n", $content);
+
+        $lineCnt = 0;
+        foreach ($contentArray as $contentLine) {
+            if ($lineCnt >= $lineStart && $lineCnt < $lineEnd) {
+                $lineNumberPost = $lineCnt + 1;
+                $tmp = str_pad((string) $lineNumberPost, self::LINE_LENGTH, '0', STR_PAD_LEFT);
+                $lineNumberPre = substr($tmp, 0, self::LINE_LENGTH - strlen((string) $lineNumberPost));
+
+                if ($lineCnt + 1 === $line) {
+                    $result = sprintf('<fg=bright-red;options=bold>%s</><fg=red>%s</><fg=blue;options=bold>:</> <fg=red>%s</>', $lineNumberPre, $lineNumberPost, $contentLine);
+                } else {
+                    $result = sprintf('<fg=gray;options=bold>%s</><fg=white>%s</><fg=blue;options=bold>:</> <fg=white>%s</>', $lineNumberPre, $lineNumberPost, $contentLine);
+                }
+
+                $this->symfonyStyle->writeln($result);
+            }
+
+            ++$lineCnt;
+        }
     }
 }

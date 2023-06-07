@@ -55,8 +55,7 @@ final class LintCommand extends Command
         $lint->run();
 
         $usageExecuteTime = Helper::formatTime(microtime(true) - $startExecuteTime);
-        $this->lintConsoleOutput->finishApplication($usageExecuteTime);
 
-        return self::SUCCESS;
+        return (int) $this->lintConsoleOutput->finishApplication($usageExecuteTime);
     }
 }

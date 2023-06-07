@@ -24,6 +24,7 @@ final class Lint
     public function run(): void
     {
         $processes = [];
+        $processResult = [];
         $count = $this->lintFinder->count();
         $iterator = $this->lintFinder->getIterator();
         $asyncProcess = $this->lintConfig->getAsyncProcess();
@@ -51,14 +52,18 @@ final class Lint
                     continue;
                 }
 
-                $processOutput = $runningProcess->getProcessOutput();
-                $this->processResultToConsole($processOutput);
+                $processResult[] = $runningProcess->getProcessResult();
 
                 unset($processes[$pid]);
             }
         }
 
         $this->lintConsoleOutput->progressBarFinish();
+
+        krsort($processResult);
+        foreach ($processResult as $processOutput) {
+            $this->processResultToConsole($processOutput);
+        }
     }
 
     public function createLintProcess(string $filename): Process

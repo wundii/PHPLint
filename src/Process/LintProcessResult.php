@@ -9,7 +9,7 @@ final class LintProcessResult
     public function __construct(
         private readonly StatusEnum $statusEnum,
         private readonly string $filename,
-        private readonly string $result,
+        private readonly string $result = '',
         private readonly ?int $line = null,
     ) {
     }
