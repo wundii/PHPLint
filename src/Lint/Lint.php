@@ -5,14 +5,17 @@ declare(strict_types=1);
 namespace PHPLint\Lint;
 
 use PHPLint\Config\LintConfig;
+use PHPLint\Console\Output\LintConsoleOutput;
 use PHPLint\Finder\LintFinder;
-use Symfony\Component\Console\Style\SymfonyStyle;
+use PHPLint\Process\LintProcessEntity;
+use PHPLint\Process\LintProcessResult;
+use PHPLint\Process\StatusEnum;
 use Symfony\Component\Process\Process;
 
 final class Lint
 {
     public function __construct(
-        private readonly SymfonyStyle $symfonyStyle,
+        private readonly LintConsoleOutput $lintConsoleOutput,
         private readonly LintConfig $lintConfig,
         private readonly LintFinder $lintFinder,
     ) {
@@ -20,42 +23,42 @@ final class Lint
 
     public function run(): void
     {
-        $this->symfonyStyle->writeln('Linting files...');
-
-        $pid = 0;
         $processes = [];
+        $count = $this->lintFinder->count();
         $iterator = $this->lintFinder->getIterator();
-        $maxAsyncProcess = $this->lintConfig->getAsyncProcess();
+        $asyncProcess = $this->lintConfig->getAsyncProcess();
+
+        $this->lintConsoleOutput->progressBarStart($count);
 
         while ($iterator->valid() || $processes !== []) {
-            for ($i = count($processes); $iterator->valid() && $i < $maxAsyncProcess; ++$i) {
+            for ($i = count($processes); $iterator->valid() && $i < $asyncProcess; ++$i) {
                 $currentFile = $iterator->current();
                 $filename = $currentFile->getRealPath();
 
                 $lintProcess = $this->createLintProcess($filename);
                 $lintProcess->start();
 
-                ++$pid;
-                $processes[$pid] = [
-                    'process' => $lintProcess,
-                    'file' => $currentFile,
-                ];
+                $this->lintConsoleOutput->progressBarAdvance();
+
+                $processes[] = new LintProcessEntity($lintProcess, $currentFile);
 
                 $iterator->next();
             }
 
-            foreach ($processes as $runningPid => $runningProcess) {
-                $lintProcess = $runningProcess['process'];
-                if ($lintProcess->isRunning()) {
+            foreach ($processes as $pid => $runningProcess) {
+                /** @var LintProcessEntity $runningProcess */
+                if ($runningProcess->isRunning()) {
                     continue;
                 }
 
-                $output = trim($lintProcess->getOutput());
-                dump($output);
+                $processOutput = $runningProcess->getProcessOutput();
+                $this->processResultToConsole($processOutput);
 
-                unset($processes[$runningPid]);
+                unset($processes[$pid]);
             }
         }
+
+        $this->lintConsoleOutput->progressBarFinish();
     }
 
     public function createLintProcess(string $filename): Process
@@ -74,5 +77,15 @@ final class Lint
         $command[] = $filename;
 
         return new Process($command);
+    }
+
+    public function processResultToConsole(LintProcessResult $lintProcessResult): void
+    {
+        if ($lintProcessResult->getStatus() === StatusEnum::OK) {
+            return;
+        }
+
+        // $this->lintConsoleOutput->writeln($lintProcessResult->getFilename());
+        // $this->lintConsoleOutput->writeln($lintProcessResult->getResult());
     }
 }

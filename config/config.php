@@ -27,13 +27,15 @@ return static function (ContainerConfigurator $container) {
             __DIR__ . '/../src/Bootstrap/',
             __DIR__ . '/../src/Config/',
             __DIR__ . '/../src/DependencyInjection/',
+            __DIR__ . '/../src/Process',
         ]);
 
+    $services->set(ArgvInput::class);
+    $services->set(ConsoleOutput::class);
     $services->set(Filesystem::class);
     $services->set(Finder::class);
-    $services->set(ArgvInput::class);
-    $services->alias(InputInterface::class, ArgvInput::class);
-    $services->set(ConsoleOutput::class);
-    $services->alias(OutputInterface::class, ConsoleOutput::class);
     $services->set(SymfonyStyle::class);
+
+    $services->alias(InputInterface::class, ArgvInput::class);
+    $services->alias(OutputInterface::class, ConsoleOutput::class);
 };
