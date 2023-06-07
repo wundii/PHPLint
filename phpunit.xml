@@ -21,6 +21,7 @@
       <directory>tests/Main/Bootstrap</directory>
       <directory>tests/Main/Console</directory>
       <directory>tests/Main/DependencyInjection</directory>
+      <directory>tests/Main/Finder</directory>
     </testsuite>
   </testsuites>
   <source>
