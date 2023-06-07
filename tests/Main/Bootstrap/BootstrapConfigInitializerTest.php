@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Main\Bootstrap;
+namespace PHPLint\Tests\Main\Bootstrap;
 
 use PHPLint\Bootstrap\BootstrapConfigInitializer;
 use PHPUnit\Framework\MockObject\Exception;

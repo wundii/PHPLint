@@ -10,7 +10,6 @@ use PHPLint\Finder\LintFinder;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Finder\Finder;
-use Symfony\Component\Finder\SplFileInfo;
 
 class LintFinderTest extends TestCase
 {
@@ -22,11 +21,21 @@ class LintFinderTest extends TestCase
         $lintFinder = new LintFinder();
         $result = $lintFinder->getFilesFromLintConfig($lintConfig);
 
-        // Assert that the result is an instance of LintFinder
         $this->assertInstanceOf(LintFinder::class, $result);
-
-        // Assert that the count of files in the LintFinder is correct
         $this->assertEquals(3, $result->count());
+    }
+
+    public function testGetFilesFromLintConfigWithDirectoryAndExcludes()
+    {
+        $lintConfig = new LintConfig(new ContainerBuilder());
+        $lintConfig->setPaths([__DIR__ . '/Files']);
+        $lintConfig->setSkip([__DIR__ . '/Files/Folder']);
+
+        $lintFinder = new LintFinder();
+        $result = $lintFinder->getFilesFromLintConfig($lintConfig);
+
+        $this->assertInstanceOf(LintFinder::class, $result);
+        $this->assertEquals(2, $result->count());
     }
 
     public function testGetFilesFromLintConfigWithInvalidPath()
@@ -36,10 +45,7 @@ class LintFinderTest extends TestCase
         $lintFinder = new LintFinder();
         $result = $lintFinder->getFilesFromLintConfig($lintConfig);
 
-        // Assert that the result is an instance of LintFinder
         $this->assertInstanceOf(LintFinder::class, $result);
-
-        // Assert that the count of files in the LintFinder is correct
         $this->assertEquals(0, $result->count());
     }
 
@@ -48,44 +54,47 @@ class LintFinderTest extends TestCase
         $lintFinder = new LintFinder();
         $result = $lintFinder->getFinderFromPath(__DIR__ . '/Files');
 
-        // Assert that the result is an instance of Finder
         $this->assertInstanceOf(Finder::class, $result);
-
-        // Assert that the Finder is configured correctly
         $this->assertTrue($result->hasResults());
     }
 
-    public function testCountGreaterThan0()
+    public function testCountByFileCount1()
     {
-        $file = __DIR__ . '/Files/File3.php';
+        $lintConfig = new LintConfig(new ContainerBuilder());
+        $lintConfig->setPaths([__DIR__ . '/Files/File3.php']);
         $lintFinder = new LintFinder();
-        $lintFinder->append([new SplFileInfo($file, $file, $file)]);
+        $lintFinder = $lintFinder->getFilesFromLintConfig($lintConfig);
         $count = $lintFinder->count();
 
-        // Assert that the count is correct
         $this->assertEquals(1, $count);
     }
 
-    public function testCountEqual0()
+    public function testCountByFileCount0()
     {
         $lintFinder = new LintFinder();
         $count = $lintFinder->count();
 
-        // Assert that the count is correct
         $this->assertEquals(0, $count);
     }
 
-    public function testGetIterator()
+    public function testGetIteratorByFileCount1()
     {
-        $file = __DIR__ . '/Files/File4.php';
+        $lintConfig = new LintConfig(new ContainerBuilder());
+        $lintConfig->setPaths([__DIR__ . '/Files/File4.php']);
         $lintFinder = new LintFinder();
-        $lintFinder->append([new SplFileInfo($file, $file, $file)]);
+        $lintFinder = $lintFinder->getFilesFromLintConfig($lintConfig);
         $iterator = $lintFinder->getIterator();
 
-        // Assert that the iterator is an instance of Iterator
         $this->assertInstanceOf(Iterator::class, $iterator);
-
-        // Assert that the iterator is not empty
         $this->assertTrue($iterator->valid());
+    }
+
+    public function testGetIteratorByFileCount0()
+    {
+        $lintFinder = new LintFinder();
+        $iterator = $lintFinder->getIterator();
+
+        $this->assertInstanceOf(Iterator::class, $iterator);
+        $this->assertFalse($iterator->valid());
     }
 }

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Main\Console;
+namespace PHPLint\Tests\Main\Console;
 
 use PHPLint\Console\OptionEnum;
 use PHPUnit\Framework\TestCase;
