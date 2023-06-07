@@ -83,7 +83,7 @@ final class LintConfig
                 continue;
             }
 
-            if(! str_starts_with($path, getcwd())) {
+            if (! str_starts_with($path, (string) getcwd())) {
                 if (str_starts_with($path, DIRECTORY_SEPARATOR)) {
                     $path = substr($path, 1);
                 }
