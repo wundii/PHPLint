@@ -141,17 +141,11 @@ final class LintConfig
         $this->memoryLimit = $memoryLimit;
     }
 
-    /**
-     * @return int
-     */
     public function getAsyncProcess(): int
     {
         return $this->asyncProcess;
     }
 
-    /**
-     * @param int $asyncProcess
-     */
     public function setAsyncProcess(int $asyncProcess): void
     {
         $this->asyncProcess = $asyncProcess;

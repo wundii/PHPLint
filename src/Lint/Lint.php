@@ -45,7 +45,6 @@ final class Lint
             }
 
             foreach ($processes as $runningPid => $runningProcess) {
-
                 $lintProcess = $runningProcess['process'];
                 if ($lintProcess->isRunning()) {
                     continue;

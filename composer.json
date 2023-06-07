@@ -48,6 +48,7 @@
       "@auto-scripts"
     ],
     "complete-check": [
+      "@cache-clear",
       "@rector-dry",
       "@phpstan",
       "@ecs-dry",
@@ -70,6 +71,9 @@
     ],
     "unittest": [
       "php vendor/bin/phpunit --configuration phpunit.xml"
+    ],
+    "cache-clear": [
+      "rm -R ./cache/*"
     ]
   },
   "minimum-stability": "dev",
