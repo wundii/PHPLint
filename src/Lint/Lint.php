@@ -22,27 +22,40 @@ final class Lint
     {
         $this->symfonyStyle->writeln('Linting files...');
 
-        $this->lintFinder->count();
-        //
-        // $iterator = $this->lintFinder->getIterator();
-        // dump($iterator->valid());
-        //
-        // foreach ($iterator as $file) {
-        //     dump($file->getRealPath());
-        //     dump($iterator->valid());
-        // }
-        // dump($iterator->valid());
-        //
-        //
-        // $process = $this->createLintProcess('testFile.php');
-        // dump('start process');
-        // $process->start();
-        // dump('is running');
-        // $process->isRunning();
-        // dump('output');
-        // sleep(1);
-        // dump($process->getOutput());
-        // dump('end process');
+        $pid = 0;
+        $processes = [];
+        $iterator = $this->lintFinder->getIterator();
+        $maxAsyncProcess = $this->lintConfig->getAsyncProcess();
+
+        while ($iterator->valid() || $processes !== []) {
+            for ($i = count($processes); $iterator->valid() && $i < $maxAsyncProcess; ++$i) {
+                $currentFile = $iterator->current();
+                $filename = $currentFile->getRealPath();
+
+                $lintProcess = $this->createLintProcess($filename);
+                $lintProcess->start();
+
+                ++$pid;
+                $processes[$pid] = [
+                    'process' => $lintProcess,
+                    'file' => $currentFile,
+                ];
+
+                $iterator->next();
+            }
+
+            foreach ($processes as $runningPid => $runningProcess) {
+                $lintProcess = $runningProcess['process'];
+                if ($lintProcess->isRunning()) {
+                    continue;
+                }
+
+                $output = trim($lintProcess->getOutput());
+                dump($output);
+
+                unset($processes[$runningPid]);
+            }
+        }
     }
 
     public function createLintProcess(string $filename): Process

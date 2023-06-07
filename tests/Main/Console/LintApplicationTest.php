@@ -28,7 +28,7 @@ class LintApplicationTest extends TestCase
     }
 
     /**
-     * @throws Exception
+     * @throws Exception|\PHPUnit\Framework\MockObject\Exception
      */
     public function testRun()
     {
@@ -37,6 +37,7 @@ class LintApplicationTest extends TestCase
         $bootstrapConfigInitializer = new BootstrapConfigInitializer(new Filesystem(), $symfonyStyle);
         $bootstrapConfigResolver = new BootstrapConfigResolver();
         $lintConfig = new LintConfig($container);
+        $lintConfig->setPaths(['src']);
         $lintFinder = new LintFinder();
         $lintCheckCommand = new LintCommand($bootstrapConfigInitializer, $bootstrapConfigResolver, $symfonyStyle, $lintConfig, $lintFinder);
         $lintInitCommand = new LintInitCommand($bootstrapConfigInitializer);
