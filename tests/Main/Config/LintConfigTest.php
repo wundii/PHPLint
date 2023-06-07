@@ -119,4 +119,19 @@ class LintConfigTest extends TestCase
 
         $this->assertEquals(['set1', 'set2'], $lintConfig->getSets());
     }
+
+    public function testGetAsyncProcess()
+    {
+        $lintConfig = new LintConfig($this->getMockContainerBuilder());
+
+        $this->assertEquals(10, $lintConfig->getAsyncProcess());
+    }
+
+    public function testSetAsyncProcess()
+    {
+        $lintConfig = new LintConfig($this->getMockContainerBuilder());
+        $lintConfig->setAsyncProcess(5);
+
+        $this->assertEquals(5, $lintConfig->getAsyncProcess());
+    }
 }

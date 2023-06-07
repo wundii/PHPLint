@@ -28,6 +28,8 @@ final class LintConfig
 
     private string $memoryLimit = '512M';
 
+    private int $asyncProcess = 10;
+
     public function __construct(
         private readonly ContainerBuilder $containerBuilder
     ) {
@@ -137,6 +139,22 @@ final class LintConfig
     public function setMemoryLimit(string $memoryLimit): void
     {
         $this->memoryLimit = $memoryLimit;
+    }
+
+    /**
+     * @return int
+     */
+    public function getAsyncProcess(): int
+    {
+        return $this->asyncProcess;
+    }
+
+    /**
+     * @param int $asyncProcess
+     */
+    public function setAsyncProcess(int $asyncProcess): void
+    {
+        $this->asyncProcess = $asyncProcess;
     }
 
     /**
