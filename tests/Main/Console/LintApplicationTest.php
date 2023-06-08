@@ -35,10 +35,11 @@ class LintApplicationTest extends TestCase
      */
     public function testRun()
     {
+        $lintConfig = new LintConfig();
         $consoleInput = new ArgvInput();
         $consoleOutput = new StreamOutput(fopen('php://memory', 'w', false));
         $symfonyStyle = new SymfonyStyle($consoleInput, $consoleOutput);
-        $lintConsoleOutput = new LintConsoleOutput($symfonyStyle);
+        $lintConsoleOutput = new LintConsoleOutput($symfonyStyle, $lintConfig);
         $container = $this->createMock(ContainerBuilder::class);
         $bootstrapConfigInitializer = new BootstrapConfigInitializer(new Filesystem(), $symfonyStyle);
         $bootstrapConfigResolver = new BootstrapConfigResolver();
