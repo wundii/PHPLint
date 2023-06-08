@@ -31,6 +31,23 @@ final class LintConfig
 
     private bool $allowNotice = true;
 
+    private bool $ignoreExitCode = false;
+
+    /**
+     * @todo not implemented
+     */
+    private bool $ignoreProcessBar = false;
+
+    /**
+     * @todo not implemented
+     */
+    private bool $cache = true;
+
+    /**
+     * @todo not implemented
+     */
+    private string $cacheDirectory = '.phplint';
+
     public function getPhpCgiExecutable(): string
     {
         return $this->phpCgiExecutable;
@@ -165,5 +182,45 @@ final class LintConfig
     public function setAllowNotice(bool $allowNotice): void
     {
         $this->allowNotice = $allowNotice;
+    }
+
+    public function isIgnoreExitCode(): bool
+    {
+        return $this->ignoreExitCode;
+    }
+
+    public function setIgnoreExitCode(bool $ignoreExitCode): void
+    {
+        $this->ignoreExitCode = $ignoreExitCode;
+    }
+
+    public function isIgnoreProcessBar(): bool
+    {
+        return $this->ignoreProcessBar;
+    }
+
+    public function setIgnoreProcessBar(bool $ignoreProcessBar): void
+    {
+        $this->ignoreProcessBar = $ignoreProcessBar;
+    }
+
+    public function isCache(): bool
+    {
+        return $this->cache;
+    }
+
+    public function setCache(bool $cache): void
+    {
+        $this->cache = $cache;
+    }
+
+    public function getCacheDirectory(): string
+    {
+        return $this->cacheDirectory;
+    }
+
+    public function setCacheDirectory(string $cacheDirectory): void
+    {
+        $this->cacheDirectory = $cacheDirectory;
     }
 }

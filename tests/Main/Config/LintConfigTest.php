@@ -111,4 +111,94 @@ class LintConfigTest extends TestCase
 
         $this->assertEquals(5, $lintConfig->getAsyncProcess());
     }
+
+    public function testIsAllowWarning()
+    {
+        $lintConfig = new LintConfig();
+
+        $this->assertTrue($lintConfig->isAllowWarning());
+    }
+
+    public function testSetAllowWarning()
+    {
+        $lintConfig = new LintConfig();
+        $lintConfig->setAllowWarning(false);
+
+        $this->assertFalse($lintConfig->isAllowWarning());
+    }
+
+    public function testIsAllowNotice()
+    {
+        $lintConfig = new LintConfig();
+
+        $this->assertTrue($lintConfig->isAllowNotice());
+    }
+
+    public function testSetAllowNotice()
+    {
+        $lintConfig = new LintConfig();
+        $lintConfig->setAllowNotice(false);
+
+        $this->assertFalse($lintConfig->isAllowNotice());
+    }
+
+    public function testIsIgnoreExitCode()
+    {
+        $lintConfig = new LintConfig();
+
+        $this->assertFalse($lintConfig->isIgnoreExitCode());
+    }
+
+    public function testSetIgnoreExitCode()
+    {
+        $lintConfig = new LintConfig();
+        $lintConfig->setIgnoreExitCode(true);
+
+        $this->assertTrue($lintConfig->isIgnoreExitCode());
+    }
+
+    public function testIsIgnoreProcessBar()
+    {
+        $lintConfig = new LintConfig();
+
+        $this->assertFalse($lintConfig->isIgnoreProcessBar());
+    }
+
+    public function testSetIgnoreProcessBar()
+    {
+        $lintConfig = new LintConfig();
+        $lintConfig->setIgnoreProcessBar(true);
+
+        $this->assertTrue($lintConfig->isIgnoreProcessBar());
+    }
+
+    public function testIsCache()
+    {
+        $lintConfig = new LintConfig();
+
+        $this->assertTrue($lintConfig->isCache());
+    }
+
+    public function testSetCache()
+    {
+        $lintConfig = new LintConfig();
+        $lintConfig->setCache(false);
+
+        $this->assertFalse($lintConfig->isCache());
+    }
+
+    public function testGetCacheDirectory()
+    {
+        $lintConfig = new LintConfig();
+
+        $this->assertEquals('.phplint', $lintConfig->getCacheDirectory());
+    }
+
+    public function testSetCacheDirectory()
+    {
+        $lintConfig = new LintConfig();
+        $lintConfig->setCacheDirectory(__DIR__ . '/path/to/cache/folder');
+
+        $this->assertEquals(__DIR__ . '/path/to/cache/folder', $lintConfig->getCacheDirectory());
+    }
 }

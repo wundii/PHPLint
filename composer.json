@@ -1,6 +1,6 @@
 {
   "name": "wundii/phplint",
-  "description": "This tool checks the syntax and style of PHP files",
+  "description": "This tool checks the syntax of PHP files",
   "license": "MIT",
   "authors": [
     {
