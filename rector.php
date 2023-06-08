@@ -43,9 +43,4 @@ return static function (RectorConfig $rectorConfig): void
 
     $services = $rectorConfig->services();
     $services->set(ExplicitBoolCompareRector::class);
-
-    $rectorConfig->skip([
-        // RemoveUselessReturnTagRector::class,
-        // RemoveUselessParamTagRector::class,
-    ]);
 };

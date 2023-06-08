@@ -19,9 +19,10 @@
     <testsuite name="main">
       <directory>tests/Main/Config</directory>
       <directory>tests/Main/Bootstrap</directory>
-      <directory>tests/Main/Console</directory>
       <directory>tests/Main/DependencyInjection</directory>
       <directory>tests/Main/Finder</directory>
+      <directory>tests/Main/Process</directory>
+      <directory>tests/Main/Console</directory>
     </testsuite>
   </testsuites>
   <source>

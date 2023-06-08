@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PHPLint\Console\Output;
 
 use PHPLint\Process\LintProcessResult;
+use PHPLint\Process\StatusEnum;
 use Symfony\Component\Console\Helper\Helper;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
@@ -43,11 +44,11 @@ final class LintConsoleOutput
         $this->symfonyStyle->writeln(sprintf('Memory usage: %s', $usageMemory));
 
         if (! $this->isSuccess) {
-            $this->symfonyStyle->error(sprintf('Finished in %s seconds', $executionTime));
+            $this->symfonyStyle->error(sprintf('Finished in %s', $executionTime));
             return true;
         }
 
-        $this->symfonyStyle->success(sprintf('Finished in %s seconds', $executionTime));
+        $this->symfonyStyle->success(sprintf('Finished in %s', $executionTime));
         return false; // false means success
     }
 
@@ -71,18 +72,25 @@ final class LintConsoleOutput
 
     public function messageByProcessResult(LintProcessResult $lintProcessResult): void
     {
+        $messageColor = match ($lintProcessResult->getStatus()) {
+            StatusEnum::OK => 'green',
+            StatusEnum::ERROR => 'red',
+            StatusEnum::WARNING => 'yellow',
+            default => 'red',
+        };
+
         $line01 = sprintf('<options=bold>line %s </><fg=gray;options=bold>[%s]</>', $lintProcessResult->getLine(), $lintProcessResult->getFilename());
-        $line02 = sprintf('<fg=bright-red>%s</>', $lintProcessResult->getResult());
+        $line02 = sprintf('<fg=bright-%s>%s</>: <fg=%s>%s</>', $messageColor, ucfirst($lintProcessResult->getStatus()->value), $messageColor, $lintProcessResult->getResult());
 
         $this->symfonyStyle->writeln($line01);
         $this->symfonyStyle->writeln($line02);
-        $this->loadCodeSnippet($lintProcessResult->getFilename(), (int) $lintProcessResult->getLine());
+        $this->loadCodeSnippet($lintProcessResult->getFilename(), (int) $lintProcessResult->getLine(), $messageColor);
         $this->symfonyStyle->newLine();
 
         $this->isSuccess = false;
     }
 
-    private function loadCodeSnippet(string $filename, int $line): void
+    private function loadCodeSnippet(string $filename, int $line, string $messageColor): void
     {
         $lineStart = $line - self::SNIPPED_LINE;
         $lineEnd = $line + (self::SNIPPED_LINE - 1);
@@ -102,7 +110,7 @@ final class LintConsoleOutput
                 $lineNumberPre = substr($tmp, 0, self::LINE_LENGTH - strlen((string) $lineNumberPost));
 
                 if ($lineCnt + 1 === $line) {
-                    $result = sprintf('<fg=bright-red;options=bold>%s</><fg=red>%s</><fg=blue;options=bold>:</> <fg=red>%s</>', $lineNumberPre, $lineNumberPost, $contentLine);
+                    $result = sprintf('<fg=bright-%s;options=bold>%s</><fg=%s>%s</><fg=blue;options=bold>:</> <fg=%s>%s</>', $messageColor, $lineNumberPre, $messageColor, $lineNumberPost, $messageColor, $contentLine);
                 } else {
                     $result = sprintf('<fg=gray;options=bold>%s</><fg=white>%s</><fg=blue;options=bold>:</> <fg=white>%s</>', $lineNumberPre, $lineNumberPost, $contentLine);
                 }
