@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PHPLint\Process;
 
 use Exception;
+use PHPLint\Config\LintConfig;
 use Symfony\Component\Finder\SplFileInfo;
 use Symfony\Component\Process\Process;
 
@@ -13,14 +14,15 @@ final class LintProcessEntity
     /**
      * @var string
      */
-    public const REGEX_ERROR = '/^(PHP\s+)?(Parse|Fatal) error:\s*(?:\w+ error,\s*)?(?<error>.+?)\s+in\s+.+?\s*line\s+(?<line>\d+)/';
+    public const REGEX_ERROR = '/^(PHP\s+)?(Parse|Fatal) error:\s*?(?<error>.*?)(?: in .+? line (?<line>\d+))?$/';
 
     /**
      * @var string
      */
-    public const REGEX_WARNING = '/^(PHP\s+)?(Warning|Deprecated|Notice):\s*?(?<error>.+?)\s+in\s+.+?\s*line\s+(?<line>\d+)/';
+    public const REGEX_WARNING = '/^(PHP\s+)?(Warning|Deprecated|Notice):\s*?(?<error>.+?)(?: in .+? line (?<line>\d+))?$/';
 
     public function __construct(
+        private readonly LintConfig $lintConfig,
         private readonly Process $process,
         private readonly SplFileInfo $splFileInfo,
     ) {
@@ -41,13 +43,22 @@ final class LintProcessEntity
         $result = array_shift($outputExplode);
         $fileRealPath = $this->splFileInfo->getRealPath();
 
-        if (! str_contains($result, 'No syntax errors detected')) {
+        $matchedError = ! str_contains($result, 'No syntax errors detected');
+        $matchedWarning = preg_match('#(Warning:|Deprecated:)#', $result);
+        $matchedInfo = str_contains($result, 'Notice:');
+        $isAllowWarning = $this->lintConfig->isAllowWarning();
+        $isAllowNotice = $this->lintConfig->isAllowNotice();
+
+        if ($matchedError && ! $matchedWarning && ! $matchedInfo) {
             return $this->createLintProcessResult(StatusEnum::ERROR, $fileRealPath, self::REGEX_ERROR, $result);
         }
 
-        $matched = preg_match('#(Warning:|Deprecated:|Notice:)#', $result);
-        if ($matched !== false && $matched > 0) {
+        if ($isAllowWarning && $matchedWarning) {
             return $this->createLintProcessResult(StatusEnum::WARNING, $fileRealPath, self::REGEX_WARNING, $result);
+        }
+
+        if ($isAllowNotice && $matchedInfo) {
+            return $this->createLintProcessResult(StatusEnum::NOTICE, $fileRealPath, self::REGEX_WARNING, $result);
         }
 
         return new LintProcessResult(StatusEnum::OK, $fileRealPath);
@@ -65,7 +76,7 @@ final class LintProcessEntity
 
         $matched = preg_match($pattern, $result, $match);
         if ($matched !== false && $matched > 0) {
-            $message = $match['error'];
+            $message = trim($match['error']);
             $line = (int) $match['line'];
         }
 

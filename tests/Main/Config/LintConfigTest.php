@@ -4,36 +4,14 @@ declare(strict_types=1);
 
 namespace PHPLint\Tests\Main\Config;
 
-use Exception;
 use PHPLint\Config\LintConfig;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class LintConfigTest extends TestCase
 {
-    public function getMockContainerBuilder(): ContainerBuilder
-    {
-        $containerBuilder = new ContainerBuilder();
-        $containerBuilder->register(LintConfig::class, LintConfig::class)
-            ->setArgument('$containerBuilder', $containerBuilder);
-
-        return $containerBuilder;
-    }
-
-    /**
-     * @throws Exception
-     */
-    public function testGetPhpCgiExecutable()
-    {
-        $lintConfig = new LintConfig($this->getMockContainerBuilder());
-
-        $this->assertEquals('php', $lintConfig->getPhpCgiExecutable());
-        $this->assertInstanceOf(LintConfig::class, $lintConfig->getService(LintConfig::class));
-    }
-
     public function testSetPhpCgiExecutable()
     {
-        $lintConfig = new LintConfig($this->getMockContainerBuilder());
+        $lintConfig = new LintConfig();
         $lintConfig->setPhpCgiExecutable('php7');
 
         $this->assertEquals('php7', $lintConfig->getPhpCgiExecutable());
@@ -41,14 +19,14 @@ class LintConfigTest extends TestCase
 
     public function testGetPathsDefault()
     {
-        $lintConfig = new LintConfig($this->getMockContainerBuilder());
+        $lintConfig = new LintConfig();
 
         $this->assertEquals([getcwd() . DIRECTORY_SEPARATOR], $lintConfig->getPaths());
     }
 
     public function testSetPaths()
     {
-        $lintConfig = new LintConfig($this->getMockContainerBuilder());
+        $lintConfig = new LintConfig();
         $lintConfig->setPaths(['path/to/dir1', 'path/to/dir2']);
 
         $this->assertEquals(['path/to/dir1', 'path/to/dir2'], $lintConfig->getPaths());
@@ -56,14 +34,14 @@ class LintConfigTest extends TestCase
 
     public function testGetSkip()
     {
-        $lintConfig = new LintConfig($this->getMockContainerBuilder());
+        $lintConfig = new LintConfig();
 
         $this->assertEquals([], $lintConfig->getSkip());
     }
 
     public function testSetSkip()
     {
-        $lintConfig = new LintConfig($this->getMockContainerBuilder());
+        $lintConfig = new LintConfig();
         $lintConfig->setSkip(['className', 'file1.php', 'file2.php']);
 
         $this->assertEquals(['className', 'file1.php', 'file2.php'], $lintConfig->getSkip());
@@ -71,8 +49,7 @@ class LintConfigTest extends TestCase
 
     public function testGetSkipPath()
     {
-        $containerBuilder = $this->getMockContainerBuilder();
-        $lintConfig = new LintConfig($containerBuilder);
+        $lintConfig = new LintConfig();
 
         // Test case 1: No skip paths
         $this->assertEquals([], $lintConfig->getSkipPath());
@@ -107,14 +84,14 @@ class LintConfigTest extends TestCase
 
     public function testGetSets()
     {
-        $lintConfig = new LintConfig($this->getMockContainerBuilder());
+        $lintConfig = new LintConfig();
 
         $this->assertEquals([], $lintConfig->getSets());
     }
 
     public function testSetSets()
     {
-        $lintConfig = new LintConfig($this->getMockContainerBuilder());
+        $lintConfig = new LintConfig();
         $lintConfig->setSets(['set1', 'set2']);
 
         $this->assertEquals(['set1', 'set2'], $lintConfig->getSets());
@@ -122,14 +99,14 @@ class LintConfigTest extends TestCase
 
     public function testGetAsyncProcess()
     {
-        $lintConfig = new LintConfig($this->getMockContainerBuilder());
+        $lintConfig = new LintConfig();
 
         $this->assertEquals(10, $lintConfig->getAsyncProcess());
     }
 
     public function testSetAsyncProcess()
     {
-        $lintConfig = new LintConfig($this->getMockContainerBuilder());
+        $lintConfig = new LintConfig();
         $lintConfig->setAsyncProcess(5);
 
         $this->assertEquals(5, $lintConfig->getAsyncProcess());

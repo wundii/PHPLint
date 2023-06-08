@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace PHPLint\Config;
 
-use Exception;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
-
 final class LintConfig
 {
     private string $phpCgiExecutable = 'php';
@@ -30,10 +27,9 @@ final class LintConfig
 
     private int $asyncProcess = 10;
 
-    public function __construct(
-        private readonly ContainerBuilder $containerBuilder
-    ) {
-    }
+    private bool $allowWarning = true;
+
+    private bool $allowNotice = true;
 
     public function getPhpCgiExecutable(): string
     {
@@ -151,11 +147,23 @@ final class LintConfig
         $this->asyncProcess = $asyncProcess;
     }
 
-    /**
-     * @throws Exception
-     */
-    public function getService(string $id): ?object
+    public function isAllowWarning(): bool
     {
-        return $this->containerBuilder->get($id);
+        return $this->allowWarning;
+    }
+
+    public function setAllowWarning(bool $allowWarning): void
+    {
+        $this->allowWarning = $allowWarning;
+    }
+
+    public function isAllowNotice(): bool
+    {
+        return $this->allowNotice;
+    }
+
+    public function setAllowNotice(bool $allowNotice): void
+    {
+        $this->allowNotice = $allowNotice;
     }
 }

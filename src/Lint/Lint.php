@@ -41,7 +41,7 @@ final class Lint
 
                 $this->lintConsoleOutput->progressBarAdvance();
 
-                $processes[] = new LintProcessEntity($lintProcess, $currentFile);
+                $processes[] = new LintProcessEntity($this->lintConfig, $lintProcess, $currentFile);
 
                 $iterator->next();
             }
