@@ -6,8 +6,7 @@ use PHPLint\Config\LintConfig;
 
 return static function (LintConfig $lintConfig): void {
     $lintConfig->setPaths([
-        __DIR__
+        'src',
+        'tests',
     ]);
-
-    $lintConfig->setIgnoreProcessBar(true);
 };

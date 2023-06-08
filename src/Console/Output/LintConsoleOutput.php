@@ -140,25 +140,25 @@ final class LintConsoleOutput
         $lineCnt = 0;
         foreach ($contentArray as $contentLine) {
             if ($lineCnt >= $lineStart && $lineCnt < $lineEnd) {
-                $lineNumberPost = $lineCnt + 1;
-                $tmp = str_pad((string) $lineNumberPost, self::LINE_LENGTH, '0', STR_PAD_LEFT);
-                $lineNumberPre = substr($tmp, 0, self::LINE_LENGTH - strlen((string) $lineNumberPost));
+                $lineNumber = $lineCnt + 1;
+                $tmp = str_pad((string) $lineNumber, self::LINE_LENGTH, '0', STR_PAD_LEFT);
+                $lineNumberPrefix = substr($tmp, 0, self::LINE_LENGTH - strlen((string) $lineNumber));
 
                 if ($lineCnt + 1 === $line) {
                     $result = sprintf(
-                        '<fg=%s;options=bold>%s</><fg=%s>%s</><fg=blue;options=bold>:</> <fg=%s>%s</>',
+                        '<fg=%s>%s</><fg=%s;options=bold>%s</><fg=gray>|</> <fg=%s>%s</>',
                         $outputColorEnum->getBrightValue(),
-                        $lineNumberPre,
+                        $lineNumberPrefix,
                         $outputColorEnum->value,
-                        $lineNumberPost,
+                        $lineNumber,
                         $outputColorEnum->value,
                         $contentLine,
                     );
                 } else {
                     $result = sprintf(
-                        '<fg=gray;options=bold>%s</><fg=white>%s</><fg=blue;options=bold>:</> <fg=white>%s</>',
-                        $lineNumberPre,
-                        $lineNumberPost,
+                        '<fg=gray>%s</><fg=white;options=bold>%s</><fg=gray>|</> <fg=white>%s</>',
+                        $lineNumberPrefix,
+                        $lineNumber,
                         $contentLine,
                     );
                 }
