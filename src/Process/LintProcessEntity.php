@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PHPLint\Process;
 
 use Exception;
+use PHPLint\Config\LintConfig;
 use Symfony\Component\Finder\SplFileInfo;
 use Symfony\Component\Process\Process;
 
@@ -21,6 +22,7 @@ final class LintProcessEntity
     public const REGEX_WARNING = '/^(PHP\s+)?(Warning|Deprecated|Notice):\s*?(?<error>.+?)(?: in .+? line (?<line>\d+))?$/';
 
     public function __construct(
+        private readonly LintConfig $lintConfig,
         private readonly Process $process,
         private readonly SplFileInfo $splFileInfo,
     ) {
@@ -41,13 +43,22 @@ final class LintProcessEntity
         $result = array_shift($outputExplode);
         $fileRealPath = $this->splFileInfo->getRealPath();
 
-        $matched = preg_match('#(Warning:|Deprecated:|Notice:)#', $result);
-        if ($matched !== false && $matched > 0) {
+        $matchedError = ! str_contains($result, 'No syntax errors detected');
+        $matchedWarning = preg_match('#(Warning:|Deprecated:)#', $result);
+        $matchedInfo = str_contains($result, 'Notice:');
+        $isAllowWarning = $this->lintConfig->isAllowWarning();
+        $isAllowNotice = $this->lintConfig->isAllowNotice();
+
+        if ($matchedError && ! $matchedWarning && ! $matchedInfo) {
+            return $this->createLintProcessResult(StatusEnum::ERROR, $fileRealPath, self::REGEX_ERROR, $result);
+        }
+
+        if ($isAllowWarning && $matchedWarning) {
             return $this->createLintProcessResult(StatusEnum::WARNING, $fileRealPath, self::REGEX_WARNING, $result);
         }
 
-        if (! str_contains($result, 'No syntax errors detected')) {
-            return $this->createLintProcessResult(StatusEnum::ERROR, $fileRealPath, self::REGEX_ERROR, $result);
+        if ($isAllowNotice && $matchedInfo) {
+            return $this->createLintProcessResult(StatusEnum::NOTICE, $fileRealPath, self::REGEX_WARNING, $result);
         }
 
         return new LintProcessResult(StatusEnum::OK, $fileRealPath);

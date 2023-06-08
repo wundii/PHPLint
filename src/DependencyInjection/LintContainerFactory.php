@@ -36,8 +36,7 @@ final class LintContainerFactory
         $containerBuilder->autowire(BootstrapConfigResolver::class, BootstrapConfigResolver::class)
             ->setPublic(true);
         $containerBuilder->autowire(LintConfig::class, LintConfig::class)
-            ->setPublic(true)
-            ->setArgument('$containerBuilder', $containerBuilder);
+            ->setPublic(true);
 
         $phpFileLoader = new PhpFileLoader($containerBuilder, new FileLocator(__DIR__));
         $phpFileLoader->load(__DIR__ . '/../../config/config.php');
