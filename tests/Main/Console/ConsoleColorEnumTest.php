@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PHPLint\Tests\Main\Console;
 
-use PHPLint\Console\ConsoleColorEnum;
+use PHPLint\Console\OutputColorEnum;
 use PHPUnit\Framework\TestCase;
 use ReflectionEnum;
 
@@ -14,7 +14,7 @@ class ConsoleColorEnumTest extends TestCase
     {
         $values = [];
 
-        $reflectionEnum = new ReflectionEnum(ConsoleColorEnum::class);
+        $reflectionEnum = new ReflectionEnum(OutputColorEnum::class);
         foreach ($reflectionEnum->getCases() as $case) {
             $values[] = $case->getValue();
         }

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PHPLint\Console;
 
-enum ConsoleColorEnum: string
+enum OutputColorEnum: string
 {
     case BLACK = 'black';
     case RED = 'red';
