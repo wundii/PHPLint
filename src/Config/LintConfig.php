@@ -27,15 +27,12 @@ final class LintConfig
 
     private int $asyncProcess = 10;
 
-    private bool $allowWarning = true;
+    private bool $enableWarning = true;
 
-    private bool $allowNotice = true;
+    private bool $enableNotice = true;
 
     private bool $ignoreExitCode = false;
 
-    /**
-     * @todo not implemented
-     */
     private bool $ignoreProcessBar = false;
 
     /**
@@ -164,24 +161,24 @@ final class LintConfig
         $this->asyncProcess = $asyncProcess;
     }
 
-    public function isAllowWarning(): bool
+    public function isEnableWarning(): bool
     {
-        return $this->allowWarning;
+        return $this->enableWarning;
     }
 
-    public function setAllowWarning(bool $allowWarning): void
+    public function disableWarning(): void
     {
-        $this->allowWarning = $allowWarning;
+        $this->enableWarning = false;
     }
 
-    public function isAllowNotice(): bool
+    public function isEnableNotice(): bool
     {
-        return $this->allowNotice;
+        return $this->enableNotice;
     }
 
-    public function setAllowNotice(bool $allowNotice): void
+    public function disableNotice(): void
     {
-        $this->allowNotice = $allowNotice;
+        $this->enableNotice = false;
     }
 
     public function isIgnoreExitCode(): bool
@@ -189,9 +186,9 @@ final class LintConfig
         return $this->ignoreExitCode;
     }
 
-    public function setIgnoreExitCode(bool $ignoreExitCode): void
+    public function ignoreExitCode(): void
     {
-        $this->ignoreExitCode = $ignoreExitCode;
+        $this->ignoreExitCode = true;
     }
 
     public function isIgnoreProcessBar(): bool
@@ -199,9 +196,9 @@ final class LintConfig
         return $this->ignoreProcessBar;
     }
 
-    public function setIgnoreProcessBar(bool $ignoreProcessBar): void
+    public function ignoreProcessBar(): void
     {
-        $this->ignoreProcessBar = $ignoreProcessBar;
+        $this->ignoreProcessBar = true;
     }
 
     public function isCache(): bool

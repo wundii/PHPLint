@@ -112,34 +112,34 @@ class LintConfigTest extends TestCase
         $this->assertEquals(5, $lintConfig->getAsyncProcess());
     }
 
-    public function testIsAllowWarning()
+    public function testIsEnableWarning()
     {
         $lintConfig = new LintConfig();
 
-        $this->assertTrue($lintConfig->isAllowWarning());
+        $this->assertTrue($lintConfig->isEnableWarning());
     }
 
-    public function testSetAllowWarning()
+    public function testDisableWarning()
     {
         $lintConfig = new LintConfig();
-        $lintConfig->setAllowWarning(false);
+        $lintConfig->disableWarning();
 
-        $this->assertFalse($lintConfig->isAllowWarning());
+        $this->assertFalse($lintConfig->isEnableWarning());
     }
 
-    public function testIsAllowNotice()
+    public function testIsEnableNotice()
     {
         $lintConfig = new LintConfig();
 
-        $this->assertTrue($lintConfig->isAllowNotice());
+        $this->assertTrue($lintConfig->isEnableNotice());
     }
 
-    public function testSetAllowNotice()
+    public function testDisableNotice()
     {
         $lintConfig = new LintConfig();
-        $lintConfig->setAllowNotice(false);
+        $lintConfig->disableNotice();
 
-        $this->assertFalse($lintConfig->isAllowNotice());
+        $this->assertFalse($lintConfig->isEnableNotice());
     }
 
     public function testIsIgnoreExitCode()
@@ -152,7 +152,7 @@ class LintConfigTest extends TestCase
     public function testSetIgnoreExitCode()
     {
         $lintConfig = new LintConfig();
-        $lintConfig->setIgnoreExitCode(true);
+        $lintConfig->ignoreExitCode();
 
         $this->assertTrue($lintConfig->isIgnoreExitCode());
     }
@@ -167,7 +167,7 @@ class LintConfigTest extends TestCase
     public function testSetIgnoreProcessBar()
     {
         $lintConfig = new LintConfig();
-        $lintConfig->setIgnoreProcessBar(true);
+        $lintConfig->ignoreProcessBar();
 
         $this->assertTrue($lintConfig->isIgnoreProcessBar());
     }

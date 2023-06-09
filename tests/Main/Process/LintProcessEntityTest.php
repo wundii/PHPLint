@@ -157,7 +157,7 @@ class LintProcessEntityTest extends TestCase
     public function testGetProcessResultWithWarningDisallow()
     {
         $lintConfig = new LintConfig();
-        $lintConfig->setAllowWarning(false);
+        $lintConfig->disableWarning();
         $processMock = $this->createMock(Process::class);
         $processMock->method('getOutput')->willReturn('Warning: Undefined variable $foo in /path/to/file.php line 5');
         $splFileInfoMock = $this->createMock(SplFileInfo::class);
@@ -200,7 +200,7 @@ class LintProcessEntityTest extends TestCase
     public function testGetProcessResultWithNoticeAndDisallow()
     {
         $lintConfig = new LintConfig();
-        $lintConfig->setAllowNotice(false);
+        $lintConfig->disableNotice();
         $processMock = $this->createMock(Process::class);
         $processMock->method('getOutput')->willReturn('Notice: Undefined variable $foo in /path/to/file.php line 5');
         $splFileInfoMock = $this->createMock(SplFileInfo::class);

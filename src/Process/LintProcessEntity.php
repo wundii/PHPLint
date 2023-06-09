@@ -46,18 +46,18 @@ final class LintProcessEntity
         $matchedError = ! str_contains($result, 'No syntax errors detected');
         $matchedWarning = preg_match('#(Warning:|Deprecated:)#', $result);
         $matchedInfo = str_contains($result, 'Notice:');
-        $isAllowWarning = $this->lintConfig->isAllowWarning();
-        $isAllowNotice = $this->lintConfig->isAllowNotice();
+        $isEnableWarning = $this->lintConfig->isEnableWarning();
+        $isEnableNotice = $this->lintConfig->isEnableNotice();
 
         if ($matchedError && ! $matchedWarning && ! $matchedInfo) {
             return $this->createLintProcessResult(StatusEnum::ERROR, $fileRealPath, self::REGEX_ERROR, $result);
         }
 
-        if ($isAllowWarning && $matchedWarning) {
+        if ($isEnableWarning && $matchedWarning) {
             return $this->createLintProcessResult(StatusEnum::WARNING, $fileRealPath, self::REGEX_WARNING, $result);
         }
 
-        if ($isAllowNotice && $matchedInfo) {
+        if ($isEnableNotice && $matchedInfo) {
             return $this->createLintProcessResult(StatusEnum::NOTICE, $fileRealPath, self::REGEX_WARNING, $result);
         }
 
