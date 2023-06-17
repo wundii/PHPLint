@@ -34,7 +34,8 @@ class LintTest extends TestCase
 
         $this->assertInstanceOf(Process::class, $process);
 
-        $expectedCommand = "'/usr/local/bin/php' '-d display_errors=1' '-d error_reporting=E_ALL' '-d memory_limit=256M' '-n' '-l' 'path/to/file.php'";
+        $phpBinary = PHP_BINARY;
+        $expectedCommand = sprintf("'%s' '-d display_errors=1' '-d error_reporting=E_ALL' '-d memory_limit=256M' '-n' '-l' 'path/to/file.php'", $phpBinary);
 
         $this->assertEquals($expectedCommand, $process->getCommandLine());
     }

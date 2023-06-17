@@ -17,15 +17,16 @@ class LintConsoleOutputTest extends TestCase
 {
     public function testLintProcessResultToConsoleWithOk()
     {
+        $filename = __DIR__ . '/fileNotExists.php';
         $lintProcessResult = new LintProcessResult(
             StatusEnum::OK,
-            __DIR__ . '/fileNotExists.php',
+            $filename,
             'Some lint result',
             10,
         );
 
         $expected = <<<EOT
-#1 - line 10 [/var/www/phplint/tests/Main/Console/fileNotExists.php]
+#1 - line 10 [$filename]
 Ok: Some lint result
 
 
@@ -36,15 +37,16 @@ EOT;
 
     public function testLintProcessResultToConsoleWithNotice()
     {
+        $filename = __DIR__ . '/Files/File1.php';
         $lintProcessResult = new LintProcessResult(
             StatusEnum::NOTICE,
-            __DIR__ . '/Files/File1.php',
+            $filename,
             'Some lint result',
             1,
         );
 
         $expected = <<<EOT
-#1 - line 1 [/var/www/phplint/tests/Main/Console/Files/File1.php]
+#1 - line 1 [$filename]
 Notice: Some lint result
 00001| <?php
 00002| 
@@ -60,15 +62,16 @@ EOT;
 
     public function testLintProcessResultToConsoleWithWarning()
     {
+        $filename = __DIR__ . '/Files/File1.php';
         $lintProcessResult = new LintProcessResult(
             StatusEnum::WARNING,
-            __DIR__ . '/Files/File1.php',
+            $filename,
             'Some lint result',
             2,
         );
 
         $expected = <<<EOT
-#1 - line 2 [/var/www/phplint/tests/Main/Console/Files/File1.php]
+#1 - line 2 [$filename]
 Warning: Some lint result
 00001| <?php
 00002| 
@@ -85,15 +88,16 @@ EOT;
 
     public function testLintProcessResultToConsoleWithError()
     {
+        $filename = __DIR__ . '/Files/File1.php';
         $lintProcessResult = new LintProcessResult(
             StatusEnum::ERROR,
-            __DIR__ . '/Files/File1.php',
+            $filename,
             'Some lint result',
             46,
         );
 
         $expected = <<<EOT
-#1 - line 46 [/var/www/phplint/tests/Main/Console/Files/File1.php]
+#1 - line 46 [$filename]
 Error: Some lint result
 00042| 
 00043| \$person = new Person('Bob');
@@ -109,15 +113,16 @@ EOT;
 
     public function testLintProcessResultToConsoleWithRunning()
     {
+        $filename = __DIR__ . '/Files/File1.php';
         $lintProcessResult = new LintProcessResult(
             StatusEnum::RUNNING,
-            __DIR__ . '/Files/File1.php',
+            $filename,
             'Some lint result',
             10,
         );
 
         $expected = <<<EOT
-#1 - line 10 [/var/www/phplint/tests/Main/Console/Files/File1.php]
+#1 - line 10 [$filename]
 Running: Some lint result
 00006| 
 00007| \$variable = 42;
