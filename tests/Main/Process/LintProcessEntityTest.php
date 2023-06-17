@@ -215,4 +215,25 @@ class LintProcessEntityTest extends TestCase
         $this->assertSame('', $result->getResult());
         $this->assertNull($result->getLine());
     }
+
+    /**
+     * @throws Exception
+     */
+    public function testGetProcessResultWithRunning()
+    {
+        $lintConfig = new LintConfig();
+        $processMock = $this->createMock(Process::class);
+        $processMock->method('isRunning')->willReturn(true);
+        $splFileInfoMock = $this->createMock(SplFileInfo::class);
+        $splFileInfoMock->method('getRealPath')->willReturn('/path/to/file.php');
+
+        $lintProcessEntity = new LintProcessEntity($lintConfig, $processMock, $splFileInfoMock);
+        $result = $lintProcessEntity->getProcessResult();
+
+        $this->assertInstanceOf(LintProcessResult::class, $result);
+        $this->assertSame(StatusEnum::RUNNING->name, $result->getStatus()->name);
+        $this->assertSame('/path/to/file.php', $result->getFilename());
+        $this->assertSame('Process is still running', $result->getResult());
+        $this->assertNull($result->getLine());
+    }
 }

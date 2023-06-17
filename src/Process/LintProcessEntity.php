@@ -28,20 +28,17 @@ final class LintProcessEntity
     ) {
     }
 
-    /**
-     * @throws Exception
-     */
     public function getProcessResult(): LintProcessResult
     {
+        $fileRealPath = $this->splFileInfo->getRealPath();
+
         if ($this->isRunning()) {
-            throw new Exception('Process is still running');
+            return new LintProcessResult(StatusEnum::RUNNING, $fileRealPath, 'Process is still running');
         }
 
         $output = trim($this->process->getOutput());
-
         $outputExplode = explode("\n", $output);
         $result = array_shift($outputExplode);
-        $fileRealPath = $this->splFileInfo->getRealPath();
 
         $matchedError = ! str_contains($result, 'No syntax errors detected');
         $matchedWarning = preg_match('#(Warning:|Deprecated:)#', $result);
