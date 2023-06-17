@@ -26,7 +26,7 @@ class LintConsoleOutputTest extends TestCase
         );
 
         $expected = <<<EOT
-#1 - line 10 [$filename]
+#1 - line 10 [{$filename}]
 Ok: Some lint result
 
 
@@ -46,7 +46,7 @@ EOT;
         );
 
         $expected = <<<EOT
-#1 - line 1 [$filename]
+#1 - line 1 [{$filename}]
 Notice: Some lint result
 00001| <?php
 00002| 
@@ -71,7 +71,7 @@ EOT;
         );
 
         $expected = <<<EOT
-#1 - line 2 [$filename]
+#1 - line 2 [{$filename}]
 Warning: Some lint result
 00001| <?php
 00002| 
@@ -97,7 +97,7 @@ EOT;
         );
 
         $expected = <<<EOT
-#1 - line 46 [$filename]
+#1 - line 46 [{$filename}]
 Error: Some lint result
 00042| 
 00043| \$person = new Person('Bob');
@@ -122,7 +122,7 @@ EOT;
         );
 
         $expected = <<<EOT
-#1 - line 10 [$filename]
+#1 - line 10 [{$filename}]
 Running: Some lint result
 00006| 
 00007| \$variable = 42;
