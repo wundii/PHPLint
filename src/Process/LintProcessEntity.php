@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace PHPLint\Process;
 
-use Exception;
 use PHPLint\Config\LintConfig;
 use Symfony\Component\Finder\SplFileInfo;
 use Symfony\Component\Process\Process;

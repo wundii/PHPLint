@@ -6,15 +6,12 @@ namespace PHPLint\Tests\Main\Console;
 
 use PHPLint\Config\LintConfig;
 use PHPLint\Console\Output\LintConsoleOutput;
-use PHPLint\Finder\LintFinder;
-use PHPLint\Lint\Lint;
 use PHPLint\Process\LintProcessResult;
 use PHPLint\Process\StatusEnum;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Output\StreamOutput;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use Symfony\Component\Process\Process;
 
 class LintConsoleOutputTest extends TestCase
 {
@@ -53,7 +50,7 @@ Notice: Some lint result
 00002| 
 00003| declare(strict_types=1);
 00004| 
-00005| echo "Hello, world!";
+00005| echo 'Hello, world!';
 
 
 EOT;
@@ -77,7 +74,7 @@ Warning: Some lint result
 00002| 
 00003| declare(strict_types=1);
 00004| 
-00005| echo "Hello, world!";
+00005| echo 'Hello, world!';
 00006| 
 
 
@@ -92,17 +89,17 @@ EOT;
             StatusEnum::ERROR,
             __DIR__ . '/Files/File1.php',
             'Some lint result',
-            41,
+            46,
         );
 
         $expected = <<<EOT
-#1 - line 41 [/var/www/phplint/tests/Main/Console/Files/File1.php]
+#1 - line 46 [/var/www/phplint/tests/Main/Console/Files/File1.php]
 Error: Some lint result
-00037| }
-00038| 
-00039| \$person = new Person("Bob");
-00040| 
-00041| echo \$person->getName();
+00042| 
+00043| \$person = new Person('Bob');
+00044| 
+00045| echo \$person->getName();
+00046| 
 
 
 EOT;
@@ -126,9 +123,9 @@ Running: Some lint result
 00007| \$variable = 42;
 00008| 
 00009| if (\$variable > 30) {
-00010|     echo "Variable is greater than 30.";
+00010|     echo 'Variable is greater than 30.';
 00011| } else {
-00012|     echo "Variable is not greater than 30.";
+00012|     echo 'Variable is not greater than 30.';
 00013| }
 00014| 
 
