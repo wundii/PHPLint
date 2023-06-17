@@ -130,6 +130,10 @@ final class LintConsoleOutput
         $lineStart = $line - self::SNIPPED_LINE;
         $lineEnd = $line + (self::SNIPPED_LINE - 1);
 
+        if (!file_exists($filename)) {
+            return;
+        }
+
         $content = file_get_contents($filename);
         if ($content === false) {
             return;

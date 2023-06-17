@@ -5,6 +5,7 @@
          bootstrap="tests/bootstrap.php"
          cacheDirectory="cache/phpunit"
          stopOnError ="true"
+         stopOnWarning="true"
          testdox="true"
          defaultTestSuite="main"
 >
