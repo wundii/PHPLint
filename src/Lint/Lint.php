@@ -7,8 +7,8 @@ namespace PHPLint\Lint;
 use PHPLint\Config\LintConfig;
 use PHPLint\Console\Output\LintConsoleOutput;
 use PHPLint\Finder\LintFinder;
-use PHPLint\Process\LintProcessEntity;
 use PHPLint\Process\LintProcessResult;
+use PHPLint\Process\LintProcessTask;
 use PHPLint\Process\StatusEnum;
 use Symfony\Component\Process\Process;
 
@@ -41,13 +41,13 @@ final class Lint
 
                 $this->lintConsoleOutput->progressBarAdvance();
 
-                $processes[] = new LintProcessEntity($this->lintConfig, $lintProcess, $currentFile);
+                $processes[] = new LintProcessTask($this->lintConfig, $lintProcess, $currentFile);
 
                 $iterator->next();
             }
 
             foreach ($processes as $pid => $runningProcess) {
-                /** @var LintProcessEntity $runningProcess */
+                /** @var LintProcessTask $runningProcess */
                 if ($runningProcess->isRunning()) {
                     continue;
                 }

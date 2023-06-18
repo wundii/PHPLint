@@ -27,9 +27,23 @@ final class LintConfig
 
     private int $asyncProcess = 10;
 
-    private bool $allowWarning = true;
+    private bool $enableWarning = true;
 
-    private bool $allowNotice = true;
+    private bool $enableNotice = true;
+
+    private bool $ignoreExitCode = false;
+
+    private bool $ignoreProcessBar = false;
+
+    /**
+     * @todo not implemented
+     */
+    private bool $cache = true;
+
+    /**
+     * @todo not implemented
+     */
+    private string $cacheDirectory = '.phplint';
 
     public function getPhpCgiExecutable(): string
     {
@@ -147,23 +161,63 @@ final class LintConfig
         $this->asyncProcess = $asyncProcess;
     }
 
-    public function isAllowWarning(): bool
+    public function isEnableWarning(): bool
     {
-        return $this->allowWarning;
+        return $this->enableWarning;
     }
 
-    public function setAllowWarning(bool $allowWarning): void
+    public function disableWarning(): void
     {
-        $this->allowWarning = $allowWarning;
+        $this->enableWarning = false;
     }
 
-    public function isAllowNotice(): bool
+    public function isEnableNotice(): bool
     {
-        return $this->allowNotice;
+        return $this->enableNotice;
     }
 
-    public function setAllowNotice(bool $allowNotice): void
+    public function disableNotice(): void
     {
-        $this->allowNotice = $allowNotice;
+        $this->enableNotice = false;
+    }
+
+    public function isIgnoreExitCode(): bool
+    {
+        return $this->ignoreExitCode;
+    }
+
+    public function ignoreExitCode(): void
+    {
+        $this->ignoreExitCode = true;
+    }
+
+    public function isIgnoreProcessBar(): bool
+    {
+        return $this->ignoreProcessBar;
+    }
+
+    public function ignoreProcessBar(): void
+    {
+        $this->ignoreProcessBar = true;
+    }
+
+    public function isCache(): bool
+    {
+        return $this->cache;
+    }
+
+    public function setCache(bool $cache): void
+    {
+        $this->cache = $cache;
+    }
+
+    public function getCacheDirectory(): string
+    {
+        return $this->cacheDirectory;
+    }
+
+    public function setCacheDirectory(string $cacheDirectory): void
+    {
+        $this->cacheDirectory = $cacheDirectory;
     }
 }

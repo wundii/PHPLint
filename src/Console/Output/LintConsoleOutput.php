@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace PHPLint\Console\Output;
 
-use PHPLint\Console\ConsoleColorEnum;
+use PHPLint\Config\LintConfig;
+use PHPLint\Console\OutputColorEnum;
 use PHPLint\Process\LintProcessResult;
 use PHPLint\Process\StatusEnum;
 use Symfony\Component\Console\Helper\Helper;
@@ -27,7 +28,8 @@ final class LintConsoleOutput
     private int $countFiles = 0;
 
     public function __construct(
-        private readonly SymfonyStyle $symfonyStyle
+        private readonly SymfonyStyle $symfonyStyle,
+        private readonly LintConfig $lintConfig,
     ) {
     }
 
@@ -62,29 +64,38 @@ final class LintConsoleOutput
 
     public function progressBarStart(int $count): void
     {
-        $this->symfonyStyle->writeln('Linting files...');
-        $this->symfonyStyle->newLine();
+        if ($this->lintConfig->isIgnoreProcessBar()) {
+            return;
+        }
 
         $this->symfonyStyle->progressStart($count);
     }
 
     public function progressBarAdvance(): void
     {
+        if ($this->lintConfig->isIgnoreProcessBar()) {
+            return;
+        }
+
         $this->symfonyStyle->progressAdvance();
     }
 
     public function progressBarFinish(): void
     {
+        if ($this->lintConfig->isIgnoreProcessBar()) {
+            return;
+        }
+
         $this->symfonyStyle->progressFinish();
     }
 
     public function messageByProcessResult(LintProcessResult $lintProcessResult): void
     {
-        $consoleColorEnum = match ($lintProcessResult->getStatus()) {
-            StatusEnum::OK => ConsoleColorEnum::GREEN,
-            StatusEnum::NOTICE => ConsoleColorEnum::BLUE,
-            StatusEnum::WARNING => ConsoleColorEnum::YELLOW,
-            default => ConsoleColorEnum::RED,
+        $outputColorEnum = match ($lintProcessResult->getStatus()) {
+            StatusEnum::OK => OutputColorEnum::GREEN,
+            StatusEnum::NOTICE => OutputColorEnum::BLUE,
+            StatusEnum::WARNING => OutputColorEnum::YELLOW,
+            default => OutputColorEnum::RED,
         };
 
         ++$this->countFiles;
@@ -97,24 +108,28 @@ final class LintConsoleOutput
         );
         $line02 = sprintf(
             '<fg=%s;options=bold>%s</>: <fg=%s>%s</>',
-            $consoleColorEnum->getBrightValue(),
+            $outputColorEnum->getBrightValue(),
             ucfirst($lintProcessResult->getStatus()->value),
-            $consoleColorEnum->value,
+            $outputColorEnum->value,
             $lintProcessResult->getResult(),
         );
 
         $this->symfonyStyle->writeln($line01);
         $this->symfonyStyle->writeln($line02);
-        $this->loadCodeSnippet($lintProcessResult->getFilename(), (int) $lintProcessResult->getLine(), $consoleColorEnum);
+        $this->loadCodeSnippet($lintProcessResult->getFilename(), (int) $lintProcessResult->getLine(), $outputColorEnum);
         $this->symfonyStyle->newLine();
 
         $this->isSuccess = false;
     }
 
-    private function loadCodeSnippet(string $filename, int $line, ConsoleColorEnum $consoleColorEnum): void
+    private function loadCodeSnippet(string $filename, int $line, OutputColorEnum $outputColorEnum): void
     {
         $lineStart = $line - self::SNIPPED_LINE;
         $lineEnd = $line + (self::SNIPPED_LINE - 1);
+
+        if (! file_exists($filename)) {
+            return;
+        }
 
         $content = file_get_contents($filename);
         if ($content === false) {
@@ -126,25 +141,25 @@ final class LintConsoleOutput
         $lineCnt = 0;
         foreach ($contentArray as $contentLine) {
             if ($lineCnt >= $lineStart && $lineCnt < $lineEnd) {
-                $lineNumberPost = $lineCnt + 1;
-                $tmp = str_pad((string) $lineNumberPost, self::LINE_LENGTH, '0', STR_PAD_LEFT);
-                $lineNumberPre = substr($tmp, 0, self::LINE_LENGTH - strlen((string) $lineNumberPost));
+                $lineNumber = $lineCnt + 1;
+                $tmp = str_pad((string) $lineNumber, self::LINE_LENGTH, '0', STR_PAD_LEFT);
+                $lineNumberPrefix = substr($tmp, 0, self::LINE_LENGTH - strlen((string) $lineNumber));
 
                 if ($lineCnt + 1 === $line) {
                     $result = sprintf(
-                        '<fg=%s;options=bold>%s</><fg=%s>%s</><fg=blue;options=bold>:</> <fg=%s>%s</>',
-                        $consoleColorEnum->getBrightValue(),
-                        $lineNumberPre,
-                        $consoleColorEnum->value,
-                        $lineNumberPost,
-                        $consoleColorEnum->value,
+                        '<fg=%s>%s</><fg=%s;options=bold>%s</><fg=gray>|</> <fg=%s>%s</>',
+                        $outputColorEnum->getBrightValue(),
+                        $lineNumberPrefix,
+                        $outputColorEnum->value,
+                        $lineNumber,
+                        $outputColorEnum->value,
                         $contentLine,
                     );
                 } else {
                     $result = sprintf(
-                        '<fg=gray;options=bold>%s</><fg=white>%s</><fg=blue;options=bold>:</> <fg=white>%s</>',
-                        $lineNumberPre,
-                        $lineNumberPost,
+                        '<fg=gray>%s</><fg=white;options=bold>%s</><fg=gray>|</> <fg=white>%s</>',
+                        $lineNumberPrefix,
+                        $lineNumber,
                         $contentLine,
                     );
                 }

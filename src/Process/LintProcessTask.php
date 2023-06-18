@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace PHPLint\Process;
 
-use Exception;
 use PHPLint\Config\LintConfig;
 use Symfony\Component\Finder\SplFileInfo;
 use Symfony\Component\Process\Process;
 
-final class LintProcessEntity
+final class LintProcessTask
 {
     /**
      * @var string
@@ -28,36 +27,33 @@ final class LintProcessEntity
     ) {
     }
 
-    /**
-     * @throws Exception
-     */
     public function getProcessResult(): LintProcessResult
     {
+        $fileRealPath = $this->splFileInfo->getRealPath();
+
         if ($this->isRunning()) {
-            throw new Exception('Process is still running');
+            return new LintProcessResult(StatusEnum::RUNNING, $fileRealPath, 'Process is still running');
         }
 
         $output = trim($this->process->getOutput());
-
         $outputExplode = explode("\n", $output);
         $result = array_shift($outputExplode);
-        $fileRealPath = $this->splFileInfo->getRealPath();
 
         $matchedError = ! str_contains($result, 'No syntax errors detected');
         $matchedWarning = preg_match('#(Warning:|Deprecated:)#', $result);
         $matchedInfo = str_contains($result, 'Notice:');
-        $isAllowWarning = $this->lintConfig->isAllowWarning();
-        $isAllowNotice = $this->lintConfig->isAllowNotice();
+        $isEnableWarning = $this->lintConfig->isEnableWarning();
+        $isEnableNotice = $this->lintConfig->isEnableNotice();
 
         if ($matchedError && ! $matchedWarning && ! $matchedInfo) {
             return $this->createLintProcessResult(StatusEnum::ERROR, $fileRealPath, self::REGEX_ERROR, $result);
         }
 
-        if ($isAllowWarning && $matchedWarning) {
+        if ($isEnableWarning && $matchedWarning) {
             return $this->createLintProcessResult(StatusEnum::WARNING, $fileRealPath, self::REGEX_WARNING, $result);
         }
 
-        if ($isAllowNotice && $matchedInfo) {
+        if ($isEnableNotice && $matchedInfo) {
             return $this->createLintProcessResult(StatusEnum::NOTICE, $fileRealPath, self::REGEX_WARNING, $result);
         }
 

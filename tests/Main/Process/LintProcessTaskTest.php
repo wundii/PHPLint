@@ -5,15 +5,15 @@ declare(strict_types=1);
 namespace PHPLint\Tests\Main\Process;
 
 use PHPLint\Config\LintConfig;
-use PHPLint\Process\LintProcessEntity;
 use PHPLint\Process\LintProcessResult;
+use PHPLint\Process\LintProcessTask;
 use PHPLint\Process\StatusEnum;
 use PHPUnit\Framework\MockObject\Exception;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Finder\SplFileInfo;
 use Symfony\Component\Process\Process;
 
-class LintProcessEntityTest extends TestCase
+class LintProcessTaskTest extends TestCase
 {
     public function testRegexError()
     {
@@ -39,7 +39,7 @@ class LintProcessEntityTest extends TestCase
         ];
 
         foreach ($errorMessages as $kex => $errorMessage) {
-            $matched = preg_match(LintProcessEntity::REGEX_ERROR, $errorMessage, $matches);
+            $matched = preg_match(LintProcessTask::REGEX_ERROR, $errorMessage, $matches);
 
             $this->assertSame(1, $matched, $errorMessage);
             $this->assertArrayHasKey('error', $matches);
@@ -75,7 +75,7 @@ class LintProcessEntityTest extends TestCase
         ];
 
         foreach ($warningMessages as $key => $warningMessage) {
-            $matched = preg_match(LintProcessEntity::REGEX_WARNING, $warningMessage, $matches);
+            $matched = preg_match(LintProcessTask::REGEX_WARNING, $warningMessage, $matches);
 
             $this->assertSame(1, $matched);
             $this->assertArrayHasKey('error', $matches);
@@ -98,8 +98,8 @@ class LintProcessEntityTest extends TestCase
         $splFileInfoMock = $this->createMock(SplFileInfo::class);
         $splFileInfoMock->method('getRealPath')->willReturn('/path/to/file.php');
 
-        $lintProcessEntity = new LintProcessEntity($lintConfig, $processMock, $splFileInfoMock);
-        $result = $lintProcessEntity->getProcessResult();
+        $lintProcessTask = new LintProcessTask($lintConfig, $processMock, $splFileInfoMock);
+        $result = $lintProcessTask->getProcessResult();
 
         $this->assertInstanceOf(LintProcessResult::class, $result);
         $this->assertSame(StatusEnum::OK->name, $result->getStatus()->name);
@@ -119,9 +119,9 @@ class LintProcessEntityTest extends TestCase
         $splFileInfoMock = $this->createMock(SplFileInfo::class);
         $splFileInfoMock->method('getRealPath')->willReturn('/path/to/file.php');
 
-        $lintProcessEntity = new LintProcessEntity($lintConfig, $processMock, $splFileInfoMock);
+        $lintProcessTask = new LintProcessTask($lintConfig, $processMock, $splFileInfoMock);
 
-        $result = $lintProcessEntity->getProcessResult();
+        $result = $lintProcessTask->getProcessResult();
 
         $this->assertInstanceOf(LintProcessResult::class, $result);
         $this->assertSame(StatusEnum::ERROR->name, $result->getStatus()->name);
@@ -141,8 +141,8 @@ class LintProcessEntityTest extends TestCase
         $splFileInfoMock = $this->createMock(SplFileInfo::class);
         $splFileInfoMock->method('getRealPath')->willReturn('/path/to/file.php');
 
-        $lintProcessEntity = new LintProcessEntity($lintConfig, $processMock, $splFileInfoMock);
-        $result = $lintProcessEntity->getProcessResult();
+        $lintProcessTask = new LintProcessTask($lintConfig, $processMock, $splFileInfoMock);
+        $result = $lintProcessTask->getProcessResult();
 
         $this->assertInstanceOf(LintProcessResult::class, $result);
         $this->assertSame(StatusEnum::WARNING->name, $result->getStatus()->name);
@@ -157,14 +157,14 @@ class LintProcessEntityTest extends TestCase
     public function testGetProcessResultWithWarningDisallow()
     {
         $lintConfig = new LintConfig();
-        $lintConfig->setAllowWarning(false);
+        $lintConfig->disableWarning();
         $processMock = $this->createMock(Process::class);
         $processMock->method('getOutput')->willReturn('Warning: Undefined variable $foo in /path/to/file.php line 5');
         $splFileInfoMock = $this->createMock(SplFileInfo::class);
         $splFileInfoMock->method('getRealPath')->willReturn('/path/to/file.php');
 
-        $lintProcessEntity = new LintProcessEntity($lintConfig, $processMock, $splFileInfoMock);
-        $result = $lintProcessEntity->getProcessResult();
+        $lintProcessTask = new LintProcessTask($lintConfig, $processMock, $splFileInfoMock);
+        $result = $lintProcessTask->getProcessResult();
 
         $this->assertInstanceOf(LintProcessResult::class, $result);
         $this->assertSame(StatusEnum::OK->name, $result->getStatus()->name);
@@ -184,8 +184,8 @@ class LintProcessEntityTest extends TestCase
         $splFileInfoMock = $this->createMock(SplFileInfo::class);
         $splFileInfoMock->method('getRealPath')->willReturn('/path/to/file.php');
 
-        $lintProcessEntity = new LintProcessEntity($lintConfig, $processMock, $splFileInfoMock);
-        $result = $lintProcessEntity->getProcessResult();
+        $lintProcessTask = new LintProcessTask($lintConfig, $processMock, $splFileInfoMock);
+        $result = $lintProcessTask->getProcessResult();
 
         $this->assertInstanceOf(LintProcessResult::class, $result);
         $this->assertSame(StatusEnum::NOTICE->name, $result->getStatus()->name);
@@ -200,19 +200,40 @@ class LintProcessEntityTest extends TestCase
     public function testGetProcessResultWithNoticeAndDisallow()
     {
         $lintConfig = new LintConfig();
-        $lintConfig->setAllowNotice(false);
+        $lintConfig->disableNotice();
         $processMock = $this->createMock(Process::class);
         $processMock->method('getOutput')->willReturn('Notice: Undefined variable $foo in /path/to/file.php line 5');
         $splFileInfoMock = $this->createMock(SplFileInfo::class);
         $splFileInfoMock->method('getRealPath')->willReturn('/path/to/file.php');
 
-        $lintProcessEntity = new LintProcessEntity($lintConfig, $processMock, $splFileInfoMock);
-        $result = $lintProcessEntity->getProcessResult();
+        $lintProcessTask = new LintProcessTask($lintConfig, $processMock, $splFileInfoMock);
+        $result = $lintProcessTask->getProcessResult();
 
         $this->assertInstanceOf(LintProcessResult::class, $result);
         $this->assertSame(StatusEnum::OK->name, $result->getStatus()->name);
         $this->assertSame('/path/to/file.php', $result->getFilename());
         $this->assertSame('', $result->getResult());
+        $this->assertNull($result->getLine());
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function testGetProcessResultWithRunning()
+    {
+        $lintConfig = new LintConfig();
+        $processMock = $this->createMock(Process::class);
+        $processMock->method('isRunning')->willReturn(true);
+        $splFileInfoMock = $this->createMock(SplFileInfo::class);
+        $splFileInfoMock->method('getRealPath')->willReturn('/path/to/file.php');
+
+        $lintProcessTask = new LintProcessTask($lintConfig, $processMock, $splFileInfoMock);
+        $result = $lintProcessTask->getProcessResult();
+
+        $this->assertInstanceOf(LintProcessResult::class, $result);
+        $this->assertSame(StatusEnum::RUNNING->name, $result->getStatus()->name);
+        $this->assertSame('/path/to/file.php', $result->getFilename());
+        $this->assertSame('Process is still running', $result->getResult());
         $this->assertNull($result->getLine());
     }
 }
