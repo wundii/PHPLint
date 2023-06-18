@@ -68,9 +68,6 @@ final class LintConsoleOutput
             return;
         }
 
-        $this->symfonyStyle->writeln('Linting files...');
-        $this->symfonyStyle->newLine();
-
         $this->symfonyStyle->progressStart($count);
     }
 

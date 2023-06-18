@@ -29,7 +29,7 @@ final class LintApplication
     /**
      * @var string
      */
-    public const VERSION = '0.0.1';
+    public const VERSION = '0.1.0';
 
     public function __construct(
         private readonly LintCommand $lintCommand,

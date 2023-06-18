@@ -15,9 +15,11 @@ composer require wundii/phplint --dev
 
 ```shell
 php vendor/bin/phplint
+php vendor/bin/phplint --config=phplint.php
+php vendor/bin/phplint --help
 ```
 
-### Functionality
+### Functionality over the config file (phplint.php)
 + php cgi executable (default: php)
 + paths (default: src)
 + skip
@@ -39,7 +41,7 @@ composer phpstan
 composer ecs-dry
 composer ecs-apply
 composer phpunit
-cache-clear
+composer cache-clear
 ```
 
 ### complete checks before merge
@@ -48,11 +50,10 @@ cache-clear
 composer complete-check
 ```
 
-### To-do list
-+ [ ] unit tests for lintConsoleOutput class and refactor lint test class
+### To-do list for version 1.0.0
 + [ ] add symfony cache-system
-+ [ ] refactor console output class
-+ [ ] refactor lintConfig class
++ [ ] refactor LintConsoleOutput class
++ [ ] refactor LintConfig class
 
 ## Feedback and Contributions
 I welcome feedback, bug reports and contributions from the community! 

@@ -8,7 +8,7 @@ use PHPLint\Config\LintConfig;
 use Symfony\Component\Finder\SplFileInfo;
 use Symfony\Component\Process\Process;
 
-final class LintProcessEntity
+final class LintProcessTask
 {
     /**
      * @var string

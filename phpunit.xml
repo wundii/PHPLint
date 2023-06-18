@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
-         colors="true"
          bootstrap="tests/bootstrap.php"
          cacheDirectory="cache/phpunit"
-         stopOnError ="true"
-         stopOnWarning="true"
+         colors="true"
+         failOnRisky="true"
+         failOnWarning="true"
          testdox="true"
-         defaultTestSuite="main"
 >
   <php>
     <ini name="display_errors" value="1"/>
@@ -25,6 +24,9 @@
       <directory>tests/Main/Process</directory>
       <directory>tests/Main/Lint</directory>
       <directory>tests/Main/Console</directory>
+    </testsuite>
+    <testsuite name="e2e">
+      <directory>tests/E2E/Console</directory>
     </testsuite>
   </testsuites>
   <source>
