@@ -1,7 +1,7 @@
 # PHPLint - the fastest way to check your syntax
 
 [![PHP-Tests](https://github.com/wundii/PHPLint/actions/workflows/code_quality.yml/badge.svg)](https://github.com/wundii/PHPLint/actions/workflows/code_quality.yml)
-[![PHPStan](https://img.shields.io/badge/PHPStan-level%208-brightgreen.svg?style=flat)](https://phpstan.org/)
+[![PHPStan](https://img.shields.io/badge/PHPStan-level%209-brightgreen.svg?style=flat)](https://phpstan.org/)
 [![Downloads](https://img.shields.io/packagist/dt/wundii/phplint.svg?style=flat)](https://packagist.org/packages/wundii/phplint)
 
 This program is one of the fastest tools for static code analysis and error detection in PHP source code.
