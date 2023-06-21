@@ -48,7 +48,13 @@ final class BootstrapConfigResolver
     {
         foreach ($optionNames as $optionName) {
             if ($argvInput->hasParameterOption($optionName, true)) {
-                return $argvInput->getParameterOption($optionName, null, true);
+                $parameterOption = $argvInput->getParameterOption($optionName, null, true);
+
+                if (! is_string($parameterOption)) {
+                    continue;
+                }
+
+                return $parameterOption;
             }
         }
 
