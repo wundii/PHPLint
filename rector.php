@@ -5,8 +5,6 @@ declare(strict_types=1);
 use Rector\CodeQuality\Rector\If_\ExplicitBoolCompareRector;
 use Rector\Core\Configuration\Option;
 use Rector\Core\ValueObject\PhpVersion;
-use Rector\DeadCode\Rector\ClassMethod\RemoveUselessParamTagRector;
-use Rector\DeadCode\Rector\ClassMethod\RemoveUselessReturnTagRector;
 use Rector\PHPUnit\Set\PHPUnitSetList;
 use Rector\Set\ValueObject\LevelSetList;
 use Rector\Set\ValueObject\SetList;
@@ -37,7 +35,6 @@ return static function (RectorConfig $rectorConfig): void
         SetList::INSTANCEOF,
         SetList::NAMING,
         SetList::PRIVATIZATION,
-        SetList::PSR_4,
         SetList::TYPE_DECLARATION,
     ]);
 

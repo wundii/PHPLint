@@ -21,6 +21,7 @@
       <directory>tests/Main/Bootstrap</directory>
       <directory>tests/Main/DependencyInjection</directory>
       <directory>tests/Main/Finder</directory>
+      <directory>tests/Main/Cache</directory>
       <directory>tests/Main/Process</directory>
       <directory>tests/Main/Lint</directory>
       <directory>tests/Main/Console</directory>

@@ -4,27 +4,39 @@ declare(strict_types=1);
 
 namespace PHPLint\Lint;
 
+use PHPLint\Cache\LintCache;
 use PHPLint\Config\LintConfig;
 use PHPLint\Console\Output\LintConsoleOutput;
 use PHPLint\Finder\LintFinder;
 use PHPLint\Process\LintProcessResult;
 use PHPLint\Process\LintProcessTask;
 use PHPLint\Process\StatusEnum;
+use Symfony\Component\Cache\Adapter\FilesystemAdapter;
+use Symfony\Component\Cache\Adapter\NullAdapter;
 use Symfony\Component\Process\Process;
 
 final class Lint
 {
+    private readonly LintCache $lintCache;
+
     public function __construct(
         private readonly LintConsoleOutput $lintConsoleOutput,
         private readonly LintConfig $lintConfig,
         private readonly LintFinder $lintFinder,
     ) {
+        $adapter = new NullAdapter();
+
+        if ($this->lintConfig->isCacheActivated()) {
+            $adapter = new FilesystemAdapter('cache', 0, $this->lintConfig->getCacheDirectory());
+        }
+
+        $this->lintCache = new LintCache($adapter);
     }
 
     public function run(): void
     {
         $processes = [];
-        $processResult = [];
+        $processResults = [];
         $count = $this->lintFinder->count();
         $iterator = $this->lintFinder->getIterator();
         $asyncProcess = $this->lintConfig->getAsyncProcess();
@@ -36,12 +48,14 @@ final class Lint
                 $currentFile = $iterator->current();
                 $filename = $currentFile->getRealPath();
 
-                $lintProcess = $this->createLintProcess($filename);
-                $lintProcess->start();
+                if (! $this->lintCache->isMd5FileValid($filename)) {
+                    $lintProcess = $this->createLintProcess($filename);
+                    $lintProcess->start();
 
-                $this->lintConsoleOutput->progressBarAdvance();
+                    $this->lintConsoleOutput->progressBarAdvance();
 
-                $processes[] = new LintProcessTask($this->lintConfig, $lintProcess, $currentFile);
+                    $processes[] = new LintProcessTask($this->lintConfig, $lintProcess, $currentFile);
+                }
 
                 $iterator->next();
             }
@@ -52,17 +66,22 @@ final class Lint
                     continue;
                 }
 
-                $processResult[] = $runningProcess->getProcessResult();
+                $processResult = $runningProcess->getProcessResult();
+                $processResults[] = $processResult;
 
                 unset($processes[$pid]);
+
+                if ($processResult->getStatus() === StatusEnum::OK) {
+                    $this->lintCache->setMd5File($processResult->getFilename());
+                }
             }
         }
 
         $this->lintConsoleOutput->progressBarFinish();
 
-        krsort($processResult);
-        foreach ($processResult as $processOutput) {
-            $this->processResultToConsole($processOutput);
+        krsort($processResults);
+        foreach ($processResults as $processResult) {
+            $this->processResultToConsole($processResult);
         }
     }
 

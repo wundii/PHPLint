@@ -35,14 +35,8 @@ final class LintConfig
 
     private bool $ignoreProcessBar = false;
 
-    /**
-     * @todo not implemented
-     */
     private bool $cache = true;
 
-    /**
-     * @todo not implemented
-     */
     private string $cacheDirectory = '.phplint';
 
     public function getPhpCgiExecutable(): string
@@ -201,7 +195,7 @@ final class LintConfig
         $this->ignoreProcessBar = true;
     }
 
-    public function isCache(): bool
+    public function isCacheActivated(): bool
     {
         return $this->cache;
     }

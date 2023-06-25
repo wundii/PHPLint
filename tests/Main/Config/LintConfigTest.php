@@ -172,11 +172,11 @@ class LintConfigTest extends TestCase
         $this->assertTrue($lintConfig->isIgnoreProcessBar());
     }
 
-    public function testIsCache()
+    public function testIsCacheActivated()
     {
         $lintConfig = new LintConfig();
 
-        $this->assertTrue($lintConfig->isCache());
+        $this->assertTrue($lintConfig->isCacheActivated());
     }
 
     public function testSetCache()
@@ -184,7 +184,7 @@ class LintConfigTest extends TestCase
         $lintConfig = new LintConfig();
         $lintConfig->setCache(false);
 
-        $this->assertFalse($lintConfig->isCache());
+        $this->assertFalse($lintConfig->isCacheActivated());
     }
 
     public function testGetCacheDirectory()

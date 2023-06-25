@@ -25,6 +25,7 @@ return static function (ContainerConfigurator $container) {
         ->autowire()
         ->exclude([
             __DIR__ . '/../src/Bootstrap/',
+            __DIR__ . '/../src/Cache/',
             __DIR__ . '/../src/Config/',
             __DIR__ . '/../src/DependencyInjection/',
             __DIR__ . '/../src/Process',

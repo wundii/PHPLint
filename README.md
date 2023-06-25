@@ -51,7 +51,7 @@ composer complete-check
 ```
 
 ### To-do list for version 1.0.0
-+ [ ] add symfony cache-system
++ [x] add symfony cache-system
 + [ ] refactor LintConsoleOutput class
 + [ ] refactor LintConfig class
 
