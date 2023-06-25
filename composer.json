@@ -67,7 +67,7 @@
       "php vendor/bin/ecs check --fix"
     ],
     "phpstan": [
-      "php vendor/bin/phpstan analyse src"
+      "php vendor/bin/phpstan analyse"
     ],
     "unittest": [
       "php vendor/bin/phpunit --configuration phpunit.xml"
