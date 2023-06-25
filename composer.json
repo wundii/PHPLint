@@ -1,6 +1,7 @@
 {
   "name": "wundii/phplint",
   "description": "This tool is the fast way, to checks the syntax of your PHP files.",
+  "keywords": ["phplint","lint","syntax","dev"],
   "license": "MIT",
   "authors": [
     {
@@ -14,6 +15,7 @@
   "require": {
     "php": ">=8.1",
     "ext-json": "*",
+    "symfony/cache": "^6.0",
     "symfony/config": "^6.0",
     "symfony/console": "^6.0",
     "symfony/dependency-injection": "^6.0",
@@ -24,7 +26,7 @@
     "phpstan/phpstan": "^1.10",
     "phpstan/phpstan-strict-rules": "^1.5",
     "phpunit/phpunit": "^10.0",
-    "rector/rector": "^0.16",
+    "rector/rector": "^0.17",
     "symfony/var-dumper": "^6.2",
     "symplify/easy-coding-standard": "^11.0"
   },
@@ -73,7 +75,7 @@
       "php vendor/bin/phpunit --configuration phpunit.xml"
     ],
     "cache-clear": [
-      "rm -R ./cache/*"
+      "rm -R ./cache/* -f"
     ]
   },
   "minimum-stability": "dev",

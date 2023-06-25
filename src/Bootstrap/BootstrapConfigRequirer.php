@@ -21,8 +21,8 @@ final class BootstrapConfigRequirer
      */
     public function loadConfigFile(LintConfig $lintConfig): LintConfig
     {
-        $configFile = $this->bootstrapConfig->getBootstrapConfigFile();
-        if ($configFile === null) {
+        $bootstrapConfigFile = $this->bootstrapConfig->getBootstrapConfigFile();
+        if ($bootstrapConfigFile === null) {
             return $lintConfig;
         }
 
