@@ -3,15 +3,15 @@
 declare(strict_types=1);
 
 use Rector\CodeQuality\Rector\If_\ExplicitBoolCompareRector;
-use Rector\Core\Configuration\Option;
-use Rector\Core\ValueObject\PhpVersion;
 use Rector\PHPUnit\Set\PHPUnitSetList;
-use Rector\Set\ValueObject\LevelSetList;
 use Rector\Set\ValueObject\SetList;
 use Rector\Config\RectorConfig;
+use Rector\ValueObject\PhpVersion;
 
 return static function (RectorConfig $rectorConfig): void
 {
+    $rectorConfig->PHPVersion(PhpVersion::PHP_81);
+    $rectorConfig->phpstanConfig(__DIR__ . '/phpstan.neon');
     $rectorConfig->cacheDirectory('./cache/rector');
     $rectorConfig->paths(
         [
@@ -19,13 +19,8 @@ return static function (RectorConfig $rectorConfig): void
         ]
     );
 
-    $parameter = $rectorConfig->parameters();
-    $parameter->set(Option::PHPSTAN_FOR_RECTOR_PATH, __DIR__ . '/phpstan.neon');
-    $parameter->set(Option::PHP_VERSION_FEATURES, PhpVersion::PHP_81);
-
     $rectorConfig->symfonyContainerXml(__DIR__ . '/var/cache/dev/App_KernelDevDebugContainer.xml');
     $rectorConfig->sets([
-        LevelSetList::UP_TO_PHP_81,
         PHPUnitSetList::PHPUNIT_100,
         PHPUnitSetList::PHPUNIT_CODE_QUALITY,
         SetList::CODE_QUALITY,
@@ -38,6 +33,7 @@ return static function (RectorConfig $rectorConfig): void
         SetList::TYPE_DECLARATION,
     ]);
 
-    $services = $rectorConfig->services();
-    $services->set(ExplicitBoolCompareRector::class);
+    $rectorConfig->skip([
+        ExplicitBoolCompareRector::class,
+    ]);
 };
