@@ -46,19 +46,18 @@ class LintApplicationTest extends TestCase
         $lintConfig = new LintConfig($container);
         $lintConfig->setPaths(['src']);
         $lintFinder = new LintFinder();
-        $lintCheckCommand = new LintCommand($bootstrapConfigInitializer, $bootstrapConfigResolver, $lintConsoleOutput, $lintConfig, $lintFinder);
+        $lintCommand = new LintCommand($bootstrapConfigInitializer, $bootstrapConfigResolver, $lintConsoleOutput, $lintConfig, $lintFinder);
         $lintInitCommand = new LintInitCommand($bootstrapConfigInitializer);
 
         // Create Application instance
         $application = new LintApplication(
-            $lintCheckCommand,
+            $lintCommand,
             $lintInitCommand,
         );
-        $appInit = $application->initRun();
-        $appInit->setAutoExit(false);
+        $application->setAutoExit(false);
 
         // Create ApplicationTester
-        $tester = new ApplicationTester($appInit);
+        $tester = new ApplicationTester($application);
 
         // Simulate running the application
         $statusCode = $tester->run([]);

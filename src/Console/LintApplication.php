@@ -4,10 +4,7 @@ declare(strict_types=1);
 
 namespace PHPLint\Console;
 
-use Exception;
 use PHPLint\Bootstrap\BootstrapConfig;
-use PHPLint\Console\Commands\LintCommand;
-use PHPLint\Console\Commands\LintInitCommand;
 use Symfony\Component\Console\Application as BaseApplication;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\ArgvInput;
@@ -19,7 +16,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Throwable;
 
-final class LintApplication
+final class LintApplication extends BaseApplication
 {
     /**
      * @var string
@@ -32,33 +29,16 @@ final class LintApplication
     public const VERSION = '0.2.0';
 
     public function __construct(
-        private readonly LintCommand $lintCommand,
-        private readonly LintInitCommand $lintInitCommand,
+        Command ...$consoleCommands,
     ) {
-    }
+        parent::__construct(self::NAME, self::VERSION);
 
-    /**
-     * @throws Exception
-     */
-    public function initRun(): BaseApplication
-    {
-        $application = new BaseApplication(self::NAME, self::VERSION);
-        $application->add($this->lintCommand);
-        $application->add($this->lintInitCommand);
-        $application->setDefaultCommand('lint');
-        $application->setDefinition($this->getInputDefinition());
+        foreach ($consoleCommands as $consoleCommand) {
+            $this->add($consoleCommand);
+        }
 
-        return $application;
-    }
-
-    /**
-     * @throws Exception
-     */
-    public function run(): int
-    {
-        $baseApplication = $this->initRun();
-
-        return $baseApplication->run();
+        $this->setDefaultCommand('lint');
+        $this->setDefinition($this->getInputDefinition());
     }
 
     public static function runExceptionally(Throwable $throwable, ?OutputInterface $output = null): int
