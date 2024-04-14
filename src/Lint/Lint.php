@@ -6,7 +6,7 @@ namespace PHPLint\Lint;
 
 use PHPLint\Cache\LintCache;
 use PHPLint\Config\LintConfig;
-use PHPLint\Console\Output\LintConsoleOutput;
+use PHPLint\Console\Output\LintSymfonyStyle;
 use PHPLint\Finder\LintFinder;
 use PHPLint\Process\LintProcessResult;
 use PHPLint\Process\LintProcessTask;
@@ -20,7 +20,7 @@ final class Lint
     private readonly LintCache $lintCache;
 
     public function __construct(
-        private readonly LintConsoleOutput $lintConsoleOutput,
+        private readonly LintSymfonyStyle $lintSymfonyStyle,
         private readonly LintConfig $lintConfig,
         private readonly LintFinder $lintFinder,
     ) {
@@ -41,7 +41,7 @@ final class Lint
         $iterator = $this->lintFinder->getIterator();
         $asyncProcess = $this->lintConfig->getAsyncProcess();
 
-        $this->lintConsoleOutput->progressBarStart($count);
+        $this->lintSymfonyStyle->progressBarStart($count);
 
         while ($iterator->valid() || $processes !== []) {
             for ($i = count($processes); $iterator->valid() && $i < $asyncProcess; ++$i) {
@@ -52,7 +52,7 @@ final class Lint
                     $lintProcess = $this->createLintProcess($filename);
                     $lintProcess->start();
 
-                    $this->lintConsoleOutput->progressBarAdvance();
+                    $this->lintSymfonyStyle->progressBarAdvance();
 
                     $processes[] = new LintProcessTask($this->lintConfig, $lintProcess, $currentFile);
                 }
@@ -77,7 +77,7 @@ final class Lint
             }
         }
 
-        $this->lintConsoleOutput->progressBarFinish();
+        $this->lintSymfonyStyle->progressBarFinish();
 
         krsort($processResults);
         foreach ($processResults as $processResult) {
@@ -109,6 +109,6 @@ final class Lint
             return;
         }
 
-        $this->lintConsoleOutput->messageByProcessResult($lintProcessResult);
+        $this->lintSymfonyStyle->messageByProcessResult($lintProcessResult);
     }
 }

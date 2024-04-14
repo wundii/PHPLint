@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace PHPLint\Console;
 
 use PHPLint\Bootstrap\BootstrapConfig;
+use PHPLint\Console\Commands\LintCommand;
+use PHPLint\Console\Commands\LintInitCommand;
 use Symfony\Component\Console\Application as BaseApplication;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\ArgvInput;
@@ -29,14 +31,13 @@ final class LintApplication extends BaseApplication
     public const VERSION = '0.2.0';
 
     public function __construct(
-        Command ...$consoleCommands,
+        LintCommand $lintCommand,
+        LintInitCommand $lintInitCommand,
     ) {
         parent::__construct(self::NAME, self::VERSION);
 
-        foreach ($consoleCommands as $consoleCommand) {
-            $this->add($consoleCommand);
-        }
-
+        $this->add($lintCommand);
+        $this->add($lintInitCommand);
         $this->setDefaultCommand('lint');
         $this->setDefinition($this->getInputDefinition());
     }

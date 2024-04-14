@@ -9,9 +9,11 @@ use PHPLint\Console\OutputColorEnum;
 use PHPLint\Process\LintProcessResult;
 use PHPLint\Process\StatusEnum;
 use Symfony\Component\Console\Helper\Helper;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
-final class LintConsoleOutput
+final class LintSymfonyStyle extends SymfonyStyle
 {
     /**
      * @var int
@@ -28,9 +30,11 @@ final class LintConsoleOutput
     private int $countFiles = 0;
 
     public function __construct(
-        private readonly SymfonyStyle $symfonyStyle,
         private readonly LintConfig $lintConfig,
+        InputInterface $consoleInput,
+        OutputInterface $consoleOutput,
     ) {
+        parent::__construct($consoleInput, $consoleOutput);
     }
 
     public function startApplication(string $version): void
@@ -42,23 +46,23 @@ final class LintConsoleOutput
             $version,
             PHP_VERSION,
         );
-        $this->symfonyStyle->writeln('> ' . implode('', $argv));
-        $this->symfonyStyle->writeln($message);
-        $this->symfonyStyle->writeln('');
+        $this->writeln('> ' . implode(' ', $argv));
+        $this->writeln($message);
+        $this->writeln('');
     }
 
     public function finishApplication(string $executionTime): bool
     {
         $usageMemory = Helper::formatMemory(memory_get_usage(true));
 
-        $this->symfonyStyle->writeln(sprintf('Memory usage: %s', $usageMemory));
+        $this->writeln(sprintf('Memory usage: %s', $usageMemory));
 
         if (! $this->isSuccess) {
-            $this->symfonyStyle->error(sprintf('Finished in %s', $executionTime));
+            $this->error(sprintf('Finished in %s', $executionTime));
             return true;
         }
 
-        $this->symfonyStyle->success(sprintf('Finished in %s', $executionTime));
+        $this->success(sprintf('Finished in %s', $executionTime));
         return false; // false means success
     }
 
@@ -68,7 +72,7 @@ final class LintConsoleOutput
             return;
         }
 
-        $this->symfonyStyle->progressStart($count);
+        $this->progressStart($count);
     }
 
     public function progressBarAdvance(): void
@@ -77,7 +81,7 @@ final class LintConsoleOutput
             return;
         }
 
-        $this->symfonyStyle->progressAdvance();
+        $this->progressAdvance();
     }
 
     public function progressBarFinish(): void
@@ -86,7 +90,7 @@ final class LintConsoleOutput
             return;
         }
 
-        $this->symfonyStyle->progressFinish();
+        $this->progressFinish();
     }
 
     public function messageByProcessResult(LintProcessResult $lintProcessResult): void
@@ -114,10 +118,10 @@ final class LintConsoleOutput
             $lintProcessResult->getResult(),
         );
 
-        $this->symfonyStyle->writeln($line01);
-        $this->symfonyStyle->writeln($line02);
+        $this->writeln($line01);
+        $this->writeln($line02);
         $this->loadCodeSnippet($lintProcessResult->getFilename(), (int) $lintProcessResult->getLine(), $outputColorEnum);
-        $this->symfonyStyle->newLine();
+        $this->newLine();
 
         $this->isSuccess = false;
     }
@@ -164,7 +168,7 @@ final class LintConsoleOutput
                     );
                 }
 
-                $this->symfonyStyle->writeln($result);
+                $this->writeln($result);
             }
 
             ++$lineCnt;

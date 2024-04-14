@@ -5,13 +5,12 @@ declare(strict_types=1);
 namespace PHPLint\Tests\Main\Console;
 
 use PHPLint\Config\LintConfig;
-use PHPLint\Console\Output\LintConsoleOutput;
+use PHPLint\Console\Output\LintSymfonyStyle;
 use PHPLint\Process\LintProcessResult;
 use PHPLint\Process\StatusEnum;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Output\StreamOutput;
-use Symfony\Component\Console\Style\SymfonyStyle;
 
 class LintConsoleOutputTest extends TestCase
 {
@@ -145,9 +144,8 @@ EOT;
         $lintConfig = new LintConfig();
         $consoleInput = new ArgvInput();
         $consoleOutput = new StreamOutput(fopen('php://memory', 'w', false));
-        $symfonyStyle = new SymfonyStyle($consoleInput, $consoleOutput);
 
-        $lintConsoleOutput = new LintConsoleOutput($symfonyStyle, $lintConfig);
+        $lintConsoleOutput = new LintSymfonyStyle($lintConfig, $consoleInput, $consoleOutput);
         $lintConsoleOutput->messageByProcessResult($lintProcessResult);
 
         rewind($consoleOutput->getStream());

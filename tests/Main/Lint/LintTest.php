@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace PHPLint\Tests\Main\Lint;
 
 use PHPLint\Config\LintConfig;
-use PHPLint\Console\Output\LintConsoleOutput;
+use PHPLint\Console\Output\LintSymfonyStyle;
 use PHPLint\Finder\LintFinder;
 use PHPLint\Lint\Lint;
 use PHPLint\Process\LintProcessResult;
@@ -13,7 +13,6 @@ use PHPLint\Process\StatusEnum;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Output\StreamOutput;
-use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Process\Process;
 
 class LintTest extends TestCase
@@ -23,8 +22,7 @@ class LintTest extends TestCase
         $lintConfig = new LintConfig();
         $consoleInput = new ArgvInput();
         $consoleOutput = new StreamOutput(fopen('php://memory', 'w', false));
-        $symfonyStyle = new SymfonyStyle($consoleInput, $consoleOutput);
-        $lintConsoleOutput = new LintConsoleOutput($symfonyStyle, $lintConfig);
+        $lintConsoleOutput = new LintSymfonyStyle($lintConfig, $consoleInput, $consoleOutput);
         $lintConfig->setMemoryLimit('256M');
 
         $lint = new Lint($lintConsoleOutput, $lintConfig, new LintFinder());
@@ -69,8 +67,7 @@ class LintTest extends TestCase
         $lintConfig = new LintConfig();
         $consoleInput = new ArgvInput();
         $consoleOutput = new StreamOutput(fopen('php://memory', 'w', false));
-        $symfonyStyle = new SymfonyStyle($consoleInput, $consoleOutput);
-        $lintConsoleOutput = new LintConsoleOutput($symfonyStyle, $lintConfig);
+        $lintConsoleOutput = new LintSymfonyStyle($lintConfig, $consoleInput, $consoleOutput);
 
         $lint = new Lint($lintConsoleOutput, $lintConfig, new LintFinder());
         $lint->processResultToConsole($lintProcessResult);

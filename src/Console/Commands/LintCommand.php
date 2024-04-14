@@ -9,7 +9,7 @@ use PHPLint\Bootstrap\BootstrapConfigInitializer;
 use PHPLint\Bootstrap\BootstrapConfigResolver;
 use PHPLint\Config\LintConfig;
 use PHPLint\Console\LintApplication;
-use PHPLint\Console\Output\LintConsoleOutput;
+use PHPLint\Console\Output\LintSymfonyStyle;
 use PHPLint\Finder\LintFinder;
 use PHPLint\Lint\Lint;
 use Symfony\Component\Console\Command\Command;
@@ -22,7 +22,7 @@ final class LintCommand extends Command
     public function __construct(
         private readonly BootstrapConfigInitializer $bootstrapConfigInitializer,
         private readonly BootstrapConfigResolver $bootstrapConfigResolver,
-        private readonly LintConsoleOutput $lintConsoleOutput,
+        private readonly LintSymfonyStyle $lintSymfonyStyle,
         private readonly LintConfig $lintConfig,
         private readonly LintFinder $lintFinder,
     ) {
@@ -47,16 +47,16 @@ final class LintCommand extends Command
 
         $startExecuteTime = microtime(true);
 
-        $this->lintConsoleOutput->startApplication(LintApplication::VERSION);
+        $this->lintSymfonyStyle->startApplication(LintApplication::VERSION);
 
         $lintFinder = $this->lintFinder->getFilesFromLintConfig($this->lintConfig);
 
-        $lint = new Lint($this->lintConsoleOutput, $this->lintConfig, $lintFinder);
+        $lint = new Lint($this->lintSymfonyStyle, $this->lintConfig, $lintFinder);
         $lint->run();
 
         $usageExecuteTime = Helper::formatTime(microtime(true) - $startExecuteTime);
 
-        $exitCode = (int) $this->lintConsoleOutput->finishApplication($usageExecuteTime);
+        $exitCode = (int) $this->lintSymfonyStyle->finishApplication($usageExecuteTime);
 
         if ($this->lintConfig->isIgnoreExitCode()) {
             return self::SUCCESS;

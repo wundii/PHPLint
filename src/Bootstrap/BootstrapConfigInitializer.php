@@ -12,7 +12,7 @@ final class BootstrapConfigInitializer
 {
     public function __construct(
         private readonly Filesystem $filesystem,
-        private readonly SymfonyStyle $symfonyStyle
+        private readonly SymfonyStyle $symfonyStyle,
     ) {
     }
 
