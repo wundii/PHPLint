@@ -8,25 +8,35 @@ use ArrayIterator;
 use Iterator;
 use LogicException;
 use PHPLint\Config\LintConfig;
+use PHPLint\Resolver\Config\LintPathsResolver;
+use PHPLint\Resolver\Config\LintSkipPathsResolver;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 
 final class LintFinder extends Finder
 {
+    public function __construct(
+        private readonly LintSkipPathsResolver $lintSkipPathsResolver,
+        private readonly LintPathsResolver $lintPathsResolver,
+    ) {
+        parent::__construct();
+    }
+
     public function getFilesFromLintConfig(LintConfig $lintConfig): self
     {
-        $excludes = $lintConfig->getSkipPath();
+        $excludes = $this->lintSkipPathsResolver->resolve($lintConfig);
 
-        foreach ($lintConfig->getPaths() as $path) {
-            $path = realpath($path);
-
-            if ($path === false) {
+        foreach ($this->lintPathsResolver->resolve($lintConfig) as $path) {
+            if (! is_dir($path) && ! is_file($path)) {
                 continue;
             }
 
             if (is_dir($path)) {
                 $this->append($this->getFinderFromPath($path, $excludes));
-            } elseif (is_file($path)) {
+                continue;
+            }
+
+            if (is_file($path)) {
                 $this->append([new SplFileInfo($path, $path, $path)]);
             }
         }

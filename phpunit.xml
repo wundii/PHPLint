@@ -17,7 +17,9 @@
   </php>
   <testsuites>
     <testsuite name="main">
-      <directory>tests/Main/Config</directory>
+      <file>tests/Main/Config/LintConfigParameterTest.php</file>
+      <file>tests/Main/Config/LintConfigTest.php</file>
+      <directory>tests/Main/Resolver/Config</directory>
       <directory>tests/Main/Bootstrap</directory>
       <directory>tests/Main/DependencyInjection</directory>
       <directory>tests/Main/Finder</directory>

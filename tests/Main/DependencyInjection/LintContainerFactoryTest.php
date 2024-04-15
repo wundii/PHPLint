@@ -6,6 +6,7 @@ namespace PHPLint\Tests\Main\DependencyInjection;
 
 use Exception;
 use PHPLint\Config\LintConfig;
+use PHPLint\Config\OptionEnum;
 use PHPLint\DependencyInjection\LintContainerFactory;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Input\ArgvInput;
@@ -25,7 +26,7 @@ class LintContainerFactoryTest extends TestCase
         $container = $factory->createFromArgvInput($argvInput);
 
         $this->assertInstanceOf(ContainerInterface::class, $container);
-        $this->assertEquals('php', $container->get(LintConfig::class)->getPhpCgiExecutable());
+        $this->assertEquals('php', $container->get(LintConfig::class)->getString(OptionEnum::PHP_CGI_EXECUTABLE));
     }
 
     /**
@@ -42,6 +43,6 @@ class LintContainerFactoryTest extends TestCase
         $container = $factory->createFromArgvInput($argvInput);
 
         $this->assertInstanceOf(ContainerInterface::class, $container);
-        $this->assertEquals('TimTest', $container->get(LintConfig::class)->getPhpCgiExecutable());
+        $this->assertEquals('TimTest', $container->get(LintConfig::class)->getString(OptionEnum::PHP_CGI_EXECUTABLE));
     }
 }

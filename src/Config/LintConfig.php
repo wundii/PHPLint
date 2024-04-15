@@ -4,25 +4,10 @@ declare(strict_types=1);
 
 namespace PHPLint\Config;
 
-final class LintConfig
+use Webmozart\Assert\Assert;
+
+final class LintConfig extends LintConfigParameter
 {
-    private string $phpCgiExecutable = 'php';
-
-    /**
-     * @var array<string>
-     */
-    private array $paths = [];
-
-    /**
-     * @var array<string>
-     */
-    private array $skip = [];
-
-    /**
-     * @var array<string>
-     */
-    private array $sets = [];
-
     private string $memoryLimit = '512M';
 
     private int $asyncProcess = 10;
@@ -39,100 +24,42 @@ final class LintConfig
 
     private string $cacheDirectory = '.phplint';
 
-    public function getPhpCgiExecutable(): string
+    public function __construct()
     {
-        return $this->phpCgiExecutable;
+        $this->setParameter(OptionEnum::ASYNC_PROCESS, 10);
+        $this->setParameter(OptionEnum::CACHE, true);
+        $this->setParameter(OptionEnum::CACHE_DIRECTORY, '.phplint');
+        $this->setParameter(OptionEnum::CONSOLE_NOTICE, true);
+        $this->setParameter(OptionEnum::CONSOLE_WARNING, true);
+        $this->setParameter(OptionEnum::MEMORY_LIMIT, '512M');
+        $this->setParameter(OptionEnum::NO_EXIT_CODE, false);
+        $this->setParameter(OptionEnum::NO_PROGRESS_BAR, false);
+        $this->setParameter(OptionEnum::PHP_CGI_EXECUTABLE, 'php');
     }
 
-    public function setPhpCgiExecutable(string $string): void
+    public function phpCgiExecutable(string $string): void
     {
-        $this->phpCgiExecutable = $string;
-    }
-
-    /**
-     * @return array<string>
-     */
-    public function getPaths(): array
-    {
-        if ($this->paths === []) {
-            return [getcwd() . DIRECTORY_SEPARATOR];
-        }
-
-        return $this->paths;
+        $this->setParameter(OptionEnum::PHP_CGI_EXECUTABLE, $string);
     }
 
     /**
      * @param array<string> $paths
      */
-    public function setPaths(array $paths): void
+    public function paths(array $paths): void
     {
-        $this->paths = $paths;
-    }
+        Assert::allString($paths);
 
-    /**
-     * @return array<string>
-     */
-    public function getSkip(): array
-    {
-        return $this->skip;
-    }
-
-    /**
-     * @return array<string>
-     */
-    public function getSkipPath(): array
-    {
-        $paths = [];
-
-        foreach ($this->skip as $path) {
-            if (class_exists($path)) {
-                continue;
-            }
-
-            if (! str_starts_with($path, (string) getcwd())) {
-                if (str_starts_with($path, DIRECTORY_SEPARATOR)) {
-                    $path = substr($path, 1);
-                }
-
-                $path = getcwd() . DIRECTORY_SEPARATOR . $path;
-            }
-
-            if (! is_dir($path)) {
-                continue;
-            }
-
-            $realPath = realpath($path);
-
-            if ($realPath !== false) {
-                $paths[] = $realPath;
-            }
-        }
-
-        return $paths;
+        $this->setParameter(OptionEnum::PATHS, $paths);
     }
 
     /**
      * @param array<string> $skip
      */
-    public function setSkip(array $skip): void
+    public function skip(array $skip): void
     {
-        $this->skip = $skip;
-    }
+        Assert::allString($skip);
 
-    /**
-     * @return array<string>
-     */
-    public function getSets(): array
-    {
-        return $this->sets;
-    }
-
-    /**
-     * @param array<string> $sets
-     */
-    public function setSets(array $sets): void
-    {
-        $this->sets = $sets;
+        $this->setParameter(OptionEnum::SKIP, $skip);
     }
 
     public function getMemoryLimit(): string

@@ -11,6 +11,8 @@ use PHPLint\Console\Commands\LintCommand;
 use PHPLint\Console\LintApplication;
 use PHPLint\Console\Output\LintSymfonyStyle;
 use PHPLint\Finder\LintFinder;
+use PHPLint\Resolver\Config\LintPathsResolver;
+use PHPLint\Resolver\Config\LintSkipPathsResolver;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Output\StreamOutput;
@@ -33,7 +35,10 @@ class LintCommandTest extends TestCase
             $bootstrapConfigInitializer,
             $bootstrapConfigResolver,
             $lintConfig,
-            new LintFinder(),
+            new LintFinder(
+                new LintSkipPathsResolver(),
+                new LintPathsResolver(),
+            ),
         );
 
         return new CommandTester($lintCommand);
@@ -42,7 +47,7 @@ class LintCommandTest extends TestCase
     public function testEndToEndSuccess()
     {
         $lintConfig = new LintConfig();
-        $lintConfig->setPaths(['src']);
+        $lintConfig->paths(['src']);
 
         $lintCommand = $this->createLintCommand($lintConfig);
 
@@ -52,7 +57,7 @@ class LintCommandTest extends TestCase
     public function testEndToEndFirstDisplayLine()
     {
         $lintConfig = new LintConfig();
-        $lintConfig->setPaths(['src']);
+        $lintConfig->paths(['src']);
 
         $lintCommand = $this->createLintCommand($lintConfig);
         $lintCommand->execute([]);
@@ -69,7 +74,7 @@ class LintCommandTest extends TestCase
     public function testEndToEndFail()
     {
         $lintConfig = new LintConfig();
-        $lintConfig->setPaths(['tests/FaultyFiles']);
+        $lintConfig->paths(['tests/FaultyFiles']);
 
         $lintCommand = $this->createLintCommand($lintConfig);
 
@@ -82,7 +87,7 @@ class LintCommandTest extends TestCase
     public function testEndToEndFailWithSuccessReturn()
     {
         $lintConfig = new LintConfig();
-        $lintConfig->setPaths(['tests/FaultyFiles']);
+        $lintConfig->paths(['tests/FaultyFiles']);
         $lintConfig->ignoreExitCode();
 
         $lintCommand = $this->createLintCommand($lintConfig);

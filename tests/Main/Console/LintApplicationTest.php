@@ -13,6 +13,8 @@ use PHPLint\Console\Commands\LintInitCommand;
 use PHPLint\Console\LintApplication;
 use PHPLint\Console\Output\LintSymfonyStyle;
 use PHPLint\Finder\LintFinder;
+use PHPLint\Resolver\Config\LintPathsResolver;
+use PHPLint\Resolver\Config\LintSkipPathsResolver;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\ArgvInput;
@@ -37,8 +39,11 @@ class LintApplicationTest extends TestCase
         $lintConsoleOutput = new LintSymfonyStyle($lintConfig, $consoleInput, $consoleOutput);
         $bootstrapConfigInitializer = new BootstrapConfigInitializer(new Filesystem(), $lintConsoleOutput);
         $bootstrapConfigResolver = new BootstrapConfigResolver();
-        $lintConfig->setPaths(['src']);
-        $lintFinder = new LintFinder();
+        $lintConfig->paths(['src']);
+        $lintFinder = new LintFinder(
+            new LintSkipPathsResolver(),
+            new LintPathsResolver(),
+        );
         $lintCommand = new LintCommand(
             $bootstrapConfigInitializer,
             $bootstrapConfigResolver,

@@ -10,6 +10,8 @@ use PHPLint\Finder\LintFinder;
 use PHPLint\Lint\Lint;
 use PHPLint\Process\LintProcessResult;
 use PHPLint\Process\StatusEnum;
+use PHPLint\Resolver\Config\LintPathsResolver;
+use PHPLint\Resolver\Config\LintSkipPathsResolver;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Output\StreamOutput;
@@ -25,7 +27,14 @@ class LintTest extends TestCase
         $lintConsoleOutput = new LintSymfonyStyle($lintConfig, $consoleInput, $consoleOutput);
         $lintConfig->setMemoryLimit('256M');
 
-        $lint = new Lint($lintConsoleOutput, $lintConfig, new LintFinder());
+        $lint = new Lint(
+            $lintConsoleOutput,
+            $lintConfig,
+            new LintFinder(
+                new LintSkipPathsResolver(),
+                new LintPathsResolver(),
+            ),
+        );
 
         $filename = 'path/to/file.php';
         $process = $lint->createLintProcess($filename);
@@ -69,7 +78,14 @@ class LintTest extends TestCase
         $consoleOutput = new StreamOutput(fopen('php://memory', 'w', false));
         $lintConsoleOutput = new LintSymfonyStyle($lintConfig, $consoleInput, $consoleOutput);
 
-        $lint = new Lint($lintConsoleOutput, $lintConfig, new LintFinder());
+        $lint = new Lint(
+            $lintConsoleOutput,
+            $lintConfig,
+            new LintFinder(
+                new LintSkipPathsResolver(),
+                new LintPathsResolver(),
+            ),
+        );
         $lint->processResultToConsole($lintProcessResult);
 
         rewind($consoleOutput->getStream());
