@@ -22,7 +22,6 @@ final class LintCommand extends Command
     public function __construct(
         private readonly BootstrapConfigInitializer $bootstrapConfigInitializer,
         private readonly BootstrapConfigResolver $bootstrapConfigResolver,
-        private readonly LintSymfonyStyle $lintSymfonyStyle,
         private readonly LintConfig $lintConfig,
         private readonly LintFinder $lintFinder,
     ) {
@@ -47,16 +46,17 @@ final class LintCommand extends Command
 
         $startExecuteTime = microtime(true);
 
-        $this->lintSymfonyStyle->startApplication(LintApplication::VERSION);
+        $output = new LintSymfonyStyle($this->lintConfig, $input, $output);
+        $output->startApplication(LintApplication::VERSION);
 
         $lintFinder = $this->lintFinder->getFilesFromLintConfig($this->lintConfig);
 
-        $lint = new Lint($this->lintSymfonyStyle, $this->lintConfig, $lintFinder);
+        $lint = new Lint($output, $this->lintConfig, $lintFinder);
         $lint->run();
 
         $usageExecuteTime = Helper::formatTime(microtime(true) - $startExecuteTime);
 
-        $exitCode = (int) $this->lintSymfonyStyle->finishApplication($usageExecuteTime);
+        $exitCode = (int) $output->finishApplication($usageExecuteTime);
 
         if ($this->lintConfig->isIgnoreExitCode()) {
             return self::SUCCESS;

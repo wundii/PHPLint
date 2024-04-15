@@ -40,12 +40,12 @@ final class LintSymfonyStyle extends SymfonyStyle
     public function startApplication(string $version): void
     {
         $argv = $_SERVER['argv'] ?? [];
-
         $message = sprintf(
             '<fg=blue;options=bold>PHP</><fg=yellow;options=bold>Lint</> %s - current PHP version: %s',
             $version,
             PHP_VERSION,
         );
+
         $this->writeln('> ' . implode(' ', $argv));
         $this->writeln($message);
         $this->writeln('');

@@ -29,22 +29,22 @@ class LintApplicationTest extends TestCase
         return new ContainerBuilder();
     }
 
-    /**
-     * @throws Exception|\PHPUnit\Framework\MockObject\Exception
-     */
     public function testRun()
     {
         $lintConfig = new LintConfig();
         $consoleInput = new ArgvInput();
         $consoleOutput = new StreamOutput(fopen('php://memory', 'w', false));
         $lintConsoleOutput = new LintSymfonyStyle($lintConfig, $consoleInput, $consoleOutput);
-        $container = $this->createMock(ContainerBuilder::class);
         $bootstrapConfigInitializer = new BootstrapConfigInitializer(new Filesystem(), $lintConsoleOutput);
         $bootstrapConfigResolver = new BootstrapConfigResolver();
-        $lintConfig = new LintConfig($container);
         $lintConfig->setPaths(['src']);
         $lintFinder = new LintFinder();
-        $lintCommand = new LintCommand($bootstrapConfigInitializer, $bootstrapConfigResolver, $lintConsoleOutput, $lintConfig, $lintFinder);
+        $lintCommand = new LintCommand(
+            $bootstrapConfigInitializer,
+            $bootstrapConfigResolver,
+            $lintConfig,
+            $lintFinder
+        );
         $lintInitCommand = new LintInitCommand($bootstrapConfigInitializer);
 
         // Create Application instance
@@ -64,9 +64,7 @@ class LintApplicationTest extends TestCase
         $this->assertEquals(Command::SUCCESS, $statusCode);
 
         // Prepare the ConsoleOutput for reading
-        rewind($consoleOutput->getStream());
-        $display = stream_get_contents($consoleOutput->getStream());
-        $display = str_replace(\PHP_EOL, "\n", $display);
+        $display = $tester->getDisplay(true);
 
         $this->assertStringContainsString('PHPLint', $display);
         $this->assertStringContainsString('Finished', $display);

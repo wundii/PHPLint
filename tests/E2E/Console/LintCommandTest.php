@@ -8,6 +8,7 @@ use PHPLint\Bootstrap\BootstrapConfigInitializer;
 use PHPLint\Bootstrap\BootstrapConfigResolver;
 use PHPLint\Config\LintConfig;
 use PHPLint\Console\Commands\LintCommand;
+use PHPLint\Console\LintApplication;
 use PHPLint\Console\Output\LintSymfonyStyle;
 use PHPLint\Finder\LintFinder;
 use PHPUnit\Framework\TestCase;
@@ -31,7 +32,6 @@ class LintCommandTest extends TestCase
         $lintCommand = new LintCommand(
             $bootstrapConfigInitializer,
             $bootstrapConfigResolver,
-            $lintConsoleOutput,
             $lintConfig,
             new LintFinder(),
         );
@@ -47,6 +47,23 @@ class LintCommandTest extends TestCase
         $lintCommand = $this->createLintCommand($lintConfig);
 
         $this->assertSame(0, $lintCommand->execute([]));
+    }
+
+    public function testEndToEndFirstDisplayLine()
+    {
+        $lintConfig = new LintConfig();
+        $lintConfig->setPaths(['src']);
+
+        $lintCommand = $this->createLintCommand($lintConfig);
+        $lintCommand->execute([]);
+
+        $display = $lintCommand->getDisplay(true);
+        $firstDisplayLine = explode("\n", $display)[0];
+
+        preg_match('/>\s(.)/', $firstDisplayLine, $matches);
+
+        $this->assertCount(2, $matches, 'First line should contain the command (' . $firstDisplayLine . ')');
+        $this->assertStringContainsString('PHPLint ' . LintApplication::VERSION . ' - current PHP version: ' . PHP_VERSION, $display);
     }
 
     public function testEndToEndFail()
