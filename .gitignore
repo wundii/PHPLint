@@ -2,3 +2,4 @@
 /.phplint/
 /cache/*
 /vendor/
+composer.lock

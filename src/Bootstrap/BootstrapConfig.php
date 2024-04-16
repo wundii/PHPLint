@@ -42,16 +42,4 @@ final class BootstrapConfig
     {
         return $this->bootstrapConfigFile;
     }
-
-    /**
-     * @return array<string>
-     */
-    public function getConfigFiles(): array
-    {
-        if ($this->bootstrapConfigFile === null) {
-            return [];
-        }
-
-        return [$this->bootstrapConfigFile];
-    }
 }

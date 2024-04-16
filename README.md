@@ -25,10 +25,12 @@ php vendor/bin/phplint --help
 + skip
 + memory limit (default: 512M)
 + async processes (default: 10)
-+ enable warnings (default: true)
-+ enable notice (default: true)
-+ ignore exit code (default: false)
-+ ignore process bar (default: false)
++ async processes timeout (default: 60)
++ console warnings (default: true)
++ console notice (default: true)
++ cache class (default: Symfony\Component\Cache\Adapter\FilesystemAdapter)
++ no exit code (default: false)
++ no process bar (default: false)
 
 ## Development for PHPLint
 
@@ -53,7 +55,8 @@ composer complete-check
 ### To-do list for version 1.0.0
 + [x] add symfony cache-system
 + [x] refactor LintConsoleOutput class
-+ [ ] refactor LintConfig class
++ [x] refactor LintConfig class
++ [ ] skip classes
 
 ## Feedback and Contributions
 I welcome feedback, bug reports and contributions from the community! 

@@ -28,7 +28,7 @@ final class LintApplication extends BaseApplication
     /**
      * @var string
      */
-    public const VERSION = '0.2.1';
+    public const VERSION = '0.3.0';
 
     public function __construct(
         LintCommand $lintCommand,

@@ -4,214 +4,104 @@ declare(strict_types=1);
 
 namespace PHPLint\Config;
 
-final class LintConfig
+use Symfony\Component\Cache\Adapter\AbstractAdapter;
+use Symfony\Component\Cache\Adapter\FilesystemAdapter;
+use Symfony\Component\Cache\Adapter\NullAdapter;
+use Webmozart\Assert\Assert;
+
+final class LintConfig extends LintConfigParameter
 {
-    private string $phpCgiExecutable = 'php';
+    public const DEFAULT_CACHE_CLASS = NullAdapter::class;
 
-    /**
-     * @var array<string>
-     */
-    private array $paths = [];
-
-    /**
-     * @var array<string>
-     */
-    private array $skip = [];
-
-    /**
-     * @var array<string>
-     */
-    private array $sets = [];
-
-    private string $memoryLimit = '512M';
-
-    private int $asyncProcess = 10;
-
-    private bool $enableWarning = true;
-
-    private bool $enableNotice = true;
-
-    private bool $ignoreExitCode = false;
-
-    private bool $ignoreProcessBar = false;
-
-    private bool $cache = true;
-
-    private string $cacheDirectory = '.phplint';
-
-    public function getPhpCgiExecutable(): string
+    public function __construct()
     {
-        return $this->phpCgiExecutable;
+        $this->setParameter(OptionEnum::ASYNC_PROCESS, 10);
+        $this->setParameter(OptionEnum::ASYNC_PROCESS_TIMEOUT, 60);
+        $this->setParameter(OptionEnum::CACHE_CLASS, FilesystemAdapter::class);
+        $this->setParameter(OptionEnum::CACHE_DIR, '.phplint');
+        $this->setParameter(OptionEnum::CONSOLE_NOTICE, true);
+        $this->setParameter(OptionEnum::CONSOLE_WARNING, true);
+        $this->setParameter(OptionEnum::MEMORY_LIMIT, '512M');
+        $this->setParameter(OptionEnum::NO_EXIT_CODE, false);
+        $this->setParameter(OptionEnum::NO_PROGRESS_BAR, false);
+        $this->setParameter(OptionEnum::PHP_CGI_EXECUTABLE, 'php');
     }
 
-    public function setPhpCgiExecutable(string $string): void
+    public function asyncProcess(int $asyncProcess): void
     {
-        $this->phpCgiExecutable = $string;
+        $this->setParameter(OptionEnum::ASYNC_PROCESS, $asyncProcess);
     }
 
-    /**
-     * @return array<string>
-     */
-    public function getPaths(): array
+    public function asyncProcessTimeout(int $asyncProcessTimeout): void
     {
-        if ($this->paths === []) {
-            return [getcwd() . DIRECTORY_SEPARATOR];
+        $this->setParameter(OptionEnum::ASYNC_PROCESS_TIMEOUT, $asyncProcessTimeout);
+    }
+
+    public function cacheClass(string $cacheClass): void
+    {
+        /**
+         * In the first step, we only allowed the AbstractAdapter class
+         */
+        if (is_a($cacheClass, AbstractAdapter::class, true)) {
+            $this->setParameter(OptionEnum::CACHE_CLASS, $cacheClass);
+            return;
         }
 
-        return $this->paths;
+        $this->setParameter(OptionEnum::CACHE_CLASS, self::DEFAULT_CACHE_CLASS);
+    }
+
+    public function cacheDirectory(string $cacheDirectory): void
+    {
+        $this->setParameter(OptionEnum::CACHE_DIR, $cacheDirectory);
+    }
+
+    public function disableConsoleNotice(): void
+    {
+        $this->setParameter(OptionEnum::CONSOLE_NOTICE, false);
+    }
+
+    public function disableWarning(): void
+    {
+        $this->setParameter(OptionEnum::CONSOLE_WARNING, false);
+    }
+
+    public function disableExitCode(): void
+    {
+        $this->setParameter(OptionEnum::NO_EXIT_CODE, true);
+    }
+
+    public function disableProcessBar(): void
+    {
+        $this->setParameter(OptionEnum::NO_PROGRESS_BAR, true);
+    }
+
+    public function memoryLimit(string $memoryLimit): void
+    {
+        $this->setParameter(OptionEnum::MEMORY_LIMIT, $memoryLimit);
+    }
+
+    public function phpCgiExecutable(string $string): void
+    {
+        $this->setParameter(OptionEnum::PHP_CGI_EXECUTABLE, $string);
     }
 
     /**
      * @param array<string> $paths
      */
-    public function setPaths(array $paths): void
+    public function paths(array $paths): void
     {
-        $this->paths = $paths;
-    }
+        Assert::allString($paths);
 
-    /**
-     * @return array<string>
-     */
-    public function getSkip(): array
-    {
-        return $this->skip;
-    }
-
-    /**
-     * @return array<string>
-     */
-    public function getSkipPath(): array
-    {
-        $paths = [];
-
-        foreach ($this->skip as $path) {
-            if (class_exists($path)) {
-                continue;
-            }
-
-            if (! str_starts_with($path, (string) getcwd())) {
-                if (str_starts_with($path, DIRECTORY_SEPARATOR)) {
-                    $path = substr($path, 1);
-                }
-
-                $path = getcwd() . DIRECTORY_SEPARATOR . $path;
-            }
-
-            if (! is_dir($path)) {
-                continue;
-            }
-
-            $realPath = realpath($path);
-
-            if ($realPath !== false) {
-                $paths[] = $realPath;
-            }
-        }
-
-        return $paths;
+        $this->setParameter(OptionEnum::PATHS, $paths);
     }
 
     /**
      * @param array<string> $skip
      */
-    public function setSkip(array $skip): void
+    public function skip(array $skip): void
     {
-        $this->skip = $skip;
-    }
+        Assert::allString($skip);
 
-    /**
-     * @return array<string>
-     */
-    public function getSets(): array
-    {
-        return $this->sets;
-    }
-
-    /**
-     * @param array<string> $sets
-     */
-    public function setSets(array $sets): void
-    {
-        $this->sets = $sets;
-    }
-
-    public function getMemoryLimit(): string
-    {
-        return $this->memoryLimit;
-    }
-
-    public function setMemoryLimit(string $memoryLimit): void
-    {
-        $this->memoryLimit = $memoryLimit;
-    }
-
-    public function getAsyncProcess(): int
-    {
-        return $this->asyncProcess;
-    }
-
-    public function setAsyncProcess(int $asyncProcess): void
-    {
-        $this->asyncProcess = $asyncProcess;
-    }
-
-    public function isEnableWarning(): bool
-    {
-        return $this->enableWarning;
-    }
-
-    public function disableWarning(): void
-    {
-        $this->enableWarning = false;
-    }
-
-    public function isEnableNotice(): bool
-    {
-        return $this->enableNotice;
-    }
-
-    public function disableNotice(): void
-    {
-        $this->enableNotice = false;
-    }
-
-    public function isIgnoreExitCode(): bool
-    {
-        return $this->ignoreExitCode;
-    }
-
-    public function ignoreExitCode(): void
-    {
-        $this->ignoreExitCode = true;
-    }
-
-    public function isIgnoreProcessBar(): bool
-    {
-        return $this->ignoreProcessBar;
-    }
-
-    public function ignoreProcessBar(): void
-    {
-        $this->ignoreProcessBar = true;
-    }
-
-    public function isCacheActivated(): bool
-    {
-        return $this->cache;
-    }
-
-    public function setCache(bool $cache): void
-    {
-        $this->cache = $cache;
-    }
-
-    public function getCacheDirectory(): string
-    {
-        return $this->cacheDirectory;
-    }
-
-    public function setCacheDirectory(string $cacheDirectory): void
-    {
-        $this->cacheDirectory = $cacheDirectory;
+        $this->setParameter(OptionEnum::SKIP, $skip);
     }
 }

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PHPLint\Console\Output;
 
 use PHPLint\Config\LintConfig;
+use PHPLint\Config\OptionEnum;
 use PHPLint\Console\OutputColorEnum;
 use PHPLint\Process\LintProcessResult;
 use PHPLint\Process\StatusEnum;
@@ -68,7 +69,7 @@ final class LintSymfonyStyle extends SymfonyStyle
 
     public function progressBarStart(int $count): void
     {
-        if ($this->lintConfig->isIgnoreProcessBar()) {
+        if ($this->lintConfig->getBoolean(OptionEnum::NO_PROGRESS_BAR)) {
             return;
         }
 
@@ -77,7 +78,7 @@ final class LintSymfonyStyle extends SymfonyStyle
 
     public function progressBarAdvance(): void
     {
-        if ($this->lintConfig->isIgnoreProcessBar()) {
+        if ($this->lintConfig->getBoolean(OptionEnum::NO_PROGRESS_BAR)) {
             return;
         }
 
@@ -86,7 +87,7 @@ final class LintSymfonyStyle extends SymfonyStyle
 
     public function progressBarFinish(): void
     {
-        if ($this->lintConfig->isIgnoreProcessBar()) {
+        if ($this->lintConfig->getBoolean(OptionEnum::NO_PROGRESS_BAR)) {
             return;
         }
 

@@ -8,6 +8,7 @@ use Exception;
 use PHPLint\Bootstrap\BootstrapConfig;
 use PHPLint\Bootstrap\BootstrapConfigRequirer;
 use PHPLint\Config\LintConfig;
+use PHPLint\Config\OptionEnum;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
@@ -28,11 +29,11 @@ class BootstrapConfigRequirerTest extends TestCase
         $bootstrapConfig = new BootstrapConfig($configFile);
         $requirer = new BootstrapConfigRequirer($bootstrapConfig);
 
-        $lintConfig = new LintConfig($this->getMockContainerBuilder());
+        $lintConfig = new LintConfig();
         $lintConfig = $requirer->loadConfigFile($lintConfig);
 
         $this->assertInstanceOf(LintConfig::class, $lintConfig);
-        $this->assertEquals('phpUnitTest', $lintConfig->getPhpCgiExecutable());
+        $this->assertEquals('phpUnitTest', $lintConfig->getString(OptionEnum::PHP_CGI_EXECUTABLE));
     }
 
     public function testGetLintConfigWithInvalidConfigReturnString()
@@ -45,7 +46,7 @@ class BootstrapConfigRequirerTest extends TestCase
         $bootstrapConfig = new BootstrapConfig($configFile);
         $requirer = new BootstrapConfigRequirer($bootstrapConfig);
 
-        $lintConfig = new LintConfig($this->getMockContainerBuilder());
+        $lintConfig = new LintConfig();
         $requirer->loadConfigFile($lintConfig);
     }
 
@@ -59,7 +60,7 @@ class BootstrapConfigRequirerTest extends TestCase
         $bootstrapConfig = new BootstrapConfig($configFile);
         $requirer = new BootstrapConfigRequirer($bootstrapConfig);
 
-        $lintConfig = new LintConfig($this->getMockContainerBuilder());
+        $lintConfig = new LintConfig();
         $requirer->loadConfigFile($lintConfig);
     }
 
@@ -73,7 +74,7 @@ class BootstrapConfigRequirerTest extends TestCase
         $bootstrapConfig = new BootstrapConfig($configFile);
         $requirer = new BootstrapConfigRequirer($bootstrapConfig);
 
-        $lintConfig = new LintConfig($this->getMockContainerBuilder());
+        $lintConfig = new LintConfig();
         $requirer->loadConfigFile($lintConfig);
     }
 }

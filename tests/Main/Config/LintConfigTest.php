@@ -5,200 +5,184 @@ declare(strict_types=1);
 namespace PHPLint\Tests\Main\Config;
 
 use PHPLint\Config\LintConfig;
+use PHPLint\Config\OptionEnum;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Cache\Adapter\ArrayAdapter;
+use Symfony\Component\Cache\Adapter\FilesystemAdapter;
+use Symfony\Component\Cache\Adapter\NullAdapter;
 
 class LintConfigTest extends TestCase
 {
-    public function testSetPhpCgiExecutable()
-    {
-        $lintConfig = new LintConfig();
-        $lintConfig->setPhpCgiExecutable('php7');
-
-        $this->assertEquals('php7', $lintConfig->getPhpCgiExecutable());
-    }
-
-    public function testGetPathsDefault()
+    public function testGetDefaultPathsDefault()
     {
         $lintConfig = new LintConfig();
 
-        $this->assertEquals([getcwd() . DIRECTORY_SEPARATOR], $lintConfig->getPaths());
+        $this->assertEquals([], $lintConfig->getArrayWithStrings(OptionEnum::PATHS));
     }
 
     public function testSetPaths()
     {
         $lintConfig = new LintConfig();
-        $lintConfig->setPaths(['path/to/dir1', 'path/to/dir2']);
+        $lintConfig->paths(['path/to/dir1', 'path/to/dir2']);
 
-        $this->assertEquals(['path/to/dir1', 'path/to/dir2'], $lintConfig->getPaths());
+        $this->assertEquals(['path/to/dir1', 'path/to/dir2'], $lintConfig->getArrayWithStrings(OptionEnum::PATHS));
     }
 
-    public function testGetSkip()
+    public function testGetDefaultSkip()
     {
         $lintConfig = new LintConfig();
 
-        $this->assertEquals([], $lintConfig->getSkip());
+        $this->assertEquals([], $lintConfig->getArrayWithStrings(OptionEnum::SKIP));
     }
 
     public function testSetSkip()
     {
         $lintConfig = new LintConfig();
-        $lintConfig->setSkip(['className', 'file1.php', 'file2.php']);
+        $lintConfig->skip(['className', 'file1.php', 'file2.php']);
 
-        $this->assertEquals(['className', 'file1.php', 'file2.php'], $lintConfig->getSkip());
+        $this->assertEquals(['className', 'file1.php', 'file2.php'], $lintConfig->getArrayWithStrings(OptionEnum::SKIP));
     }
 
-    public function testGetSkipPath()
+    public function testGetDefaultAsyncProcess()
     {
         $lintConfig = new LintConfig();
 
-        // Test case 1: No skip paths
-        $this->assertEquals([], $lintConfig->getSkipPath());
-
-        // Test case 2: Skip existing class
-        $lintConfig->setSkip([LintConfig::class]);
-        $this->assertEquals([], $lintConfig->getSkipPath());
-
-        // Test case 3: One skip path
-        $lintConfig->setSkip(['tests/Main/Config']);
-        $this->assertEquals([getcwd() . '/tests/Main/Config'], $lintConfig->getSkipPath());
-
-        // Test case 4: Multiple skip paths
-        $lintConfig->setSkip(['tests/Main/Config', 'tests/Main/Console']);
-        $this->assertEquals([
-            getcwd() . '/tests/Main/Config',
-            getcwd() . '/tests/Main/Console',
-        ], $lintConfig->getSkipPath());
-
-        // Test case 5: Invalid skip path
-        $lintConfig->setSkip(['/nonexistent/path']);
-        $this->assertEquals([], $lintConfig->getSkipPath());
-
-        // Test case 6: Skip path starting with DIRECTORY_SEPARATOR
-        $lintConfig->setSkip([DIRECTORY_SEPARATOR . 'tests/Main/Config']);
-        $this->assertEquals([getcwd() . '/tests/Main/Config'], $lintConfig->getSkipPath());
-
-        // Test case 7: One skip path from root directory
-        $lintConfig->setSkip([__DIR__]);
-        $this->assertEquals([getcwd() . '/tests/Main/Config'], $lintConfig->getSkipPath());
-    }
-
-    public function testGetSets()
-    {
-        $lintConfig = new LintConfig();
-
-        $this->assertEquals([], $lintConfig->getSets());
-    }
-
-    public function testSetSets()
-    {
-        $lintConfig = new LintConfig();
-        $lintConfig->setSets(['set1', 'set2']);
-
-        $this->assertEquals(['set1', 'set2'], $lintConfig->getSets());
-    }
-
-    public function testGetAsyncProcess()
-    {
-        $lintConfig = new LintConfig();
-
-        $this->assertEquals(10, $lintConfig->getAsyncProcess());
+        $this->assertEquals(10, $lintConfig->getInteger(OptionEnum::ASYNC_PROCESS));
     }
 
     public function testSetAsyncProcess()
     {
         $lintConfig = new LintConfig();
-        $lintConfig->setAsyncProcess(5);
+        $lintConfig->asyncProcess(5);
 
-        $this->assertEquals(5, $lintConfig->getAsyncProcess());
+        $this->assertEquals(5, $lintConfig->getInteger(OptionEnum::ASYNC_PROCESS));
     }
 
-    public function testIsEnableWarning()
+    public function testGetDefaultAsyncProcessTimeout()
     {
         $lintConfig = new LintConfig();
 
-        $this->assertTrue($lintConfig->isEnableWarning());
+        $this->assertEquals(10, $lintConfig->getInteger(OptionEnum::ASYNC_PROCESS));
     }
 
-    public function testDisableWarning()
+    public function testSetAsyncProcessTimeout()
+    {
+        $lintConfig = new LintConfig();
+        $lintConfig->asyncProcessTimeout(120);
+
+        $this->assertEquals(120, $lintConfig->getInteger(OptionEnum::ASYNC_PROCESS_TIMEOUT));
+    }
+
+    public function testGetDefaultConsoleNotice()
+    {
+        $lintConfig = new LintConfig();
+
+        $this->assertTrue($lintConfig->getBoolean(OptionEnum::CONSOLE_NOTICE));
+    }
+
+    public function testDisableConsoleNotice()
+    {
+        $lintConfig = new LintConfig();
+        $lintConfig->disableConsoleNotice();
+
+        $this->assertFalse($lintConfig->getBoolean(OptionEnum::CONSOLE_NOTICE));
+    }
+
+    public function testGetDefaultConsoleWarning()
+    {
+        $lintConfig = new LintConfig();
+
+        $this->assertTrue($lintConfig->getBoolean(OptionEnum::CONSOLE_WARNING));
+    }
+
+    public function testDisableConsoleWarning()
     {
         $lintConfig = new LintConfig();
         $lintConfig->disableWarning();
 
-        $this->assertFalse($lintConfig->isEnableWarning());
+        $this->assertFalse($lintConfig->getBoolean(OptionEnum::CONSOLE_WARNING));
     }
 
-    public function testIsEnableNotice()
+    public function testGetDefaultNoExitCode()
     {
         $lintConfig = new LintConfig();
 
-        $this->assertTrue($lintConfig->isEnableNotice());
+        $this->assertFalse($lintConfig->getBoolean(OptionEnum::NO_EXIT_CODE));
     }
 
-    public function testDisableNotice()
+    public function testSetNoExitCode()
     {
         $lintConfig = new LintConfig();
-        $lintConfig->disableNotice();
+        $lintConfig->disableExitCode();
 
-        $this->assertFalse($lintConfig->isEnableNotice());
+        $this->assertTrue($lintConfig->getBoolean(OptionEnum::NO_EXIT_CODE));
     }
 
-    public function testIsIgnoreExitCode()
-    {
-        $lintConfig = new LintConfig();
-
-        $this->assertFalse($lintConfig->isIgnoreExitCode());
-    }
-
-    public function testSetIgnoreExitCode()
-    {
-        $lintConfig = new LintConfig();
-        $lintConfig->ignoreExitCode();
-
-        $this->assertTrue($lintConfig->isIgnoreExitCode());
-    }
-
-    public function testIsIgnoreProcessBar()
+    public function testGetDefaultNoProcessBar()
     {
         $lintConfig = new LintConfig();
 
-        $this->assertFalse($lintConfig->isIgnoreProcessBar());
+        $this->assertFalse($lintConfig->getBoolean(OptionEnum::NO_PROGRESS_BAR));
     }
 
-    public function testSetIgnoreProcessBar()
+    public function testSetNoProcessBar()
     {
         $lintConfig = new LintConfig();
-        $lintConfig->ignoreProcessBar();
+        $lintConfig->disableProcessBar();
 
-        $this->assertTrue($lintConfig->isIgnoreProcessBar());
+        $this->assertTrue($lintConfig->getBoolean(OptionEnum::NO_PROGRESS_BAR));
     }
 
-    public function testIsCacheActivated()
-    {
-        $lintConfig = new LintConfig();
-
-        $this->assertTrue($lintConfig->isCacheActivated());
-    }
-
-    public function testSetCache()
-    {
-        $lintConfig = new LintConfig();
-        $lintConfig->setCache(false);
-
-        $this->assertFalse($lintConfig->isCacheActivated());
-    }
-
-    public function testGetCacheDirectory()
+    public function testGetDefaultCache()
     {
         $lintConfig = new LintConfig();
 
-        $this->assertEquals('.phplint', $lintConfig->getCacheDirectory());
+        $this->assertEquals(FilesystemAdapter::class, $lintConfig->getString(OptionEnum::CACHE_CLASS));
+    }
+
+    public function testSetCacheSuccess()
+    {
+        $lintConfig = new LintConfig();
+        $lintConfig->cacheClass(NullAdapter::class);
+
+        $this->assertEquals(NullAdapter::class, $lintConfig->getString(OptionEnum::CACHE_CLASS));
+    }
+
+    public function testSetCacheFail()
+    {
+        $lintConfig = new LintConfig();
+        $lintConfig->cacheClass(ArrayAdapter::class);
+
+        $this->assertEquals(NullAdapter::class, $lintConfig->getString(OptionEnum::CACHE_CLASS));
+    }
+
+    public function testGetDefaultCacheDirectory()
+    {
+        $lintConfig = new LintConfig();
+
+        $this->assertEquals('.phplint', $lintConfig->getString(OptionEnum::CACHE_DIR));
     }
 
     public function testSetCacheDirectory()
     {
         $lintConfig = new LintConfig();
-        $lintConfig->setCacheDirectory(__DIR__ . '/path/to/cache/folder');
+        $lintConfig->cacheDirectory(__DIR__ . '/path/to/cache/folder');
 
-        $this->assertEquals(__DIR__ . '/path/to/cache/folder', $lintConfig->getCacheDirectory());
+        $this->assertEquals(__DIR__ . '/path/to/cache/folder', $lintConfig->getString(OptionEnum::CACHE_DIR));
+    }
+
+    public function testGetDefaultMemoryLimit()
+    {
+        $lintConfig = new LintConfig();
+
+        $this->assertEquals('512M', $lintConfig->getString(OptionEnum::MEMORY_LIMIT));
+    }
+
+    public function testSetMemoryLimit()
+    {
+        $lintConfig = new LintConfig();
+        $lintConfig->memoryLimit('1G');
+
+        $this->assertEquals('1G', $lintConfig->getString(OptionEnum::MEMORY_LIMIT));
     }
 }

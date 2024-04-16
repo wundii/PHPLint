@@ -200,7 +200,7 @@ class LintProcessTaskTest extends TestCase
     public function testGetProcessResultWithNoticeAndDisallow()
     {
         $lintConfig = new LintConfig();
-        $lintConfig->disableNotice();
+        $lintConfig->disableConsoleNotice();
         $processMock = $this->createMock(Process::class);
         $processMock->method('getOutput')->willReturn('Notice: Undefined variable $foo in /path/to/file.php line 5');
         $splFileInfoMock = $this->createMock(SplFileInfo::class);

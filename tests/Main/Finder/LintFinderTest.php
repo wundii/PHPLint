@@ -7,18 +7,22 @@ namespace PHPLint\Tests\Main\Finder;
 use Iterator;
 use PHPLint\Config\LintConfig;
 use PHPLint\Finder\LintFinder;
+use PHPLint\Resolver\Config\LintPathsResolver;
+use PHPLint\Resolver\Config\LintSkipPathsResolver;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Finder\Finder;
 
 class LintFinderTest extends TestCase
 {
     public function testGetFilesFromLintConfigWithDirectory()
     {
-        $lintConfig = new LintConfig(new ContainerBuilder());
-        $lintConfig->setPaths([__DIR__ . '/Files']);
+        $lintConfig = new LintConfig();
+        $lintConfig->paths([__DIR__ . '/Files']);
 
-        $lintFinder = new LintFinder();
+        $lintFinder = new LintFinder(
+            new LintSkipPathsResolver(),
+            new LintPathsResolver(),
+        );
         $result = $lintFinder->getFilesFromLintConfig($lintConfig);
 
         $this->assertInstanceOf(LintFinder::class, $result);
@@ -27,11 +31,14 @@ class LintFinderTest extends TestCase
 
     public function testGetFilesFromLintConfigWithDirectoryAndExcludes()
     {
-        $lintConfig = new LintConfig(new ContainerBuilder());
-        $lintConfig->setPaths([__DIR__ . '/Files']);
-        $lintConfig->setSkip([__DIR__ . '/Files/Folder']);
+        $lintConfig = new LintConfig();
+        $lintConfig->paths([__DIR__ . '/Files']);
+        $lintConfig->skip([__DIR__ . '/Files/Folder']);
 
-        $lintFinder = new LintFinder();
+        $lintFinder = new LintFinder(
+            new LintSkipPathsResolver(),
+            new LintPathsResolver(),
+        );
         $result = $lintFinder->getFilesFromLintConfig($lintConfig);
 
         $this->assertInstanceOf(LintFinder::class, $result);
@@ -40,9 +47,12 @@ class LintFinderTest extends TestCase
 
     public function testGetFilesFromLintConfigWithInvalidPath()
     {
-        $lintConfig = new LintConfig(new ContainerBuilder());
-        $lintConfig->setPaths(['/path/to/invalid']);
-        $lintFinder = new LintFinder();
+        $lintConfig = new LintConfig();
+        $lintConfig->paths(['/path/to/invalid']);
+        $lintFinder = new LintFinder(
+            new LintSkipPathsResolver(),
+            new LintPathsResolver(),
+        );
         $result = $lintFinder->getFilesFromLintConfig($lintConfig);
 
         $this->assertInstanceOf(LintFinder::class, $result);
@@ -51,7 +61,10 @@ class LintFinderTest extends TestCase
 
     public function testGetFinderFromPath()
     {
-        $lintFinder = new LintFinder();
+        $lintFinder = new LintFinder(
+            new LintSkipPathsResolver(),
+            new LintPathsResolver(),
+        );
         $result = $lintFinder->getFinderFromPath(__DIR__ . '/Files');
 
         $this->assertInstanceOf(Finder::class, $result);
@@ -60,9 +73,12 @@ class LintFinderTest extends TestCase
 
     public function testCountByFileCount1()
     {
-        $lintConfig = new LintConfig(new ContainerBuilder());
-        $lintConfig->setPaths([__DIR__ . '/Files/File3.php']);
-        $lintFinder = new LintFinder();
+        $lintConfig = new LintConfig();
+        $lintConfig->paths([__DIR__ . '/Files/File3.php']);
+        $lintFinder = new LintFinder(
+            new LintSkipPathsResolver(),
+            new LintPathsResolver(),
+        );
         $lintFinder = $lintFinder->getFilesFromLintConfig($lintConfig);
         $count = $lintFinder->count();
 
@@ -71,7 +87,10 @@ class LintFinderTest extends TestCase
 
     public function testCountByFileCount0()
     {
-        $lintFinder = new LintFinder();
+        $lintFinder = new LintFinder(
+            new LintSkipPathsResolver(),
+            new LintPathsResolver(),
+        );
         $count = $lintFinder->count();
 
         $this->assertEquals(0, $count);
@@ -79,9 +98,12 @@ class LintFinderTest extends TestCase
 
     public function testGetIteratorByFileCount1()
     {
-        $lintConfig = new LintConfig(new ContainerBuilder());
-        $lintConfig->setPaths([__DIR__ . '/Files/File4.php']);
-        $lintFinder = new LintFinder();
+        $lintConfig = new LintConfig();
+        $lintConfig->paths([__DIR__ . '/Files/File4.php']);
+        $lintFinder = new LintFinder(
+            new LintSkipPathsResolver(),
+            new LintPathsResolver(),
+        );
         $lintFinder = $lintFinder->getFilesFromLintConfig($lintConfig);
         $iterator = $lintFinder->getIterator();
 
@@ -91,7 +113,10 @@ class LintFinderTest extends TestCase
 
     public function testGetIteratorByFileCount0()
     {
-        $lintFinder = new LintFinder();
+        $lintFinder = new LintFinder(
+            new LintSkipPathsResolver(),
+            new LintPathsResolver(),
+        );
         $iterator = $lintFinder->getIterator();
 
         $this->assertInstanceOf(Iterator::class, $iterator);

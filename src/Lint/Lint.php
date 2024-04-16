@@ -6,13 +6,13 @@ namespace PHPLint\Lint;
 
 use PHPLint\Cache\LintCache;
 use PHPLint\Config\LintConfig;
+use PHPLint\Config\OptionEnum;
 use PHPLint\Console\Output\LintSymfonyStyle;
 use PHPLint\Finder\LintFinder;
 use PHPLint\Process\LintProcessResult;
 use PHPLint\Process\LintProcessTask;
 use PHPLint\Process\StatusEnum;
-use Symfony\Component\Cache\Adapter\FilesystemAdapter;
-use Symfony\Component\Cache\Adapter\NullAdapter;
+use Symfony\Component\Cache\Adapter\AbstractAdapter;
 use Symfony\Component\Process\Process;
 
 final class Lint
@@ -24,10 +24,12 @@ final class Lint
         private readonly LintConfig $lintConfig,
         private readonly LintFinder $lintFinder,
     ) {
-        $adapter = new NullAdapter();
+        $adapter = new (LintConfig::DEFAULT_CACHE_CLASS)();
+        $cacheClass = $this->lintConfig->getString(OptionEnum::CACHE_CLASS);
+        $cacheDir = $this->lintConfig->getString(OptionEnum::CACHE_DIR);
 
-        if ($this->lintConfig->isCacheActivated()) {
-            $adapter = new FilesystemAdapter('cache', 0, $this->lintConfig->getCacheDirectory());
+        if (is_a($cacheClass, AbstractAdapter::class, true)) {
+            $adapter = new $cacheClass('cache', 0, $cacheDir);
         }
 
         $this->lintCache = new LintCache($adapter);
@@ -39,7 +41,8 @@ final class Lint
         $processResults = [];
         $count = $this->lintFinder->count();
         $iterator = $this->lintFinder->getIterator();
-        $asyncProcess = $this->lintConfig->getAsyncProcess();
+        $asyncProcess = $this->lintConfig->getInteger(OptionEnum::ASYNC_PROCESS);
+        $asyncProcessTimeout = $this->lintConfig->getInteger(OptionEnum::ASYNC_PROCESS_TIMEOUT);
 
         $this->lintSymfonyStyle->progressBarStart($count);
 
@@ -49,7 +52,7 @@ final class Lint
                 $filename = $currentFile->getRealPath();
 
                 if (! $this->lintCache->isMd5FileValid($filename)) {
-                    $lintProcess = $this->createLintProcess($filename);
+                    $lintProcess = $this->createLintProcess($filename, $asyncProcessTimeout);
                     $lintProcess->start();
 
                     $this->lintSymfonyStyle->progressBarAdvance();
@@ -85,7 +88,7 @@ final class Lint
         }
     }
 
-    public function createLintProcess(string $filename): Process
+    public function createLintProcess(string $filename, int $timeout): Process
     {
         $command = [PHP_BINARY];
 
@@ -95,12 +98,12 @@ final class Lint
 
         $command[] = '-d display_errors=1';
         $command[] = '-d error_reporting=E_ALL';
-        $command[] = '-d memory_limit=' . $this->lintConfig->getMemoryLimit();
+        $command[] = '-d memory_limit=' . $this->lintConfig->getString(OptionEnum::MEMORY_LIMIT);
         $command[] = '-n';
         $command[] = '-l';
         $command[] = $filename;
 
-        return new Process($command);
+        return new Process($command, timeout: $timeout);
     }
 
     public function processResultToConsole(LintProcessResult $lintProcessResult): void
