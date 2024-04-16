@@ -25,7 +25,7 @@ class LintTest extends TestCase
         $consoleInput = new ArgvInput();
         $consoleOutput = new StreamOutput(fopen('php://memory', 'w', false));
         $lintConsoleOutput = new LintSymfonyStyle($lintConfig, $consoleInput, $consoleOutput);
-        $lintConfig->setMemoryLimit('256M');
+        $lintConfig->memoryLimit('256M');
 
         $lint = new Lint(
             $lintConsoleOutput,
@@ -37,7 +37,7 @@ class LintTest extends TestCase
         );
 
         $filename = 'path/to/file.php';
-        $process = $lint->createLintProcess($filename);
+        $process = $lint->createLintProcess($filename, 60);
 
         $this->assertInstanceOf(Process::class, $process);
 

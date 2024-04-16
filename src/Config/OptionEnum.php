@@ -14,12 +14,22 @@ enum OptionEnum: string
     /**
      * @internal
      */
+    case ASYNC_PROCESS_TIMEOUT = 'async-process-timeout';
+
+    /**
+     * @internal
+     */
     case CACHE = 'cache';
 
     /**
      * @internal
      */
-    case CACHE_DIRECTORY = 'cache-directory';
+    case CACHE_CLASS = 'cache-class';
+
+    /**
+     * @internal
+     */
+    case CACHE_DIR = 'cache-dir';
 
     /**
      * @internal
@@ -62,7 +72,7 @@ enum OptionEnum: string
     case SKIP = 'skip';
 
     /**
-     * @internal
+     * @internal only for unit tests
      */
     case TEST = 'test';
 }

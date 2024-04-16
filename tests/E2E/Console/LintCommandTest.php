@@ -88,7 +88,7 @@ class LintCommandTest extends TestCase
     {
         $lintConfig = new LintConfig();
         $lintConfig->paths(['tests/FaultyFiles']);
-        $lintConfig->ignoreExitCode();
+        $lintConfig->disableExitCode();
 
         $lintCommand = $this->createLintCommand($lintConfig);
 

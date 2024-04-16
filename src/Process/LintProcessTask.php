@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PHPLint\Process;
 
 use PHPLint\Config\LintConfig;
+use PHPLint\Config\OptionEnum;
 use Symfony\Component\Finder\SplFileInfo;
 use Symfony\Component\Process\Process;
 
@@ -42,18 +43,18 @@ final class LintProcessTask
         $matchedError = ! str_contains($result, 'No syntax errors detected');
         $matchedWarning = preg_match('#(Warning:|Deprecated:)#', $result);
         $matchedInfo = str_contains($result, 'Notice:');
-        $isEnableWarning = $this->lintConfig->isEnableWarning();
-        $isEnableNotice = $this->lintConfig->isEnableNotice();
+        $isConsoleNotice = $this->lintConfig->getBoolean(OptionEnum::CONSOLE_NOTICE);
+        $isConsoleWarning = $this->lintConfig->getBoolean(OptionEnum::CONSOLE_WARNING);
 
         if ($matchedError && ! $matchedWarning && ! $matchedInfo) {
             return $this->createLintProcessResult(StatusEnum::ERROR, $fileRealPath, self::REGEX_ERROR, $result);
         }
 
-        if ($isEnableWarning && $matchedWarning) {
+        if ($isConsoleWarning && $matchedWarning) {
             return $this->createLintProcessResult(StatusEnum::WARNING, $fileRealPath, self::REGEX_WARNING, $result);
         }
 
-        if ($isEnableNotice && $matchedInfo) {
+        if ($isConsoleNotice && $matchedInfo) {
             return $this->createLintProcessResult(StatusEnum::NOTICE, $fileRealPath, self::REGEX_WARNING, $result);
         }
 

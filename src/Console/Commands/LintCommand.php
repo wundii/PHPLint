@@ -8,6 +8,7 @@ use Exception;
 use PHPLint\Bootstrap\BootstrapConfigInitializer;
 use PHPLint\Bootstrap\BootstrapConfigResolver;
 use PHPLint\Config\LintConfig;
+use PHPLint\Config\OptionEnum;
 use PHPLint\Console\LintApplication;
 use PHPLint\Console\Output\LintSymfonyStyle;
 use PHPLint\Finder\LintFinder;
@@ -58,7 +59,7 @@ final class LintCommand extends Command
 
         $exitCode = (int) $output->finishApplication($usageExecuteTime);
 
-        if ($this->lintConfig->isIgnoreExitCode()) {
+        if ($this->lintConfig->getBoolean(OptionEnum::NO_EXIT_CODE)) {
             return self::SUCCESS;
         }
 
