@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PHPLint\Bootstrap;
 
+use Closure;
 use Exception;
 use PHPLint\Config\LintConfig;
 use ReflectionFunction;
@@ -27,15 +28,15 @@ final class BootstrapConfigRequirer
         }
 
         $fn = require_once $this->bootstrapConfig->getBootstrapConfigFile();
-
         if (! is_callable($fn)) {
             throw new Exception('BootstrapConfig ' . $this->bootstrapConfig->getBootstrapConfigFile() . ' file is not callable.');
         }
 
-        /* phpstan bug: Parameter #1 $function of class ReflectionFunction constructor expects Closure|string, callable(): mixed given. */
-        /* @phpstan-ignore-next-line */
-        $reflectionFunction = new ReflectionFunction($fn);
+        if (! $fn instanceof Closure) {
+            throw new Exception('BootstrapConfig ' . $this->bootstrapConfig->getBootstrapConfigFile() . ' file is not a closure.');
+        }
 
+        $reflectionFunction = new ReflectionFunction($fn);
         if ($reflectionFunction->getNumberOfParameters() === 0) {
             throw new Exception('BootstrapConfig ' . $this->bootstrapConfig->getBootstrapConfigFile() . ' file has no parameters.');
         }

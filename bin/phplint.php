@@ -24,16 +24,11 @@ final class AutoloadIncluder
             return;
         }
 
-        $this->loadIfNotLoadedYet($cwdVendorAutoload);
-    }
-
-    public function loadIfNotLoadedYet(string $file): void
-    {
-        if (! file_exists($file)) {
+        if (! file_exists($cwdVendorAutoload)) {
             return;
         }
 
-        require_once $file;
+        require_once $cwdVendorAutoload;
     }
 }
 
