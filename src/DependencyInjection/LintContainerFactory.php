@@ -38,8 +38,8 @@ final class LintContainerFactory
         $containerBuilder->autowire(LintConfig::class, LintConfig::class)
             ->setPublic(true);
 
-        $phpFileLoader = new PhpFileLoader($containerBuilder, new FileLocator(__DIR__));
-        $phpFileLoader->load(__DIR__ . '/../../config/config.php');
+        $phpFileLoader = new PhpFileLoader($containerBuilder, new FileLocator((string) getcwd()));
+        $phpFileLoader->load(getcwd() . '/config/config.php');
 
         $containerBuilder->compile();
 

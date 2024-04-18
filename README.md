@@ -57,6 +57,7 @@ composer complete-check
 + [x] refactor LintConsoleOutput class
 + [x] refactor LintConfig class
 + [ ] skip classes
++ [ ] run without config file
 
 ## Feedback and Contributions
 I welcome feedback, bug reports and contributions from the community! 
