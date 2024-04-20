@@ -7,6 +7,7 @@ namespace PHPLint\Tests\Main\Console;
 use Exception;
 use PHPLint\Bootstrap\BootstrapConfigInitializer;
 use PHPLint\Bootstrap\BootstrapConfigResolver;
+use PHPLint\Bootstrap\BootstrapInputResolver;
 use PHPLint\Config\LintConfig;
 use PHPLint\Console\Commands\LintCommand;
 use PHPLint\Console\Commands\LintInitCommand;
@@ -18,7 +19,6 @@ use PHPLint\Resolver\Config\LintSkipPathsResolver;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\ArgvInput;
-use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\StreamOutput;
 use Symfony\Component\Console\Tester\ApplicationTester;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -38,7 +38,8 @@ class LintApplicationTest extends TestCase
         $consoleOutput = new StreamOutput(fopen('php://memory', 'w', false));
         $lintConsoleOutput = new LintSymfonyStyle($lintConfig, $consoleInput, $consoleOutput);
         $bootstrapConfigInitializer = new BootstrapConfigInitializer(new Filesystem(), $lintConsoleOutput);
-        $bootstrapConfigResolver = new BootstrapConfigResolver();
+        $bootstrapInputResolver = new BootstrapInputResolver($consoleInput);
+        $bootstrapConfigResolver = new BootstrapConfigResolver($bootstrapInputResolver);
         $lintConfig->paths(['src']);
         $lintFinder = new LintFinder(
             new LintSkipPathsResolver(),
@@ -47,6 +48,7 @@ class LintApplicationTest extends TestCase
         $lintCommand = new LintCommand(
             $bootstrapConfigInitializer,
             $bootstrapConfigResolver,
+            $bootstrapInputResolver,
             $lintConfig,
             $lintFinder
         );

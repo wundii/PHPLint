@@ -52,7 +52,7 @@ final class LintApplication extends BaseApplication
 
         $symfonyStyle = new SymfonyStyle($argvInput, $output);
 
-        $symfonyStyle->writeln('> ' . implode('', $argv));
+        $symfonyStyle->writeln('> ' . implode(' ', $argv));
         $symfonyStyle->writeln('<fg=blue;options=bold>PHP</><fg=yellow;options=bold>Lint</> ' . self::VERSION);
         $symfonyStyle->newLine();
 

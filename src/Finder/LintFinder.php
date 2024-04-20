@@ -45,7 +45,7 @@ final class LintFinder extends Finder
     }
 
     /**
-     * @param array<string> $excludes
+     * @param string[] $excludes
      */
     public function getFinderFromPath(string $path, array $excludes = []): Finder
     {

@@ -10,7 +10,7 @@ use PHPLint\Config\OptionEnum;
 final class LintSkipPathsResolver
 {
     /**
-     * @return array<string>
+     * @return string[]
      */
     public function resolve(LintConfigParameter $lintConfigParameter): array
     {

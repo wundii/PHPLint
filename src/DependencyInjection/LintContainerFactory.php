@@ -9,6 +9,7 @@ use PHPLint\Bootstrap\BootstrapConfig;
 use PHPLint\Bootstrap\BootstrapConfigInitializer;
 use PHPLint\Bootstrap\BootstrapConfigRequirer;
 use PHPLint\Bootstrap\BootstrapConfigResolver;
+use PHPLint\Bootstrap\BootstrapInputResolver;
 use PHPLint\Config\LintConfig;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Console\Input\ArgvInput;
@@ -23,8 +24,9 @@ final class LintContainerFactory
      */
     public function createFromArgvInput(ArgvInput $argvInput): ContainerInterface
     {
-        $bootstrapConfigResolver = new BootstrapConfigResolver();
-        $bootstrapConfig = $bootstrapConfigResolver->getBootstrapConfig($argvInput);
+        $bootstrapInputResolver = new BootstrapInputResolver($argvInput);
+        $bootstrapConfigResolver = new BootstrapConfigResolver($bootstrapInputResolver);
+        $bootstrapConfig = $bootstrapConfigResolver->getBootstrapConfig();
         $bootstrapConfigRequirer = new BootstrapConfigRequirer($bootstrapConfig);
 
         $containerBuilder = new ContainerBuilder();
@@ -34,6 +36,8 @@ final class LintContainerFactory
         $containerBuilder->autowire(BootstrapConfigInitializer::class, BootstrapConfigInitializer::class)
             ->setPublic(true);
         $containerBuilder->autowire(BootstrapConfigResolver::class, BootstrapConfigResolver::class)
+            ->setPublic(true);
+        $containerBuilder->autowire(BootstrapInputResolver::class, BootstrapInputResolver::class)
             ->setPublic(true);
         $containerBuilder->autowire(LintConfig::class, LintConfig::class)
             ->setPublic(true);

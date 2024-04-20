@@ -6,6 +6,7 @@ namespace PHPLint\Tests\E2E\Console;
 
 use PHPLint\Bootstrap\BootstrapConfigInitializer;
 use PHPLint\Bootstrap\BootstrapConfigResolver;
+use PHPLint\Bootstrap\BootstrapInputResolver;
 use PHPLint\Config\LintConfig;
 use PHPLint\Console\Commands\LintCommand;
 use PHPLint\Console\LintApplication;
@@ -29,11 +30,13 @@ class LintCommandTest extends TestCase
         $this->consoleOutput = new StreamOutput(fopen('php://memory', 'w', false));
         $lintConsoleOutput = new LintSymfonyStyle($lintConfig, $consoleInput, $this->consoleOutput);
         $bootstrapConfigInitializer = new BootstrapConfigInitializer(new Filesystem(), $lintConsoleOutput);
-        $bootstrapConfigResolver = new BootstrapConfigResolver();
+        $bootstrapInputResolver = new BootstrapInputResolver($consoleInput);
+        $bootstrapConfigResolver = new BootstrapConfigResolver($bootstrapInputResolver);
 
         $lintCommand = new LintCommand(
             $bootstrapConfigInitializer,
             $bootstrapConfigResolver,
+            $bootstrapInputResolver,
             $lintConfig,
             new LintFinder(
                 new LintSkipPathsResolver(),

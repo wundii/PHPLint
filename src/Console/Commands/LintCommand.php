@@ -7,9 +7,11 @@ namespace PHPLint\Console\Commands;
 use Exception;
 use PHPLint\Bootstrap\BootstrapConfigInitializer;
 use PHPLint\Bootstrap\BootstrapConfigResolver;
+use PHPLint\Bootstrap\BootstrapInputResolver;
 use PHPLint\Config\LintConfig;
-use PHPLint\Config\OptionEnum;
+use PHPLint\Config\OptionEnum as ConfigOptionEnum;
 use PHPLint\Console\LintApplication;
+use PHPLint\Console\OptionEnum;
 use PHPLint\Console\Output\LintSymfonyStyle;
 use PHPLint\Finder\LintFinder;
 use PHPLint\Lint\Lint;
@@ -23,6 +25,7 @@ final class LintCommand extends Command
     public function __construct(
         private readonly BootstrapConfigInitializer $bootstrapConfigInitializer,
         private readonly BootstrapConfigResolver $bootstrapConfigResolver,
+        private readonly BootstrapInputResolver $bootstrapInputResolver,
         private readonly LintConfig $lintConfig,
         private readonly LintFinder $lintFinder,
     ) {
@@ -40,26 +43,33 @@ final class LintCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        if (! $this->bootstrapConfigResolver->isConfigFileExists($input)) {
-            $this->bootstrapConfigInitializer->createConfig((string) getcwd());
-            return self::SUCCESS;
+        $lintConfig = $this->lintConfig;
+        $noConfig = $this->bootstrapInputResolver->hasOption(OptionEnum::NO_CONFIG);
+
+        if (! $this->bootstrapConfigResolver->isConfigFileExists() || $noConfig) {
+            if (! $noConfig) {
+                $this->bootstrapConfigInitializer->createConfig((string) getcwd());
+                return self::SUCCESS;
+            }
+
+            $lintConfig = OptionEnum::createLintConfigFromInput($this->bootstrapInputResolver);
         }
 
         $startExecuteTime = microtime(true);
 
-        $output = new LintSymfonyStyle($this->lintConfig, $input, $output);
+        $output = new LintSymfonyStyle($lintConfig, $input, $output);
         $output->startApplication(LintApplication::VERSION);
 
-        $lintFinder = $this->lintFinder->getFilesFromLintConfig($this->lintConfig);
+        $lintFinder = $this->lintFinder->getFilesFromLintConfig($lintConfig);
 
-        $lint = new Lint($output, $this->lintConfig, $lintFinder);
+        $lint = new Lint($output, $lintConfig, $lintFinder);
         $lint->run();
 
         $usageExecuteTime = Helper::formatTime(microtime(true) - $startExecuteTime);
 
         $exitCode = (int) $output->finishApplication($usageExecuteTime);
 
-        if ($this->lintConfig->getBoolean(OptionEnum::NO_EXIT_CODE)) {
+        if ($lintConfig->getBoolean(ConfigOptionEnum::NO_EXIT_CODE)) {
             return self::SUCCESS;
         }
 

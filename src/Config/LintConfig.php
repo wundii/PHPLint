@@ -86,7 +86,7 @@ final class LintConfig extends LintConfigParameter
     }
 
     /**
-     * @param array<string> $paths
+     * @param string[] $paths
      */
     public function paths(array $paths): void
     {
@@ -96,7 +96,7 @@ final class LintConfig extends LintConfigParameter
     }
 
     /**
-     * @param array<string> $skip
+     * @param string[] $skip
      */
     public function skip(array $skip): void
     {

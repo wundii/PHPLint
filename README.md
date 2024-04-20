@@ -16,7 +16,11 @@ composer require wundii/phplint --dev
 ```shell
 php vendor/bin/phplint
 php vendor/bin/phplint --config=phplint.php
+php vendor/bin/phplint init
+php vendor/bin/phplint list
 php vendor/bin/phplint --help
+php vendor/bin/phplint --no-config
+php vendor/bin/phplint --no-config --paths=src --paths=tests --skip=vendor
 ```
 
 ### Functionality over the config file (phplint.php)
@@ -57,7 +61,10 @@ composer complete-check
 + [x] refactor LintConsoleOutput class
 + [x] refactor LintConfig class
 + [ ] skip classes
-+ [ ] run without config file
++ [x] run without config file
++ [ ] test BootstrapInputResolver
++ [ ] test createLintConfigFromInput
++ [ ] test no-config with config options
 
 ## Feedback and Contributions
 I welcome feedback, bug reports and contributions from the community! 

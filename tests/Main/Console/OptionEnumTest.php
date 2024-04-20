@@ -55,14 +55,20 @@ class OptionEnumTest extends TestCase
 
     public function testAllShortcutsAreUnique()
     {
+        $emptyShortcuts = 0;
         $shortcuts = [];
 
         foreach (self::enumValues() as $option) {
             $shortcut = $option->getShortcut();
+            if ($shortcut === '') {
+                ++$emptyShortcuts;
+                continue;
+            }
+
             $this->assertFalse(in_array($shortcut, $shortcuts, true), "Duplicate shortcut: {$shortcut}");
             $shortcuts[] = $shortcut;
         }
 
-        $this->assertCount(count(self::enumValues()), $shortcuts, 'Missing shortcuts');
+        $this->assertCount(count(self::enumValues()) - $emptyShortcuts, $shortcuts, 'Missing shortcuts');
     }
 }

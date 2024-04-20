@@ -7,6 +7,7 @@ namespace PHPLint\Tests\Main\Bootstrap;
 use Exception;
 use PHPLint\Bootstrap\BootstrapConfig;
 use PHPLint\Bootstrap\BootstrapConfigResolver;
+use PHPLint\Bootstrap\BootstrapInputResolver;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Input\ArgvInput;
 
@@ -19,10 +20,10 @@ class BootstrapConfigResolverTest extends TestCase
     {
         $configFile = __DIR__ . '/Files/phplint-01.php';
 
-        $resolver = new BootstrapConfigResolver();
-        $input = new ArgvInput(['bin/phplint', '--config', $configFile]);
+        $inputResolver = new BootstrapInputResolver(new ArgvInput(['bin/phplint', '--config', $configFile]));
+        $resolver = new BootstrapConfigResolver($inputResolver);
 
-        $bootstrapConfig = $resolver->getBootstrapConfig($input);
+        $bootstrapConfig = $resolver->getBootstrapConfig();
 
         $this->assertInstanceOf(BootstrapConfig::class, $bootstrapConfig);
         $this->assertEquals($configFile, $bootstrapConfig->getBootstrapConfigFile());
@@ -33,10 +34,10 @@ class BootstrapConfigResolverTest extends TestCase
      */
     public function testGetBootstrapConfigWithConfigFilePathEmpty()
     {
-        $resolver = new BootstrapConfigResolver();
-        $input = new ArgvInput(['bin/phplint', '--config']);
+        $inputResolver = new BootstrapInputResolver(new ArgvInput(['bin/phplint', '--config']));
+        $resolver = new BootstrapConfigResolver($inputResolver);
 
-        $bootstrapConfig = $resolver->getBootstrapConfig($input);
+        $bootstrapConfig = $resolver->getBootstrapConfig();
 
         $this->assertInstanceOf(BootstrapConfig::class, $bootstrapConfig);
         $this->assertEquals(getcwd() . '/phplint.php', $bootstrapConfig->getBootstrapConfigFile());
@@ -49,10 +50,10 @@ class BootstrapConfigResolverTest extends TestCase
     {
         $configFile = __DIR__ . '/Files/phplint-no-exist.php';
 
-        $resolver = new BootstrapConfigResolver();
-        $input = new ArgvInput(['bin/phplint', '--config', $configFile]);
+        $inputResolver = new BootstrapInputResolver(new ArgvInput(['bin/phplint', '--config', $configFile]));
+        $resolver = new BootstrapConfigResolver($inputResolver);
 
-        $bootstrapConfig = $resolver->getBootstrapConfig($input);
+        $bootstrapConfig = $resolver->getBootstrapConfig();
 
         $this->assertInstanceOf(BootstrapConfig::class, $bootstrapConfig);
         $this->assertNull($bootstrapConfig->getBootstrapConfigFile());
