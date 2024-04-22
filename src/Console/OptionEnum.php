@@ -81,7 +81,7 @@ enum OptionEnum: string
         }
 
         if ($bootstrapInputResolver->hasOption(self::MEMORY_LIMIT)) {
-            $lintConfig->memoryLimit($bootstrapInputResolver->getOptionValue(self::MEMORY_LIMIT));
+            $lintConfig->memoryLimit((string) $bootstrapInputResolver->getOptionValue(self::MEMORY_LIMIT));
         }
 
         if ($bootstrapInputResolver->hasOption(self::NO_EXIT_CODE)) {

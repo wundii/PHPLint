@@ -62,7 +62,7 @@ composer complete-check
 + [x] refactor LintConfig class
 + [ ] skip classes
 + [x] run without config file
-+ [ ] test BootstrapInputResolver
++ [x] test BootstrapInputResolver
 + [ ] test createLintConfigFromInput
 + [ ] test no-config with config options
 
