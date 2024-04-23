@@ -69,6 +69,11 @@ enum OptionEnum: string
     /**
      * @internal
      */
+    case PHP_EXTENSION = 'php-extension';
+
+    /**
+     * @internal
+     */
     case SKIP = 'skip';
 
     /**

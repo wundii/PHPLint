@@ -23,13 +23,13 @@ class LintSkipPathsResolverTest extends TestCase
         $this->assertEquals([], $skipPathsResolver->resolve($lintConfig));
 
         // Test case 3: One skip path
-        $lintConfig->skip(['tests/Main/Config']);
-        $this->assertEquals([getcwd() . '/tests/Main/Config'], $skipPathsResolver->resolve($lintConfig));
+        $lintConfig->skip(['tests/Init/Config']);
+        $this->assertEquals([getcwd() . '/tests/Init/Config'], $skipPathsResolver->resolve($lintConfig));
 
         // Test case 4: Multiple skip paths
-        $lintConfig->skip(['tests/Main/Config', 'tests/Main/Console']);
+        $lintConfig->skip(['tests/Main/Bootstrap', 'tests/Main/Console']);
         $this->assertEquals([
-            getcwd() . '/tests/Main/Config',
+            getcwd() . '/tests/Main/Bootstrap',
             getcwd() . '/tests/Main/Console',
         ], $skipPathsResolver->resolve($lintConfig));
 
@@ -38,8 +38,8 @@ class LintSkipPathsResolverTest extends TestCase
         $this->assertEquals([], $skipPathsResolver->resolve($lintConfig));
 
         // Test case 6: Skip path starting with DIRECTORY_SEPARATOR
-        $lintConfig->skip([DIRECTORY_SEPARATOR . 'tests/Main/Config']);
-        $this->assertEquals([getcwd() . '/tests/Main/Config'], $skipPathsResolver->resolve($lintConfig));
+        $lintConfig->skip([DIRECTORY_SEPARATOR . 'tests/Main/Bootstrap']);
+        $this->assertEquals([getcwd() . '/tests/Main/Bootstrap'], $skipPathsResolver->resolve($lintConfig));
 
         // Test case 7: One skip path from root directory
         $lintConfig->skip([__DIR__]);

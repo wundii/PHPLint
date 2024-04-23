@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PHPLint\Tests\Main\Config;
+namespace PHPLint\Tests\Init\Config;
 
 use PHPLint\Config\LintConfigParameter;
 use PHPLint\Config\OptionEnum;

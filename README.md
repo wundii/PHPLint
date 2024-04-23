@@ -16,11 +16,16 @@ composer require wundii/phplint --dev
 ```shell
 php vendor/bin/phplint
 php vendor/bin/phplint --config=phplint.php
+php vendor/bin/phplint init
+php vendor/bin/phplint list
 php vendor/bin/phplint --help
+php vendor/bin/phplint --no-config
+php vendor/bin/phplint --no-config --paths=src --paths=tests --skip=vendor
 ```
 
 ### Functionality over the config file (phplint.php)
 + php cgi executable (default: php)
++ php extension (default: php)
 + paths (default: src)
 + skip
 + memory limit (default: 512M)
@@ -57,6 +62,10 @@ composer complete-check
 + [x] refactor LintConsoleOutput class
 + [x] refactor LintConfig class
 + [ ] skip classes
++ [x] run without config file
++ [x] test BootstrapInputResolver
++ [x] test createLintConfigFromInput
++ [x] test no-config with config options
 
 ## Feedback and Contributions
 I welcome feedback, bug reports and contributions from the community! 

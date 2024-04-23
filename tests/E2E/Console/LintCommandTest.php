@@ -6,6 +6,7 @@ namespace PHPLint\Tests\E2E\Console;
 
 use PHPLint\Bootstrap\BootstrapConfigInitializer;
 use PHPLint\Bootstrap\BootstrapConfigResolver;
+use PHPLint\Bootstrap\BootstrapInputResolver;
 use PHPLint\Config\LintConfig;
 use PHPLint\Console\Commands\LintCommand;
 use PHPLint\Console\LintApplication;
@@ -23,17 +24,29 @@ class LintCommandTest extends TestCase
 {
     private StreamOutput $consoleOutput;
 
-    public function createLintCommand(LintConfig $lintConfig): CommandTester
+    public function createLintCommand(LintConfig $lintConfig, array $argvInput = []): CommandTester
     {
-        $consoleInput = new ArgvInput();
+        if ($argvInput !== []) {
+            $first = $argvInput[0] ?? null;
+            if ($first !== 'bin/phplint') {
+                $argvInput = [
+                    'bin/phplint',
+                    ...$argvInput,
+                ];
+            }
+        }
+
+        $consoleInput = new ArgvInput($argvInput);
         $this->consoleOutput = new StreamOutput(fopen('php://memory', 'w', false));
         $lintConsoleOutput = new LintSymfonyStyle($lintConfig, $consoleInput, $this->consoleOutput);
         $bootstrapConfigInitializer = new BootstrapConfigInitializer(new Filesystem(), $lintConsoleOutput);
-        $bootstrapConfigResolver = new BootstrapConfigResolver();
+        $bootstrapInputResolver = new BootstrapInputResolver($consoleInput);
+        $bootstrapConfigResolver = new BootstrapConfigResolver($bootstrapInputResolver);
 
         $lintCommand = new LintCommand(
             $bootstrapConfigInitializer,
             $bootstrapConfigResolver,
+            $bootstrapInputResolver,
             $lintConfig,
             new LintFinder(
                 new LintSkipPathsResolver(),
@@ -65,7 +78,7 @@ class LintCommandTest extends TestCase
         $display = $lintCommand->getDisplay(true);
         $firstDisplayLine = explode("\n", $display)[0];
 
-        preg_match('/>\s(.)/', $firstDisplayLine, $matches);
+        preg_match('/>\s(.?)/', $firstDisplayLine, $matches);
 
         $this->assertCount(2, $matches, 'First line should contain the command (' . $firstDisplayLine . ')');
         $this->assertStringContainsString('PHPLint ' . LintApplication::VERSION . ' - current PHP version: ' . PHP_VERSION, $display);
@@ -93,5 +106,36 @@ class LintCommandTest extends TestCase
         $lintCommand = $this->createLintCommand($lintConfig);
 
         $this->assertSame(0, $lintCommand->execute([]));
+    }
+
+    public function testEndToEndNoConfigWithOptionsFail()
+    {
+        $lintConfig = new LintConfig();
+        $lintConfig->paths(['tests/FaultyFiles']);
+
+        $lintCommand = $this->createLintCommand($lintConfig, [
+            '--no-progress-bar',
+        ]);
+        $execute = $lintCommand->execute([]);
+        $display = $lintCommand->getDisplay(true);
+
+        $this->assertSame(1, $execute);
+        $this->assertStringContainsString('3/3 [▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓] 100%', $display);
+    }
+
+    public function testEndToEndNoConfigWithOptionsSuccess()
+    {
+        $lintConfig = new LintConfig();
+        $lintConfig->paths(['tests/FaultyFiles']);
+
+        $lintCommand = $this->createLintCommand($lintConfig, [
+            '--no-config',
+            '--no-progress-bar',
+        ]);
+        $execute = $lintCommand->execute([]);
+        $display = $lintCommand->getDisplay(true);
+
+        $this->assertSame(1, $execute);
+        $this->assertStringNotContainsString('3/3 [▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓] 100%', $display);
     }
 }

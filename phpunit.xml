@@ -16,9 +16,12 @@
     <server name="SHELL_VERBOSITY" value="-1"/>
   </php>
   <testsuites>
+    <testsuite name="init">
+      <file>tests/Init/Bootstrap/BootstrapInputResolverTest.php</file>
+      <file>tests/Init/Config/LintConfigParameterTest.php</file>
+      <file>tests/Init/Config/LintConfigTest.php</file>
+    </testsuite>
     <testsuite name="main">
-      <file>tests/Main/Config/LintConfigParameterTest.php</file>
-      <file>tests/Main/Config/LintConfigTest.php</file>
       <directory>tests/Main/Resolver/Config</directory>
       <directory>tests/Main/Bootstrap</directory>
       <directory>tests/Main/DependencyInjection</directory>

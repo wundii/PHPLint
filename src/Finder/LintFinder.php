@@ -8,6 +8,7 @@ use ArrayIterator;
 use Iterator;
 use LogicException;
 use PHPLint\Config\LintConfig;
+use PHPLint\Config\OptionEnum;
 use PHPLint\Resolver\Config\LintPathsResolver;
 use PHPLint\Resolver\Config\LintSkipPathsResolver;
 use Symfony\Component\Finder\Finder;
@@ -25,6 +26,7 @@ final class LintFinder extends Finder
     public function getFilesFromLintConfig(LintConfig $lintConfig): self
     {
         $excludes = $this->lintSkipPathsResolver->resolve($lintConfig);
+        $extension = $lintConfig->getString(OptionEnum::PHP_CGI_EXECUTABLE);
 
         foreach ($this->lintPathsResolver->resolve($lintConfig) as $path) {
             if (! is_dir($path) && ! is_file($path)) {
@@ -32,7 +34,7 @@ final class LintFinder extends Finder
             }
 
             if (is_dir($path)) {
-                $this->append($this->getFinderFromPath($path, $excludes));
+                $this->append($this->getFinderFromPath($extension, $path, $excludes));
                 continue;
             }
 
@@ -45,9 +47,9 @@ final class LintFinder extends Finder
     }
 
     /**
-     * @param array<string> $excludes
+     * @param string[] $excludes
      */
-    public function getFinderFromPath(string $path, array $excludes = []): Finder
+    public function getFinderFromPath(string $extension, string $path, array $excludes = []): Finder
     {
         $finder = new Finder();
 
@@ -57,7 +59,7 @@ final class LintFinder extends Finder
         }
 
         $finder->files();
-        $finder->name('*.php');
+        $finder->name('*.' . $extension);
         $finder->in($path);
 
         foreach ($excludes as $exclude) {

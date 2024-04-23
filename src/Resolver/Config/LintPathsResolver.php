@@ -10,12 +10,12 @@ use PHPLint\Config\OptionEnum;
 final class LintPathsResolver
 {
     /**
-     * @var array<string>
+     * @var string[]
      */
     private array $paths = [];
 
     /**
-     * @return array<string>
+     * @return string[]
      */
     public function resolve(LintConfigParameter $lintConfigParameter): array
     {

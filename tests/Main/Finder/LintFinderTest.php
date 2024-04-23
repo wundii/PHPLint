@@ -65,7 +65,7 @@ class LintFinderTest extends TestCase
             new LintSkipPathsResolver(),
             new LintPathsResolver(),
         );
-        $result = $lintFinder->getFinderFromPath(__DIR__ . '/Files');
+        $result = $lintFinder->getFinderFromPath('php', __DIR__ . '/Files');
 
         $this->assertInstanceOf(Finder::class, $result);
         $this->assertTrue($result->hasResults());

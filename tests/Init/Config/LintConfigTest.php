@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PHPLint\Tests\Main\Config;
+namespace PHPLint\Tests\Init\Config;
 
 use PHPLint\Config\LintConfig;
 use PHPLint\Config\OptionEnum;
@@ -184,5 +184,35 @@ class LintConfigTest extends TestCase
         $lintConfig->memoryLimit('1G');
 
         $this->assertEquals('1G', $lintConfig->getString(OptionEnum::MEMORY_LIMIT));
+    }
+
+    public function testGetDefaultPhpCgiExecutable()
+    {
+        $lintConfig = new LintConfig();
+
+        $this->assertEquals('php', $lintConfig->getString(OptionEnum::PHP_CGI_EXECUTABLE));
+    }
+
+    public function testSetPhpCgiExecutable()
+    {
+        $lintConfig = new LintConfig();
+        $lintConfig->phpCgiExecutable('php.exe');
+
+        $this->assertEquals('php.exe', $lintConfig->getString(OptionEnum::PHP_CGI_EXECUTABLE));
+    }
+
+    public function testGetDefaultPhpExtension()
+    {
+        $lintConfig = new LintConfig();
+
+        $this->assertEquals('php', $lintConfig->getString(OptionEnum::PHP_EXTENSION));
+    }
+
+    public function testSetPhpExtension()
+    {
+        $lintConfig = new LintConfig();
+        $lintConfig->phpExtension('php8');
+
+        $this->assertEquals('php8', $lintConfig->getString(OptionEnum::PHP_EXTENSION));
     }
 }

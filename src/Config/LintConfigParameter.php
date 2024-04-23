@@ -51,7 +51,7 @@ class LintConfigParameter
     }
 
     /**
-     * @return array<string>
+     * @return string[]
      */
     public function getArrayWithStrings(OptionEnum $optionEnum): array
     {
