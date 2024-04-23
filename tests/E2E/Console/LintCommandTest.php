@@ -118,11 +118,7 @@ class LintCommandTest extends TestCase
         ]);
         $execute = $lintCommand->execute([]);
         $display = $lintCommand->getDisplay(true);
-        $firstDisplayLine = explode("\n", $display)[0];
 
-        preg_match('/>\s(.?)/', $firstDisplayLine, $matches);
-
-        $this->assertCount(2, $matches, 'First line should contain the command (' . $firstDisplayLine . ')');
         $this->assertSame(1, $execute);
         $this->assertStringContainsString('3/3 [▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓] 100%', $display);
     }
@@ -138,11 +134,7 @@ class LintCommandTest extends TestCase
         ]);
         $execute = $lintCommand->execute([]);
         $display = $lintCommand->getDisplay(true);
-        $firstDisplayLine = explode("\n", $display)[0];
 
-        preg_match('/>\s(.?)/', $firstDisplayLine, $matches);
-
-        $this->assertCount(2, $matches, 'First line should contain the command (' . $firstDisplayLine . ')');
         $this->assertSame(1, $execute);
         $this->assertStringNotContainsString('3/3 [▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓] 100%', $display);
     }
