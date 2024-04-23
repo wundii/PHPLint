@@ -12,14 +12,9 @@ class StatusEnumTest extends TestCase
 {
     public static function enumValues(): array
     {
-        $values = [];
-
         $reflectionEnum = new ReflectionEnum(StatusEnum::class);
-        foreach ($reflectionEnum->getCases() as $case) {
-            $values[] = $case->getValue();
-        }
 
-        return $values;
+        return array_map(static fn($enum) => $enum->getValue(), $reflectionEnum->getCases());
     }
 
     public function testAllStatusNamesAreUnique()
