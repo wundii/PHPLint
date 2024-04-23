@@ -31,7 +31,7 @@ class LintCommandTest extends TestCase
             if ($first !== 'bin/phplint') {
                 $argvInput = [
                     'bin/phplint',
-                    ...$argvInput
+                    ...$argvInput,
                 ];
             }
         }
@@ -114,7 +114,7 @@ class LintCommandTest extends TestCase
         $lintConfig->paths(['tests/FaultyFiles']);
 
         $lintCommand = $this->createLintCommand($lintConfig, [
-            '--no-progress-bar'
+            '--no-progress-bar',
         ]);
         $execute = $lintCommand->execute([]);
         $display = $lintCommand->getDisplay(true);

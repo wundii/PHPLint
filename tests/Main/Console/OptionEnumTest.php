@@ -172,7 +172,7 @@ class OptionEnumTest extends TestCase
         $expected = new LintConfig();
         $expected->paths([
             'src/',
-            'vendor/'
+            'vendor/',
         ]);
         $lintConfig = OptionEnum::createLintConfigFromInput($bootstrapInputResolver);
 
@@ -195,7 +195,7 @@ class OptionEnumTest extends TestCase
         $expected = new LintConfig();
         $expected->skip([
             'test/',
-            'var/'
+            'var/',
         ]);
         $lintConfig = OptionEnum::createLintConfigFromInput($bootstrapInputResolver);
 
