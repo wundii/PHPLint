@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PHPLint\Tests\Main\Bootstrap;
+namespace PHPLint\Tests\Init\Bootstrap;
 
 use PHPLint\Bootstrap\BootstrapInputResolver;
 use PHPLint\Console\OptionEnum;
@@ -76,5 +76,7 @@ class BootstrapInputResolverTest extends TestCase
         $_SERVER['argv'] = ['bin/phplint', '--paths=' . $path1, '--paths=' . $path2];
         $inputResolver = new BootstrapInputResolver(new ArgvInput(['bin/phplint', '--path=' . $path1, '--path=' . $path2]));
         $this->assertEquals([$path1, $path2], $inputResolver->getOptionArray(OptionEnum::PATHS));
+
+        unset($_SERVER['argv']);
     }
 }

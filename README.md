@@ -63,8 +63,8 @@ composer complete-check
 + [ ] skip classes
 + [x] run without config file
 + [x] test BootstrapInputResolver
-+ [ ] test createLintConfigFromInput
-+ [ ] test no-config with config options
++ [x] test createLintConfigFromInput
++ [x] test no-config with config options
 
 ## Feedback and Contributions
 I welcome feedback, bug reports and contributions from the community! 

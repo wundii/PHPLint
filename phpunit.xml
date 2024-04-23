@@ -16,10 +16,10 @@
     <server name="SHELL_VERBOSITY" value="-1"/>
   </php>
   <testsuites>
-    <testsuite name="pre">
-      <file>tests/Main/Bootstrap/BootstrapInputResolverTest.php</file>
-      <file>tests/Main/Config/LintConfigParameterTest.php</file>
-      <file>tests/Main/Config/LintConfigTest.php</file>
+    <testsuite name="init">
+      <file>tests/Init/Bootstrap/BootstrapInputResolverTest.php</file>
+      <file>tests/Init/Config/LintConfigParameterTest.php</file>
+      <file>tests/Init/Config/LintConfigTest.php</file>
     </testsuite>
     <testsuite name="main">
       <directory>tests/Main/Resolver/Config</directory>
@@ -30,7 +30,6 @@
       <directory>tests/Main/Process</directory>
       <directory>tests/Main/Lint</directory>
       <directory>tests/Main/Console</directory>
-      <exclude>tests/Main/Bootstrap/BootstrapInputResolverTest.php</exclude>
     </testsuite>
     <testsuite name="e2e">
       <directory>tests/E2E/Console</directory>
