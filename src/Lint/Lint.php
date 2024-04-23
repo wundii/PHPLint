@@ -93,7 +93,7 @@ final class Lint
         $command = [PHP_BINARY];
 
         if (PHP_SAPI !== 'cli') {
-            $command = [PHP_BINARY . DIRECTORY_SEPARATOR . 'php'];
+            $command = [PHP_BINARY . DIRECTORY_SEPARATOR . $this->lintConfig->getString(OptionEnum::PHP_CGI_EXECUTABLE)];
         }
 
         $command[] = '-d display_errors=1';

@@ -116,6 +116,20 @@ class OptionEnumTest extends TestCase
         $this->assertEquals($expected, $lintConfig);
     }
 
+    public function testCreateLintConfigFromInputPhpExtension()
+    {
+        unset($_SERVER['argv']);
+        $bootstrapInputResolver = new BootstrapInputResolver(
+            new ArgvInput(['bin/phplint', OptionEnum::PHP_EXTENSION->getName(), 'php3'])
+        );
+
+        $expected = new LintConfig();
+        $expected->phpExtension('php3');
+        $lintConfig = OptionEnum::createLintConfigFromInput($bootstrapInputResolver);
+
+        $this->assertEquals($expected, $lintConfig);
+    }
+
     public function testCreateLintConfigFromInputNoExitCode()
     {
         unset($_SERVER['argv']);
@@ -196,14 +210,16 @@ class OptionEnumTest extends TestCase
             new ArgvInput(['bin/phplint',
                 OptionEnum::ASYNC_PROCESS->getName(), '8',
                 OptionEnum::MEMORY_LIMIT->getName(), '128M',
+                OptionEnum::PHP_EXTENSION->getName(), 'php4',
                 OptionEnum::NO_PROGRESS_BAR->getName(),
             ])
         );
 
         $expected = new LintConfig();
         $expected->asyncProcess(8);
-        $expected->memoryLimit('128M');
         $expected->disableProcessBar();
+        $expected->memoryLimit('128M');
+        $expected->phpExtension('php4');
         $lintConfig = OptionEnum::createLintConfigFromInput($bootstrapInputResolver);
 
         $this->assertEquals($expected, $lintConfig);

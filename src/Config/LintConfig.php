@@ -25,6 +25,7 @@ final class LintConfig extends LintConfigParameter
         $this->setParameter(OptionEnum::NO_EXIT_CODE, false);
         $this->setParameter(OptionEnum::NO_PROGRESS_BAR, false);
         $this->setParameter(OptionEnum::PHP_CGI_EXECUTABLE, 'php');
+        $this->setParameter(OptionEnum::PHP_EXTENSION, 'php');
     }
 
     public function asyncProcess(int $asyncProcess): void
@@ -83,6 +84,11 @@ final class LintConfig extends LintConfigParameter
     public function phpCgiExecutable(string $string): void
     {
         $this->setParameter(OptionEnum::PHP_CGI_EXECUTABLE, $string);
+    }
+
+    public function phpExtension(string $string): void
+    {
+        $this->setParameter(OptionEnum::PHP_EXTENSION, $string);
     }
 
     /**

@@ -185,4 +185,34 @@ class LintConfigTest extends TestCase
 
         $this->assertEquals('1G', $lintConfig->getString(OptionEnum::MEMORY_LIMIT));
     }
+
+    public function testGetDefaultPhpCgiExecutable()
+    {
+        $lintConfig = new LintConfig();
+
+        $this->assertEquals('php', $lintConfig->getString(OptionEnum::PHP_CGI_EXECUTABLE));
+    }
+
+    public function testSetPhpCgiExecutable()
+    {
+        $lintConfig = new LintConfig();
+        $lintConfig->phpCgiExecutable('php.exe');
+
+        $this->assertEquals('php.exe', $lintConfig->getString(OptionEnum::PHP_CGI_EXECUTABLE));
+    }
+
+    public function testGetDefaultPhpExtension()
+    {
+        $lintConfig = new LintConfig();
+
+        $this->assertEquals('php', $lintConfig->getString(OptionEnum::PHP_EXTENSION));
+    }
+
+    public function testSetPhpExtension()
+    {
+        $lintConfig = new LintConfig();
+        $lintConfig->phpExtension('php8');
+
+        $this->assertEquals('php8', $lintConfig->getString(OptionEnum::PHP_EXTENSION));
+    }
 }
