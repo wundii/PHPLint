@@ -25,6 +25,7 @@ php vendor/bin/phplint --no-config --paths=src --paths=tests --skip=vendor
 
 ### Functionality over the config file (phplint.php)
 + php cgi executable (default: php)
++ php extension (default: php)
 + paths (default: src)
 + skip
 + memory limit (default: 512M)
