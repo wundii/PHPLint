@@ -61,11 +61,11 @@ composer complete-check
 + [x] add symfony cache-system
 + [x] refactor LintConsoleOutput class
 + [x] refactor LintConfig class
-+ [ ] skip classes
 + [x] run without config file
 + [x] test BootstrapInputResolver
 + [x] test createLintConfigFromInput
 + [x] test no-config with config options
++ [ ] extension of the documentation
 
 ## Feedback and Contributions
 I welcome feedback, bug reports and contributions from the community! 
