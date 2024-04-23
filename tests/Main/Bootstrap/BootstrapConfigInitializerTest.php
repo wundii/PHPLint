@@ -67,7 +67,7 @@ class BootstrapConfigInitializerTest extends TestCase
         $filesystem->method('exists')->willReturn(false);
         $symfonyStyle->method('ask')->willReturn('yes');
         $filesystem->expects($this->once())->method('copy')->with(
-            getcwd() . '/templates/phplint.php.dist',
+            getcwd() . '/src/Bootstrap/../../templates/phplint.php.dist',
             $configFile
         );
         $symfonyStyle->expects($this->once())->method('success')->with('The config file was generated! You can now run "bin/phplint" to lint your code.');
