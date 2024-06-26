@@ -14,7 +14,7 @@ class StatusEnumTest extends TestCase
     {
         $reflectionEnum = new ReflectionEnum(StatusEnum::class);
 
-        return array_map(static fn($enum) => $enum->getValue(), $reflectionEnum->getCases());
+        return array_map(static fn ($enum) => $enum->getValue(), $reflectionEnum->getCases());
     }
 
     public function testAllStatusNamesAreUnique()

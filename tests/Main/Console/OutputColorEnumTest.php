@@ -14,7 +14,7 @@ class OutputColorEnumTest extends TestCase
     {
         $reflectionEnum = new ReflectionEnum(OutputColorEnum::class);
 
-        return array_map(static fn($enum) => $enum->getValue(), $reflectionEnum->getCases());
+        return array_map(static fn ($enum) => $enum->getValue(), $reflectionEnum->getCases());
     }
 
     public function testAllOutputColorNamesAreUnique()
