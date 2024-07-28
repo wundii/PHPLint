@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Main\Bootstrap;
 
 use Exception;
-use Wundii\PHPLint\Bootstrap\BootstrapConfig;
 use PHPUnit\Framework\TestCase;
+use Wundii\PHPLint\Bootstrap\BootstrapConfig;
 
 class BootstrapConfigTest extends TestCase
 {

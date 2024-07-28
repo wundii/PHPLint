@@ -7,12 +7,12 @@ namespace Wundii\PHPLint\Finder;
 use ArrayIterator;
 use Iterator;
 use LogicException;
+use Symfony\Component\Finder\Finder;
+use Symfony\Component\Finder\SplFileInfo;
 use Wundii\PHPLint\Config\LintConfig;
 use Wundii\PHPLint\Config\OptionEnum;
 use Wundii\PHPLint\Resolver\Config\LintPathsResolver;
 use Wundii\PHPLint\Resolver\Config\LintSkipPathsResolver;
-use Symfony\Component\Finder\Finder;
-use Symfony\Component\Finder\SplFileInfo;
 
 final class LintFinder extends Finder
 {

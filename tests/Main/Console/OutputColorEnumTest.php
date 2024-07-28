@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Main\Console;
 
-use Wundii\PHPLint\Console\OutputColorEnum;
 use PHPUnit\Framework\TestCase;
 use ReflectionEnum;
+use Wundii\PHPLint\Console\OutputColorEnum;
 
 class OutputColorEnumTest extends TestCase
 {

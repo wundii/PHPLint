@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Wundii\PHPLint\Console;
 
+use Symfony\Component\Console\Input\InputOption;
 use Wundii\PHPLint\Bootstrap\BootstrapInputResolver;
 use Wundii\PHPLint\Config\LintConfig;
-use Symfony\Component\Console\Input\InputOption;
 
 enum OptionEnum: string
 {

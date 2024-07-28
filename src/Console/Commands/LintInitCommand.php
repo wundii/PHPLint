@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Wundii\PHPLint\Console\Commands;
 
-use Wundii\PHPLint\Bootstrap\BootstrapConfigInitializer;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Wundii\PHPLint\Bootstrap\BootstrapConfigInitializer;
 
 final class LintInitCommand extends Command
 {

@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Init\Config;
 
-use Wundii\PHPLint\Config\LintConfigParameter;
-use Wundii\PHPLint\Config\OptionEnum;
 use PHPUnit\Framework\TestCase;
 use Webmozart\Assert\InvalidArgumentException;
+use Wundii\PHPLint\Config\LintConfigParameter;
+use Wundii\PHPLint\Config\OptionEnum;
 
 class LintConfigParameterTest extends TestCase
 {

@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Wundii\PHPLint\Process;
 
-use Wundii\PHPLint\Config\LintConfig;
-use Wundii\PHPLint\Config\OptionEnum;
 use Symfony\Component\Finder\SplFileInfo;
 use Symfony\Component\Process\Process;
+use Wundii\PHPLint\Config\LintConfig;
+use Wundii\PHPLint\Config\OptionEnum;
 
 final class LintProcessTask
 {

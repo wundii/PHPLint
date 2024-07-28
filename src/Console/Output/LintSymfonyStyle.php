@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace Wundii\PHPLint\Console\Output;
 
+use Symfony\Component\Console\Helper\Helper;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
 use Wundii\PHPLint\Config\LintConfig;
 use Wundii\PHPLint\Config\OptionEnum;
 use Wundii\PHPLint\Console\OutputColorEnum;
 use Wundii\PHPLint\Process\LintProcessResult;
 use Wundii\PHPLint\Process\StatusEnum;
-use Symfony\Component\Console\Helper\Helper;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Style\SymfonyStyle;
 
 final class LintSymfonyStyle extends SymfonyStyle
 {

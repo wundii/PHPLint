@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Main\Process;
 
-use Wundii\PHPLint\Process\StatusEnum;
 use PHPUnit\Framework\TestCase;
 use ReflectionEnum;
+use Wundii\PHPLint\Process\StatusEnum;
 
 class StatusEnumTest extends TestCase
 {

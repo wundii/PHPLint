@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Init\Config;
 
-use Wundii\PHPLint\Config\LintConfig;
-use Wundii\PHPLint\Config\OptionEnum;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Cache\Adapter\ArrayAdapter;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 use Symfony\Component\Cache\Adapter\NullAdapter;
+use Wundii\PHPLint\Config\LintConfig;
+use Wundii\PHPLint\Config\OptionEnum;
 
 class LintConfigTest extends TestCase
 {

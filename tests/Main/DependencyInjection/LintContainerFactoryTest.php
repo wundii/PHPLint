@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace Main\DependencyInjection;
 
 use Exception;
-use Wundii\PHPLint\Config\LintConfig;
-use Wundii\PHPLint\Config\OptionEnum;
-use Wundii\PHPLint\DependencyInjection\LintContainerFactory;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Wundii\PHPLint\Config\LintConfig;
+use Wundii\PHPLint\Config\OptionEnum;
+use Wundii\PHPLint\DependencyInjection\LintContainerFactory;
 
 class LintContainerFactoryTest extends TestCase
 {

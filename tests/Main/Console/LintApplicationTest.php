@@ -5,6 +5,13 @@ declare(strict_types=1);
 namespace Main\Console;
 
 use Exception;
+use PHPUnit\Framework\TestCase;
+use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\ArgvInput;
+use Symfony\Component\Console\Output\StreamOutput;
+use Symfony\Component\Console\Tester\ApplicationTester;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\Filesystem\Filesystem;
 use Wundii\PHPLint\Bootstrap\BootstrapConfigInitializer;
 use Wundii\PHPLint\Bootstrap\BootstrapConfigResolver;
 use Wundii\PHPLint\Bootstrap\BootstrapInputResolver;
@@ -16,13 +23,6 @@ use Wundii\PHPLint\Console\Output\LintSymfonyStyle;
 use Wundii\PHPLint\Finder\LintFinder;
 use Wundii\PHPLint\Resolver\Config\LintPathsResolver;
 use Wundii\PHPLint\Resolver\Config\LintSkipPathsResolver;
-use PHPUnit\Framework\TestCase;
-use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\ArgvInput;
-use Symfony\Component\Console\Output\StreamOutput;
-use Symfony\Component\Console\Tester\ApplicationTester;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\Filesystem\Filesystem;
 
 class LintApplicationTest extends TestCase
 {

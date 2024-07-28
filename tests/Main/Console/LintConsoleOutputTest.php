@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Main\Console;
 
+use PHPUnit\Framework\TestCase;
+use Symfony\Component\Console\Input\ArgvInput;
+use Symfony\Component\Console\Output\StreamOutput;
 use Wundii\PHPLint\Config\LintConfig;
 use Wundii\PHPLint\Console\Output\LintSymfonyStyle;
 use Wundii\PHPLint\Process\LintProcessResult;
 use Wundii\PHPLint\Process\StatusEnum;
-use PHPUnit\Framework\TestCase;
-use Symfony\Component\Console\Input\ArgvInput;
-use Symfony\Component\Console\Output\StreamOutput;
 
 class LintConsoleOutputTest extends TestCase
 {

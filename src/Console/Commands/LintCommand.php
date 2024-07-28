@@ -5,6 +5,10 @@ declare(strict_types=1);
 namespace Wundii\PHPLint\Console\Commands;
 
 use Exception;
+use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Helper\Helper;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 use Wundii\PHPLint\Bootstrap\BootstrapConfigInitializer;
 use Wundii\PHPLint\Bootstrap\BootstrapConfigResolver;
 use Wundii\PHPLint\Bootstrap\BootstrapInputResolver;
@@ -15,10 +19,6 @@ use Wundii\PHPLint\Console\OptionEnum;
 use Wundii\PHPLint\Console\Output\LintSymfonyStyle;
 use Wundii\PHPLint\Finder\LintFinder;
 use Wundii\PHPLint\Lint\Lint;
-use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Helper\Helper;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
 
 final class LintCommand extends Command
 {

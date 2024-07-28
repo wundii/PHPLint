@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Main\Console;
 
-use Wundii\PHPLint\Bootstrap\BootstrapInputResolver;
-use Wundii\PHPLint\Config\LintConfig;
-use Wundii\PHPLint\Console\OptionEnum;
 use PHPUnit\Framework\TestCase;
 use ReflectionEnum;
 use Symfony\Component\Console\Input\ArgvInput;
+use Wundii\PHPLint\Bootstrap\BootstrapInputResolver;
+use Wundii\PHPLint\Config\LintConfig;
+use Wundii\PHPLint\Console\OptionEnum;
 
 class OptionEnumTest extends TestCase
 {

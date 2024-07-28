@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Main\Bootstrap;
 
-use Wundii\PHPLint\Bootstrap\BootstrapConfigInitializer;
 use PHPUnit\Framework\MockObject\Exception;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Filesystem;
+use Wundii\PHPLint\Bootstrap\BootstrapConfigInitializer;
 
 class BootstrapConfigInitializerTest extends TestCase
 {

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Main\Resolver\Config;
 
+use PHPUnit\Framework\TestCase;
 use Wundii\PHPLint\Config\LintConfig;
 use Wundii\PHPLint\Resolver\Config\LintSkipPathsResolver;
-use PHPUnit\Framework\TestCase;
 
 class LintSkipPathsResolverTest extends TestCase
 {

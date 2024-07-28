@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Init\Bootstrap;
 
-use Wundii\PHPLint\Bootstrap\BootstrapInputResolver;
-use Wundii\PHPLint\Console\OptionEnum;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Input\ArgvInput;
+use Wundii\PHPLint\Bootstrap\BootstrapInputResolver;
+use Wundii\PHPLint\Console\OptionEnum;
 
 class BootstrapInputResolverTest extends TestCase
 {

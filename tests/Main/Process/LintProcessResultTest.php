@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Main\Process;
 
+use PHPUnit\Framework\TestCase;
 use Wundii\PHPLint\Process\LintProcessResult;
 use Wundii\PHPLint\Process\StatusEnum;
-use PHPUnit\Framework\TestCase;
 
 class LintProcessResultTest extends TestCase
 {

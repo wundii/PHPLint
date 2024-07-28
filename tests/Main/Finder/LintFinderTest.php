@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace Main\Finder;
 
 use Iterator;
+use PHPUnit\Framework\TestCase;
+use Symfony\Component\Finder\Finder;
 use Wundii\PHPLint\Config\LintConfig;
 use Wundii\PHPLint\Finder\LintFinder;
 use Wundii\PHPLint\Resolver\Config\LintPathsResolver;
 use Wundii\PHPLint\Resolver\Config\LintSkipPathsResolver;
-use PHPUnit\Framework\TestCase;
-use Symfony\Component\Finder\Finder;
 
 class LintFinderTest extends TestCase
 {

@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Main\Cache;
 
-use Wundii\PHPLint\Cache\LintCache;
 use PHPUnit\Framework\TestCase;
 use Psr\Cache\InvalidArgumentException;
 use Symfony\Component\Cache\Adapter\ArrayAdapter;
 use Symfony\Component\Filesystem\Filesystem;
+use Wundii\PHPLint\Cache\LintCache;
 
 class LintCacheTest extends TestCase
 {

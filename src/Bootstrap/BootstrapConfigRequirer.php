@@ -6,9 +6,9 @@ namespace Wundii\PHPLint\Bootstrap;
 
 use Closure;
 use Exception;
-use Wundii\PHPLint\Config\LintConfig;
 use ReflectionFunction;
 use ReflectionNamedType;
+use Wundii\PHPLint\Config\LintConfig;
 
 final class BootstrapConfigRequirer
 {

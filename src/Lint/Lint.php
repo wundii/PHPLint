@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Wundii\PHPLint\Lint;
 
+use Symfony\Component\Cache\Adapter\AbstractAdapter;
+use Symfony\Component\Process\Process;
 use Wundii\PHPLint\Cache\LintCache;
 use Wundii\PHPLint\Config\LintConfig;
 use Wundii\PHPLint\Config\OptionEnum;
@@ -12,8 +14,6 @@ use Wundii\PHPLint\Finder\LintFinder;
 use Wundii\PHPLint\Process\LintProcessResult;
 use Wundii\PHPLint\Process\LintProcessTask;
 use Wundii\PHPLint\Process\StatusEnum;
-use Symfony\Component\Cache\Adapter\AbstractAdapter;
-use Symfony\Component\Process\Process;
 
 final class Lint
 {

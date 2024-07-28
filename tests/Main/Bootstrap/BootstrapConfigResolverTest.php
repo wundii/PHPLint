@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace Main\Bootstrap;
 
 use Exception;
+use PHPUnit\Framework\TestCase;
+use Symfony\Component\Console\Input\ArgvInput;
 use Wundii\PHPLint\Bootstrap\BootstrapConfig;
 use Wundii\PHPLint\Bootstrap\BootstrapConfigResolver;
 use Wundii\PHPLint\Bootstrap\BootstrapInputResolver;
-use PHPUnit\Framework\TestCase;
-use Symfony\Component\Console\Input\ArgvInput;
 
 class BootstrapConfigResolverTest extends TestCase
 {

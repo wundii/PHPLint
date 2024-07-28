@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace Main\Lint;
 
+use PHPUnit\Framework\TestCase;
+use Symfony\Component\Console\Input\ArgvInput;
+use Symfony\Component\Console\Output\StreamOutput;
+use Symfony\Component\Process\Process;
 use Wundii\PHPLint\Config\LintConfig;
 use Wundii\PHPLint\Console\Output\LintSymfonyStyle;
 use Wundii\PHPLint\Finder\LintFinder;
@@ -12,10 +16,6 @@ use Wundii\PHPLint\Process\LintProcessResult;
 use Wundii\PHPLint\Process\StatusEnum;
 use Wundii\PHPLint\Resolver\Config\LintPathsResolver;
 use Wundii\PHPLint\Resolver\Config\LintSkipPathsResolver;
-use PHPUnit\Framework\TestCase;
-use Symfony\Component\Console\Input\ArgvInput;
-use Symfony\Component\Console\Output\StreamOutput;
-use Symfony\Component\Process\Process;
 
 class LintTest extends TestCase
 {
