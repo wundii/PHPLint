@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace PHPLint\Tests\Main\Bootstrap;
+namespace Main\Bootstrap;
 
 use Exception;
-use PHPLint\Bootstrap\BootstrapConfig;
 use PHPUnit\Framework\TestCase;
+use Wundii\PHPLint\Bootstrap\BootstrapConfig;
 
 class BootstrapConfigTest extends TestCase
 {

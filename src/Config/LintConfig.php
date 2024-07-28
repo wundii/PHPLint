@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PHPLint\Config;
+namespace Wundii\PHPLint\Config;
 
 use Symfony\Component\Cache\Adapter\AbstractAdapter;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;

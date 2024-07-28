@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace PHPLint\Console;
+namespace Wundii\PHPLint\Console;
 
-use PHPLint\Bootstrap\BootstrapInputResolver;
-use PHPLint\Config\LintConfig;
 use Symfony\Component\Console\Input\InputOption;
+use Wundii\PHPLint\Bootstrap\BootstrapInputResolver;
+use Wundii\PHPLint\Config\LintConfig;
 
 enum OptionEnum: string
 {

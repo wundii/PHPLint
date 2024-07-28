@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace PHPLint\Tests\Main\Cache;
+namespace Main\Cache;
 
-use PHPLint\Cache\LintCache;
 use PHPUnit\Framework\TestCase;
 use Psr\Cache\InvalidArgumentException;
 use Symfony\Component\Cache\Adapter\ArrayAdapter;
 use Symfony\Component\Filesystem\Filesystem;
+use Wundii\PHPLint\Cache\LintCache;
 
 class LintCacheTest extends TestCase
 {

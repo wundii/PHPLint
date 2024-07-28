@@ -2,11 +2,8 @@
 
 declare(strict_types=1);
 
-namespace PHPLint\Console;
+namespace Wundii\PHPLint\Console;
 
-use PHPLint\Bootstrap\BootstrapConfig;
-use PHPLint\Console\Commands\LintCommand;
-use PHPLint\Console\Commands\LintInitCommand;
 use Symfony\Component\Console\Application as BaseApplication;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\ArgvInput;
@@ -16,6 +13,9 @@ use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Throwable;
+use Wundii\PHPLint\Bootstrap\BootstrapConfig;
+use Wundii\PHPLint\Console\Commands\LintCommand;
+use Wundii\PHPLint\Console\Commands\LintInitCommand;
 
 final class LintApplication extends BaseApplication
 {

@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace PHPLint\Tests\Init\Config;
+namespace Init\Config;
 
-use PHPLint\Config\LintConfigParameter;
-use PHPLint\Config\OptionEnum;
 use PHPUnit\Framework\TestCase;
 use Webmozart\Assert\InvalidArgumentException;
+use Wundii\PHPLint\Config\LintConfigParameter;
+use Wundii\PHPLint\Config\OptionEnum;
 
 class LintConfigParameterTest extends TestCase
 {

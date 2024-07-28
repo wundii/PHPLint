@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PHPLint\Console;
+namespace Wundii\PHPLint\Console;
 
 enum OutputColorEnum: string
 {

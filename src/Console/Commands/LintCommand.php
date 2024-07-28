@@ -2,23 +2,23 @@
 
 declare(strict_types=1);
 
-namespace PHPLint\Console\Commands;
+namespace Wundii\PHPLint\Console\Commands;
 
 use Exception;
-use PHPLint\Bootstrap\BootstrapConfigInitializer;
-use PHPLint\Bootstrap\BootstrapConfigResolver;
-use PHPLint\Bootstrap\BootstrapInputResolver;
-use PHPLint\Config\LintConfig;
-use PHPLint\Config\OptionEnum as ConfigOptionEnum;
-use PHPLint\Console\LintApplication;
-use PHPLint\Console\OptionEnum;
-use PHPLint\Console\Output\LintSymfonyStyle;
-use PHPLint\Finder\LintFinder;
-use PHPLint\Lint\Lint;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\Helper;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Wundii\PHPLint\Bootstrap\BootstrapConfigInitializer;
+use Wundii\PHPLint\Bootstrap\BootstrapConfigResolver;
+use Wundii\PHPLint\Bootstrap\BootstrapInputResolver;
+use Wundii\PHPLint\Config\LintConfig;
+use Wundii\PHPLint\Config\OptionEnum as ConfigOptionEnum;
+use Wundii\PHPLint\Console\LintApplication;
+use Wundii\PHPLint\Console\OptionEnum;
+use Wundii\PHPLint\Console\Output\LintSymfonyStyle;
+use Wundii\PHPLint\Finder\LintFinder;
+use Wundii\PHPLint\Lint\Lint;
 
 final class LintCommand extends Command
 {

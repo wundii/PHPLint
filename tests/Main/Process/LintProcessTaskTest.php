@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace PHPLint\Tests\Main\Process;
+namespace Main\Process;
 
-use PHPLint\Config\LintConfig;
-use PHPLint\Process\LintProcessResult;
-use PHPLint\Process\LintProcessTask;
-use PHPLint\Process\StatusEnum;
 use PHPUnit\Framework\MockObject\Exception;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Finder\SplFileInfo;
 use Symfony\Component\Process\Process;
+use Wundii\PHPLint\Config\LintConfig;
+use Wundii\PHPLint\Process\LintProcessResult;
+use Wundii\PHPLint\Process\LintProcessTask;
+use Wundii\PHPLint\Process\StatusEnum;
 
 class LintProcessTaskTest extends TestCase
 {

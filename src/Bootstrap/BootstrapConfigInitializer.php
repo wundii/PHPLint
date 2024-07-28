@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PHPLint\Bootstrap;
+namespace Wundii\PHPLint\Bootstrap;
 
 use Exception;
 use Symfony\Component\Console\Style\SymfonyStyle;

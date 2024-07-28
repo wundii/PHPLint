@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace PHPLint\Tests\Main\Resolver\Config;
+namespace Main\Resolver\Config;
 
-use PHPLint\Config\LintConfig;
-use PHPLint\Resolver\Config\LintSkipPathsResolver;
 use PHPUnit\Framework\TestCase;
+use Wundii\PHPLint\Config\LintConfig;
+use Wundii\PHPLint\Resolver\Config\LintSkipPathsResolver;
 
 class LintSkipPathsResolverTest extends TestCase
 {

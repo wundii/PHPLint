@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace PHPLint\Tests\Main\Console;
+namespace Main\Console;
 
-use PHPLint\Console\OutputColorEnum;
 use PHPUnit\Framework\TestCase;
 use ReflectionEnum;
+use Wundii\PHPLint\Console\OutputColorEnum;
 
 class OutputColorEnumTest extends TestCase
 {

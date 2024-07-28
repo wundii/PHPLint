@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace PHPLint\Tests\Main\Bootstrap;
+namespace Main\Bootstrap;
 
 use Exception;
-use PHPLint\Bootstrap\BootstrapConfig;
-use PHPLint\Bootstrap\BootstrapConfigRequirer;
-use PHPLint\Config\LintConfig;
-use PHPLint\Config\OptionEnum;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Wundii\PHPLint\Bootstrap\BootstrapConfig;
+use Wundii\PHPLint\Bootstrap\BootstrapConfigRequirer;
+use Wundii\PHPLint\Config\LintConfig;
+use Wundii\PHPLint\Config\OptionEnum;
 
 class BootstrapConfigRequirerTest extends TestCase
 {

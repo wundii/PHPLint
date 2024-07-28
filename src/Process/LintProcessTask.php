@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace PHPLint\Process;
+namespace Wundii\PHPLint\Process;
 
-use PHPLint\Config\LintConfig;
-use PHPLint\Config\OptionEnum;
 use Symfony\Component\Finder\SplFileInfo;
 use Symfony\Component\Process\Process;
+use Wundii\PHPLint\Config\LintConfig;
+use Wundii\PHPLint\Config\OptionEnum;
 
 final class LintProcessTask
 {

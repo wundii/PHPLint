@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace PHPLint\Tests\Main\Console;
+namespace Main\Console;
 
-use PHPLint\Config\LintConfig;
-use PHPLint\Console\Output\LintSymfonyStyle;
-use PHPLint\Process\LintProcessResult;
-use PHPLint\Process\StatusEnum;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Output\StreamOutput;
+use Wundii\PHPLint\Config\LintConfig;
+use Wundii\PHPLint\Console\Output\LintSymfonyStyle;
+use Wundii\PHPLint\Process\LintProcessResult;
+use Wundii\PHPLint\Process\StatusEnum;
 
 class LintConsoleOutputTest extends TestCase
 {

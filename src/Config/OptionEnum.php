@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PHPLint\Config;
+namespace Wundii\PHPLint\Config;
 
 enum OptionEnum: string
 {

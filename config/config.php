@@ -19,7 +19,7 @@ return static function (ContainerConfigurator $container) {
         ->autoconfigure()
     ;
 
-    $services->load('PHPLint\\', __DIR__ . '/../src/')
+    $services->load('Wundii\\PHPLint\\', __DIR__ . '/../src/')
         ->public()
         ->autowire()
         ->exclude([
