@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace PHPLint\Tests\E2E\Console;
+namespace Wundii\PHPLint\Tests\E2E\Console;
 
-use PHPLint\Bootstrap\BootstrapConfigInitializer;
-use PHPLint\Bootstrap\BootstrapConfigResolver;
-use PHPLint\Bootstrap\BootstrapInputResolver;
-use PHPLint\Config\LintConfig;
-use PHPLint\Console\Commands\LintCommand;
-use PHPLint\Console\LintApplication;
-use PHPLint\Console\Output\LintSymfonyStyle;
-use PHPLint\Finder\LintFinder;
-use PHPLint\Resolver\Config\LintPathsResolver;
-use PHPLint\Resolver\Config\LintSkipPathsResolver;
+use Wundii\PHPLint\Bootstrap\BootstrapConfigInitializer;
+use Wundii\PHPLint\Bootstrap\BootstrapConfigResolver;
+use Wundii\PHPLint\Bootstrap\BootstrapInputResolver;
+use Wundii\PHPLint\Config\LintConfig;
+use Wundii\PHPLint\Console\Commands\LintCommand;
+use Wundii\PHPLint\Console\LintApplication;
+use Wundii\PHPLint\Console\Output\LintSymfonyStyle;
+use Wundii\PHPLint\Finder\LintFinder;
+use Wundii\PHPLint\Resolver\Config\LintPathsResolver;
+use Wundii\PHPLint\Resolver\Config\LintSkipPathsResolver;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Output\StreamOutput;

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PHPLint\Process;
+namespace Wundii\PHPLint\Process;
 
 enum StatusEnum: string
 {

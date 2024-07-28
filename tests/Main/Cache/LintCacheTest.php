@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace PHPLint\Tests\Main\Cache;
+namespace Wundii\PHPLint\Tests\Main\Cache;
 
-use PHPLint\Cache\LintCache;
+use Wundii\PHPLint\Cache\LintCache;
 use PHPUnit\Framework\TestCase;
 use Psr\Cache\InvalidArgumentException;
 use Symfony\Component\Cache\Adapter\ArrayAdapter;

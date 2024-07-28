@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace PHPLint\Tests\Main\Finder;
+namespace Wundii\PHPLint\Tests\Main\Finder;
 
 use Iterator;
-use PHPLint\Config\LintConfig;
-use PHPLint\Finder\LintFinder;
-use PHPLint\Resolver\Config\LintPathsResolver;
-use PHPLint\Resolver\Config\LintSkipPathsResolver;
+use Wundii\PHPLint\Config\LintConfig;
+use Wundii\PHPLint\Finder\LintFinder;
+use Wundii\PHPLint\Resolver\Config\LintPathsResolver;
+use Wundii\PHPLint\Resolver\Config\LintSkipPathsResolver;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Finder\Finder;
 

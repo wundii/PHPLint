@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace PHPLint\Resolver\Config;
+namespace Wundii\PHPLint\Resolver\Config;
 
-use PHPLint\Config\LintConfigParameter;
-use PHPLint\Config\OptionEnum;
+use Wundii\PHPLint\Config\LintConfigParameter;
+use Wundii\PHPLint\Config\OptionEnum;
 
 final class LintSkipPathsResolver
 {

@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace PHPLint\DependencyInjection;
+namespace Wundii\PHPLint\DependencyInjection;
 
 use Exception;
-use PHPLint\Bootstrap\BootstrapConfig;
-use PHPLint\Bootstrap\BootstrapConfigInitializer;
-use PHPLint\Bootstrap\BootstrapConfigRequirer;
-use PHPLint\Bootstrap\BootstrapConfigResolver;
-use PHPLint\Bootstrap\BootstrapInputResolver;
-use PHPLint\Config\LintConfig;
+use Wundii\PHPLint\Bootstrap\BootstrapConfig;
+use Wundii\PHPLint\Bootstrap\BootstrapConfigInitializer;
+use Wundii\PHPLint\Bootstrap\BootstrapConfigRequirer;
+use Wundii\PHPLint\Bootstrap\BootstrapConfigResolver;
+use Wundii\PHPLint\Bootstrap\BootstrapInputResolver;
+use Wundii\PHPLint\Config\LintConfig;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\DependencyInjection\ContainerBuilder;

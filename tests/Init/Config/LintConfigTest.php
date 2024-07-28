@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace PHPLint\Tests\Init\Config;
+namespace Wundii\PHPLint\Tests\Init\Config;
 
-use PHPLint\Config\LintConfig;
-use PHPLint\Config\OptionEnum;
+use Wundii\PHPLint\Config\LintConfig;
+use Wundii\PHPLint\Config\OptionEnum;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Cache\Adapter\ArrayAdapter;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;

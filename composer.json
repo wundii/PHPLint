@@ -33,12 +33,12 @@
   },
   "autoload": {
     "psr-4": {
-      "PHPLint\\": "src/"
+      "Wundii\\PHPLint\\": "src/"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "PHPLint\\Tests\\": "tests/"
+      "Wundii\\PHPLint\\Tests\\": "tests/"
     }
   },
   "scripts": {

@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace PHPLint\Tests\Main\Console;
+namespace Wundii\PHPLint\Tests\Main\Console;
 
-use PHPLint\Bootstrap\BootstrapInputResolver;
-use PHPLint\Config\LintConfig;
-use PHPLint\Console\OptionEnum;
+use Wundii\PHPLint\Bootstrap\BootstrapInputResolver;
+use Wundii\PHPLint\Config\LintConfig;
+use Wundii\PHPLint\Console\OptionEnum;
 use PHPUnit\Framework\TestCase;
 use ReflectionEnum;
 use Symfony\Component\Console\Input\ArgvInput;

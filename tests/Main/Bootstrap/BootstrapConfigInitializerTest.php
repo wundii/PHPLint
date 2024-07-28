@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace PHPLint\Tests\Main\Bootstrap;
+namespace Wundii\PHPLint\Tests\Main\Bootstrap;
 
-use PHPLint\Bootstrap\BootstrapConfigInitializer;
+use Wundii\PHPLint\Bootstrap\BootstrapConfigInitializer;
 use PHPUnit\Framework\MockObject\Exception;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Style\SymfonyStyle;

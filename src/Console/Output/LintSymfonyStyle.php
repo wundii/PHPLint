@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace PHPLint\Console\Output;
+namespace Wundii\PHPLint\Console\Output;
 
-use PHPLint\Config\LintConfig;
-use PHPLint\Config\OptionEnum;
-use PHPLint\Console\OutputColorEnum;
-use PHPLint\Process\LintProcessResult;
-use PHPLint\Process\StatusEnum;
+use Wundii\PHPLint\Config\LintConfig;
+use Wundii\PHPLint\Config\OptionEnum;
+use Wundii\PHPLint\Console\OutputColorEnum;
+use Wundii\PHPLint\Process\LintProcessResult;
+use Wundii\PHPLint\Process\StatusEnum;
 use Symfony\Component\Console\Helper\Helper;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;

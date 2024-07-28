@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace PHPLint\Bootstrap;
+namespace Wundii\PHPLint\Bootstrap;
 
 use Closure;
 use Exception;
-use PHPLint\Config\LintConfig;
+use Wundii\PHPLint\Config\LintConfig;
 use ReflectionFunction;
 use ReflectionNamedType;
 

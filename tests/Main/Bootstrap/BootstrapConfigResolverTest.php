@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace PHPLint\Tests\Main\Bootstrap;
+namespace Wundii\PHPLint\Tests\Main\Bootstrap;
 
 use Exception;
-use PHPLint\Bootstrap\BootstrapConfig;
-use PHPLint\Bootstrap\BootstrapConfigResolver;
-use PHPLint\Bootstrap\BootstrapInputResolver;
+use Wundii\PHPLint\Bootstrap\BootstrapConfig;
+use Wundii\PHPLint\Bootstrap\BootstrapConfigResolver;
+use Wundii\PHPLint\Bootstrap\BootstrapInputResolver;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Input\ArgvInput;
 

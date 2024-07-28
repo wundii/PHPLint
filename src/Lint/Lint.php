@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace PHPLint\Lint;
+namespace Wundii\PHPLint\Lint;
 
-use PHPLint\Cache\LintCache;
-use PHPLint\Config\LintConfig;
-use PHPLint\Config\OptionEnum;
-use PHPLint\Console\Output\LintSymfonyStyle;
-use PHPLint\Finder\LintFinder;
-use PHPLint\Process\LintProcessResult;
-use PHPLint\Process\LintProcessTask;
-use PHPLint\Process\StatusEnum;
+use Wundii\PHPLint\Cache\LintCache;
+use Wundii\PHPLint\Config\LintConfig;
+use Wundii\PHPLint\Config\OptionEnum;
+use Wundii\PHPLint\Console\Output\LintSymfonyStyle;
+use Wundii\PHPLint\Finder\LintFinder;
+use Wundii\PHPLint\Process\LintProcessResult;
+use Wundii\PHPLint\Process\LintProcessTask;
+use Wundii\PHPLint\Process\StatusEnum;
 use Symfony\Component\Cache\Adapter\AbstractAdapter;
 use Symfony\Component\Process\Process;
 

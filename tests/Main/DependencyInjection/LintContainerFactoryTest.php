@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace PHPLint\Tests\Main\DependencyInjection;
+namespace Wundii\PHPLint\Tests\Main\DependencyInjection;
 
 use Exception;
-use PHPLint\Config\LintConfig;
-use PHPLint\Config\OptionEnum;
-use PHPLint\DependencyInjection\LintContainerFactory;
+use Wundii\PHPLint\Config\LintConfig;
+use Wundii\PHPLint\Config\OptionEnum;
+use Wundii\PHPLint\DependencyInjection\LintContainerFactory;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\DependencyInjection\ContainerInterface;

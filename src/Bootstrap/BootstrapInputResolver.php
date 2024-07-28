@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace PHPLint\Bootstrap;
+namespace Wundii\PHPLint\Bootstrap;
 
-use PHPLint\Console\OptionEnum;
+use Wundii\PHPLint\Console\OptionEnum;
 use Symfony\Component\Console\Input\InputInterface;
 
 final class BootstrapInputResolver

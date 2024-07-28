@@ -2,8 +2,8 @@
 
 declare(strict_types=1);
 
-use PHPLint\Console\LintApplication;
-use PHPLint\DependencyInjection\LintContainerFactory;
+use Wundii\PHPLint\Console\LintApplication;
+use Wundii\PHPLint\DependencyInjection\LintContainerFactory;
 use Symfony\Component\Console\Input\ArgvInput;
 
 @ini_set('memory_limit', '-1');

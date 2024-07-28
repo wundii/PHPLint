@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace PHPLint\Tests\Main\Process;
+namespace Wundii\PHPLint\Tests\Main\Process;
 
-use PHPLint\Process\LintProcessResult;
-use PHPLint\Process\StatusEnum;
+use Wundii\PHPLint\Process\LintProcessResult;
+use Wundii\PHPLint\Process\StatusEnum;
 use PHPUnit\Framework\TestCase;
 
 class LintProcessResultTest extends TestCase

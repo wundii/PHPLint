@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PHPLint\Cache;
+namespace Wundii\PHPLint\Cache;
 
 use Psr\Cache\InvalidArgumentException;
 use Symfony\Component\Cache\Adapter\AdapterInterface;

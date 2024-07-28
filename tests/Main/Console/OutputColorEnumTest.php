@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace PHPLint\Tests\Main\Console;
+namespace Wundii\PHPLint\Tests\Main\Console;
 
-use PHPLint\Console\OutputColorEnum;
+use Wundii\PHPLint\Console\OutputColorEnum;
 use PHPUnit\Framework\TestCase;
 use ReflectionEnum;
 

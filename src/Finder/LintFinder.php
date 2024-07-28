@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace PHPLint\Finder;
+namespace Wundii\PHPLint\Finder;
 
 use ArrayIterator;
 use Iterator;
 use LogicException;
-use PHPLint\Config\LintConfig;
-use PHPLint\Config\OptionEnum;
-use PHPLint\Resolver\Config\LintPathsResolver;
-use PHPLint\Resolver\Config\LintSkipPathsResolver;
+use Wundii\PHPLint\Config\LintConfig;
+use Wundii\PHPLint\Config\OptionEnum;
+use Wundii\PHPLint\Resolver\Config\LintPathsResolver;
+use Wundii\PHPLint\Resolver\Config\LintSkipPathsResolver;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 
