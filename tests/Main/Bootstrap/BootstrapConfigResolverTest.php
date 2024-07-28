@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Wundii\PHPLint\Tests\Main\Bootstrap;
+namespace Main\Bootstrap;
 
 use Exception;
 use Wundii\PHPLint\Bootstrap\BootstrapConfig;

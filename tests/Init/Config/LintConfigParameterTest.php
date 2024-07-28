@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Wundii\PHPLint\Tests\Init\Config;
+namespace Init\Config;
 
 use Wundii\PHPLint\Config\LintConfigParameter;
 use Wundii\PHPLint\Config\OptionEnum;

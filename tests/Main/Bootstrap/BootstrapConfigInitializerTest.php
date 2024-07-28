@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Wundii\PHPLint\Tests\Main\Bootstrap;
+namespace Main\Bootstrap;
 
 use Wundii\PHPLint\Bootstrap\BootstrapConfigInitializer;
 use PHPUnit\Framework\MockObject\Exception;

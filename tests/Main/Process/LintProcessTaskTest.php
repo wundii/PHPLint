@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Wundii\PHPLint\Tests\Main\Process;
+namespace Main\Process;
 
 use Wundii\PHPLint\Config\LintConfig;
 use Wundii\PHPLint\Process\LintProcessResult;

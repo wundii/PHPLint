@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Wundii\PHPLint\Tests\Init\Bootstrap;
+namespace Init\Bootstrap;
 
 use Wundii\PHPLint\Bootstrap\BootstrapInputResolver;
 use Wundii\PHPLint\Console\OptionEnum;

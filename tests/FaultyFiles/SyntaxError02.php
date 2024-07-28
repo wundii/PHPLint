@@ -1,6 +1,6 @@
 <?php
 
-namespace Wundii\PHPLint\Tests\FaultyFiles;
+namespace FaultyFiles;
 
 class SyntaxError02
 {

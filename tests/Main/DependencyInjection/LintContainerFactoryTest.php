@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Wundii\PHPLint\Tests\Main\DependencyInjection;
+namespace Main\DependencyInjection;
 
 use Exception;
 use Wundii\PHPLint\Config\LintConfig;

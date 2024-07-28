@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Wundii\PHPLint\Tests\E2E\Console;
+namespace E2E\Console;
 
 use Wundii\PHPLint\Bootstrap\BootstrapConfigInitializer;
 use Wundii\PHPLint\Bootstrap\BootstrapConfigResolver;

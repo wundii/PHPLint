@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Wundii\PHPLint\Tests\Main\Console;
+namespace Main\Console;
 
 use Wundii\PHPLint\Console\OutputColorEnum;
 use PHPUnit\Framework\TestCase;

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Wundii\PHPLint\Tests\Main\Lint;
+namespace Main\Lint;
 
 use Wundii\PHPLint\Config\LintConfig;
 use Wundii\PHPLint\Console\Output\LintSymfonyStyle;

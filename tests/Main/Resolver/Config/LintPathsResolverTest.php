@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Wundii\PHPLint\Tests\Main\Resolver\Config;
+namespace Main\Resolver\Config;
 
 use Wundii\PHPLint\Config\LintConfig;
 use Wundii\PHPLint\Resolver\Config\LintPathsResolver;

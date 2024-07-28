@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Wundii\PHPLint\Tests\Main\Finder;
+namespace Main\Finder;
 
 use Iterator;
 use Wundii\PHPLint\Config\LintConfig;

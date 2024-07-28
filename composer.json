@@ -36,11 +36,6 @@
       "Wundii\\PHPLint\\": "src/"
     }
   },
-  "autoload-dev": {
-    "psr-4": {
-      "Wundii\\PHPLint\\Tests\\": "tests/"
-    }
-  },
   "scripts": {
     "auto-scripts": {
     },

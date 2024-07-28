@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Wundii\PHPLint\Tests\Main\Cache;
+namespace Main\Cache;
 
 use Wundii\PHPLint\Cache\LintCache;
 use PHPUnit\Framework\TestCase;
