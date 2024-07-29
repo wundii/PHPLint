@@ -27,13 +27,13 @@ final class LintApplication extends BaseApplication
     /**
      * @var string
      */
-    public const VERSION = '0.3.1';
+    public const VERSION = '0.3';
 
     public function __construct(
         LintCommand $lintCommand,
         LintInitCommand $lintInitCommand,
     ) {
-        parent::__construct(self::NAME, self::VERSION);
+        parent::__construct(self::NAME, self::vendorVersion());
 
         $this->add($lintCommand);
         $this->add($lintInitCommand);
@@ -53,13 +53,40 @@ final class LintApplication extends BaseApplication
         $symfonyStyle = new SymfonyStyle($argvInput, $output);
 
         $symfonyStyle->writeln('> ' . implode(' ', $argv));
-        $symfonyStyle->writeln('<fg=blue;options=bold>PHP</><fg=yellow;options=bold>Lint</> ' . self::VERSION);
+        $symfonyStyle->writeln('<fg=blue;options=bold>PHP</><fg=yellow;options=bold>Lint</> ' . self::vendorVersion());
         $symfonyStyle->newLine();
 
         $symfonyStyle->error($throwable->getMessage());
         $symfonyStyle->writeln($throwable->getTraceAsString());
 
         return Command::FAILURE;
+    }
+
+    public static function vendorVersion(): string
+    {
+        $version = self::VERSION;
+        $vendorInstallJson = getcwd() . DIRECTORY_SEPARATOR . 'vendor/composer/installed.json';
+
+        $fileContent = file_get_contents($vendorInstallJson);
+        if ($fileContent === false) {
+            return $version;
+        }
+
+        $composerJson = json_decode($fileContent, true);
+        if (! is_array($composerJson)) {
+            return $version;
+        }
+
+        $packages = $composerJson['packages'] ?? [];
+
+        foreach ($packages as $package) {
+            if ($package['name'] === 'wundii/phplint') {
+                $version = $package['version'];
+                break;
+            }
+        }
+
+        return $version;
     }
 
     private function getInputDefinition(): InputDefinition
