@@ -58,7 +58,7 @@ final class LintCommand extends Command
         $startExecuteTime = microtime(true);
 
         $output = new LintSymfonyStyle($lintConfig, $input, $output);
-        $output->startApplication(LintApplication::VERSION);
+        $output->startApplication(LintApplication::vendorVersion());
 
         $lintFinder = $this->lintFinder->getFilesFromLintConfig($lintConfig);
 
