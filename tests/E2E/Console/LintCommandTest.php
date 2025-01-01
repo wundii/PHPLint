@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace E2E\Console;
 
+use PHPUnit\Framework\Attributes\Depends;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Output\StreamOutput;
@@ -94,9 +95,7 @@ class LintCommandTest extends TestCase
         $this->assertSame(1, $lintCommand->execute([]));
     }
 
-    /**
-     * @depends testEndToEndFail
-     */
+    #[Depends('testEndToEndFail')]
     public function testEndToEndFailWithSuccessReturn()
     {
         $lintConfig = new LintConfig();

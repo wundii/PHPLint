@@ -41,6 +41,9 @@ final class LintSymfonyStyle extends SymfonyStyle
     public function startApplication(string $version): void
     {
         $argv = $_SERVER['argv'] ?? [];
+        $argv = array_values((array) $argv);
+        $argv = array_map(static fn ($value): string => is_string($value) ? $value : '', $argv);
+
         $message = sprintf(
             '<fg=blue;options=bold>PHP</><fg=yellow;options=bold>Lint</> %s - current PHP version: %s',
             $version,
