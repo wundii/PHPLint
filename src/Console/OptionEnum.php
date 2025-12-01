@@ -11,18 +11,31 @@ use Wundii\PHPLint\Config\LintConfig;
 enum OptionEnum: string
 {
     case ANSI = 'ansi';
+
     case ASYNC_PROCESS = 'async-process';
+
     case CONFIG = 'config';
+
     case HELP = 'help';
+
     case INIT = 'init';
+
     case MEMORY_LIMIT = 'memory-limit';
+
     case NO_CONFIG = 'no-config';
+
     case NO_EXIT_CODE = 'no-exit-code';
+
     case NO_PROGRESS_BAR = 'no-progress-bar';
-    case PATHS = 'paths';
+
     case PHP_EXTENSION = 'php-extension';
+
+    case PATHS = 'paths';
+
     case SKIP = 'skip';
+
     case VERBOSE = 'verbose';
+
     case VERSION = 'version';
 
     /**
@@ -59,7 +72,7 @@ enum OptionEnum: string
     {
         return [
             new InputOption(self::ASYNC_PROCESS->getName(), null, InputOption::VALUE_REQUIRED, 'Number of parallel processes'),
-            new InputOption(self::ANSI->getName(), self::ANSI->getShortcut(), InputOption::VALUE_NEGATABLE, 'Force (or disable --no-ansi) ANSI output', null),
+            new InputOption(self::ANSI->getName(), self::ANSI->getShortcut(), InputOption::VALUE_NEGATABLE, 'Force (or disable --no-ansi) ANSI output'),
             new InputOption(self::CONFIG->getName(), self::CONFIG->getShortcut(), InputOption::VALUE_REQUIRED, 'Path to config file', $defaultConfigPath),
             new InputOption(self::HELP->getName(), self::HELP->getShortcut(), InputOption::VALUE_NONE, 'Display help for the given command.'),
             new InputOption(self::MEMORY_LIMIT->getName(), null, InputOption::VALUE_REQUIRED, 'Set memory limit for linting process'),
@@ -94,12 +107,12 @@ enum OptionEnum: string
             $lintConfig->disableProcessBar();
         }
 
-        if ($bootstrapInputResolver->hasOption(self::PATHS)) {
-            $lintConfig->paths($bootstrapInputResolver->getOptionArray(self::PATHS));
-        }
-
         if ($bootstrapInputResolver->hasOption(self::PHP_EXTENSION)) {
             $lintConfig->phpExtension((string) $bootstrapInputResolver->getOptionValue(self::PHP_EXTENSION));
+        }
+
+        if ($bootstrapInputResolver->hasOption(self::PATHS)) {
+            $lintConfig->paths($bootstrapInputResolver->getOptionArray(self::PATHS));
         }
 
         if ($bootstrapInputResolver->hasOption(self::SKIP)) {

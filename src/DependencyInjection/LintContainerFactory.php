@@ -8,7 +8,6 @@ use Exception;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 use Wundii\PHPLint\Bootstrap\BootstrapConfig;
 use Wundii\PHPLint\Bootstrap\BootstrapConfigInitializer;
@@ -22,7 +21,7 @@ final class LintContainerFactory
     /**
      * @throws Exception
      */
-    public function createFromArgvInput(ArgvInput $argvInput): ContainerInterface
+    public function createFromArgvInput(ArgvInput $argvInput): ContainerBuilder
     {
         $bootstrapInputResolver = new BootstrapInputResolver($argvInput);
         $bootstrapConfigResolver = new BootstrapConfigResolver($bootstrapInputResolver);
