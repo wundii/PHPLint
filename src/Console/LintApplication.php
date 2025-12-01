@@ -35,8 +35,10 @@ final class LintApplication extends BaseApplication
     ) {
         parent::__construct(self::NAME, self::vendorVersion());
 
-        $this->add($lintCommand);
-        $this->add($lintInitCommand);
+        $this->addCommands([
+            $lintCommand,
+            $lintInitCommand,
+        ]);
         $this->setDefaultCommand('lint');
         $this->setDefinition($this->getInputDefinition());
     }
