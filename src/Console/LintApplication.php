@@ -35,8 +35,10 @@ final class LintApplication extends BaseApplication
     ) {
         parent::__construct(self::NAME, self::vendorVersion());
 
-        $this->add($lintCommand);
-        $this->add($lintInitCommand);
+        $this->addCommands([
+            $lintCommand,
+            $lintInitCommand,
+        ]);
         $this->setDefaultCommand('lint');
         $this->setDefinition($this->getInputDefinition());
     }
@@ -44,6 +46,9 @@ final class LintApplication extends BaseApplication
     public static function runExceptionally(Throwable $throwable, ?OutputInterface $output = null): int
     {
         $argv = $_SERVER['argv'] ?? [];
+        $argv = array_values((array) $argv);
+        $argv = array_map(static fn ($value): string => is_string($value) ? $value : '', $argv);
+
         $argvInput = new ArgvInput($argv);
 
         if (! $output instanceof OutputInterface) {
@@ -78,9 +83,20 @@ final class LintApplication extends BaseApplication
         }
 
         $packages = $composerJson['packages'] ?? [];
+        if (! is_iterable($packages)) {
+            return $version;
+        }
 
         foreach ($packages as $package) {
-            if ($package['name'] === 'wundii/phplint') {
+            if (! array_key_exists('name', $package)) {
+                continue;
+            }
+
+            if (! array_key_exists('version', $package)) {
+                continue;
+            }
+
+            if ($package['name'] === 'wundii/phplint' && is_string($package['version'])) {
                 $version = $package['version'];
                 break;
             }

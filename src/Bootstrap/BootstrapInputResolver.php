@@ -42,13 +42,12 @@ final class BootstrapInputResolver
     public function getOptionArray(OptionEnum $optionEnum): array
     {
         $argv = $_SERVER['argv'] ?? [];
+        $argv = array_values((array) $argv);
+        $argv = array_map(static fn ($value): string => is_string($value) ? $value : '', $argv);
+
         $array = [];
 
         foreach ($argv as $value) {
-            if (! is_string($value)) {
-                continue;
-            }
-
             $needle = $optionEnum->getName() . '=';
             if (! str_starts_with($value, $needle)) {
                 continue;
