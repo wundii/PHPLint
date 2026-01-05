@@ -29,7 +29,7 @@
     "phpunit/phpunit": "11.5.45",
     "rector/rector": "2.2.14",
     "symfony/var-dumper": "7.4.0 || 8.0.0",
-    "symplify/easy-coding-standard": "13.0.0"
+    "symplify/easy-coding-standard": "13.0.4"
   },
   "autoload": {
     "psr-4": {
