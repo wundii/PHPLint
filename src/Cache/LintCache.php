@@ -5,18 +5,11 @@ declare(strict_types=1);
 namespace Wundii\PHPLint\Cache;
 
 use Psr\Cache\InvalidArgumentException;
-use Symfony\Component\Cache\Adapter\AdapterInterface;
 use Symfony\Component\Cache\Adapter\TraceableAdapter;
 use Symfony\Contracts\Cache\ItemInterface;
 
 final class LintCache extends TraceableAdapter
 {
-    public function __construct(
-        AdapterInterface $adapter,
-    ) {
-        parent::__construct($adapter);
-    }
-
     public function isMd5FileValid(string $filename): bool
     {
         try {
