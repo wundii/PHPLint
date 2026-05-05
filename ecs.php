@@ -37,6 +37,5 @@ return function (ECSConfig $ecsConfig): void {
         SetList::NAMESPACES,
         SetList::PSR_12,
         SetList::SPACES,
-        SetList::STRICT,
     ]);
 };
